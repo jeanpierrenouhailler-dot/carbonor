@@ -1,0 +1,6 @@
+{
+  "name": "CO₂ Atmosphère & Cycle du Carbone",
+  "description": "PWA scientifique pour l'exploration du CO₂ atmosphérique, de la spectroscopie moléculaire aux observations sol, satellites, profils et flux.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
