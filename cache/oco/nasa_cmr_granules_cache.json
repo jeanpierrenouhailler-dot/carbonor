@@ -1,0 +1,234 @@
+{
+  "fetchedAt": "2026-10-05T08:25:25.735Z",
+  "provider": "NASA Earthdata CMR (Common Metadata Repository)",
+  "version": "ACOS v11.3r / v11.1r",
+  "totalGranules": 16,
+  "oco2": [
+    {
+      "id": "G4287858414-GES_DISC",
+      "producerGranuleId": "oco2_LtCO2_260728_B11300Ar_260824193629s.nc4",
+      "title": "OCO2_L2_Lite_FP.11.3r:oco2_LtCO2_260728_B11300Ar_260824193629s.nc4",
+      "timeStart": "2026-07-28T00:00:00.000Z",
+      "timeEnd": "2026-07-29T00:00:00.000Z",
+      "granuleSizeBytes": 16003382,
+      "downloadUrl": "https://data.gesdisc.earthdata.nasa.gov/data/OCO2_DATA/OCO2_L2_Lite_FP.11.3r/2026/oco2_LtCO2_260728_B11300Ar_260824193629s.nc4",
+      "opendapUrl": "https://opendap.earthdata.nasa.gov/collections/C4203038017-GES_DISC/granules/OCO2_L2_Lite_FP.11.3r%3Aoco2_LtCO2_260728_B11300Ar_260824193629s.nc4",
+      "doi": "10.5067/EWSGQD2MI070",
+      "boxes": [
+        "-90 -180 90 180"
+      ]
+    },
+    {
+      "id": "G4287858393-GES_DISC",
+      "producerGranuleId": "oco2_LtCO2_260727_B11300Ar_260824193619s.nc4",
+      "title": "OCO2_L2_Lite_FP.11.3r:oco2_LtCO2_260727_B11300Ar_260824193619s.nc4",
+      "timeStart": "2026-07-27T00:00:00.000Z",
+      "timeEnd": "2026-07-28T00:00:00.000Z",
+      "granuleSizeBytes": 57665180,
+      "downloadUrl": "https://data.gesdisc.earthdata.nasa.gov/data/OCO2_DATA/OCO2_L2_Lite_FP.11.3r/2026/oco2_LtCO2_260727_B11300Ar_260824193619s.nc4",
+      "opendapUrl": "https://opendap.earthdata.nasa.gov/collections/C4203038017-GES_DISC/granules/OCO2_L2_Lite_FP.11.3r%3Aoco2_LtCO2_260727_B11300Ar_260824193619s.nc4",
+      "doi": "10.5067/EWSGQD2MI070",
+      "boxes": [
+        "-90 -180 90 180"
+      ]
+    },
+    {
+      "id": "G4287858365-GES_DISC",
+      "producerGranuleId": "oco2_LtCO2_260726_B11300Ar_260824193536s.nc4",
+      "title": "OCO2_L2_Lite_FP.11.3r:oco2_LtCO2_260726_B11300Ar_260824193536s.nc4",
+      "timeStart": "2026-07-26T00:00:00.000Z",
+      "timeEnd": "2026-07-27T00:00:00.000Z",
+      "granuleSizeBytes": 78382474,
+      "downloadUrl": "https://data.gesdisc.earthdata.nasa.gov/data/OCO2_DATA/OCO2_L2_Lite_FP.11.3r/2026/oco2_LtCO2_260726_B11300Ar_260824193536s.nc4",
+      "opendapUrl": "https://opendap.earthdata.nasa.gov/collections/C4203038017-GES_DISC/granules/OCO2_L2_Lite_FP.11.3r%3Aoco2_LtCO2_260726_B11300Ar_260824193536s.nc4",
+      "doi": "10.5067/EWSGQD2MI070",
+      "boxes": [
+        "-90 -180 90 180"
+      ]
+    },
+    {
+      "id": "G4287858418-GES_DISC",
+      "producerGranuleId": "oco2_LtCO2_260725_B11300Ar_260824193531s.nc4",
+      "title": "OCO2_L2_Lite_FP.11.3r:oco2_LtCO2_260725_B11300Ar_260824193531s.nc4",
+      "timeStart": "2026-07-25T00:00:00.000Z",
+      "timeEnd": "2026-07-26T00:00:00.000Z",
+      "granuleSizeBytes": 63446403,
+      "downloadUrl": "https://data.gesdisc.earthdata.nasa.gov/data/OCO2_DATA/OCO2_L2_Lite_FP.11.3r/2026/oco2_LtCO2_260725_B11300Ar_260824193531s.nc4",
+      "opendapUrl": "https://opendap.earthdata.nasa.gov/collections/C4203038017-GES_DISC/granules/OCO2_L2_Lite_FP.11.3r%3Aoco2_LtCO2_260725_B11300Ar_260824193531s.nc4",
+      "doi": "10.5067/EWSGQD2MI070",
+      "boxes": [
+        "-90 -180 90 180"
+      ]
+    },
+    {
+      "id": "G4287858375-GES_DISC",
+      "producerGranuleId": "oco2_LtCO2_260724_B11300Ar_260824193456s.nc4",
+      "title": "OCO2_L2_Lite_FP.11.3r:oco2_LtCO2_260724_B11300Ar_260824193456s.nc4",
+      "timeStart": "2026-07-24T00:00:00.000Z",
+      "timeEnd": "2026-07-25T00:00:00.000Z",
+      "granuleSizeBytes": 60991622,
+      "downloadUrl": "https://data.gesdisc.earthdata.nasa.gov/data/OCO2_DATA/OCO2_L2_Lite_FP.11.3r/2026/oco2_LtCO2_260724_B11300Ar_260824193456s.nc4",
+      "opendapUrl": "https://opendap.earthdata.nasa.gov/collections/C4203038017-GES_DISC/granules/OCO2_L2_Lite_FP.11.3r%3Aoco2_LtCO2_260724_B11300Ar_260824193456s.nc4",
+      "doi": "10.5067/EWSGQD2MI070",
+      "boxes": [
+        "-90 -180 90 180"
+      ]
+    },
+    {
+      "id": "G4287858411-GES_DISC",
+      "producerGranuleId": "oco2_LtCO2_260723_B11300Ar_260824193442s.nc4",
+      "title": "OCO2_L2_Lite_FP.11.3r:oco2_LtCO2_260723_B11300Ar_260824193442s.nc4",
+      "timeStart": "2026-07-23T00:00:00.000Z",
+      "timeEnd": "2026-07-24T00:00:00.000Z",
+      "granuleSizeBytes": 65616052,
+      "downloadUrl": "https://data.gesdisc.earthdata.nasa.gov/data/OCO2_DATA/OCO2_L2_Lite_FP.11.3r/2026/oco2_LtCO2_260723_B11300Ar_260824193442s.nc4",
+      "opendapUrl": "https://opendap.earthdata.nasa.gov/collections/C4203038017-GES_DISC/granules/OCO2_L2_Lite_FP.11.3r%3Aoco2_LtCO2_260723_B11300Ar_260824193442s.nc4",
+      "doi": "10.5067/EWSGQD2MI070",
+      "boxes": [
+        "-90 -180 90 180"
+      ]
+    },
+    {
+      "id": "G4287858387-GES_DISC",
+      "producerGranuleId": "oco2_LtCO2_260722_B11300Ar_260824193342s.nc4",
+      "title": "OCO2_L2_Lite_FP.11.3r:oco2_LtCO2_260722_B11300Ar_260824193342s.nc4",
+      "timeStart": "2026-07-22T00:00:00.000Z",
+      "timeEnd": "2026-07-23T00:00:00.000Z",
+      "granuleSizeBytes": 72699513,
+      "downloadUrl": "https://data.gesdisc.earthdata.nasa.gov/data/OCO2_DATA/OCO2_L2_Lite_FP.11.3r/2026/oco2_LtCO2_260722_B11300Ar_260824193342s.nc4",
+      "opendapUrl": "https://opendap.earthdata.nasa.gov/collections/C4203038017-GES_DISC/granules/OCO2_L2_Lite_FP.11.3r%3Aoco2_LtCO2_260722_B11300Ar_260824193342s.nc4",
+      "doi": "10.5067/EWSGQD2MI070",
+      "boxes": [
+        "-90 -180 90 180"
+      ]
+    },
+    {
+      "id": "G4287858392-GES_DISC",
+      "producerGranuleId": "oco2_LtCO2_260721_B11300Ar_260824193245s.nc4",
+      "title": "OCO2_L2_Lite_FP.11.3r:oco2_LtCO2_260721_B11300Ar_260824193245s.nc4",
+      "timeStart": "2026-07-21T00:00:00.000Z",
+      "timeEnd": "2026-07-22T00:00:00.000Z",
+      "granuleSizeBytes": 59669608,
+      "downloadUrl": "https://data.gesdisc.earthdata.nasa.gov/data/OCO2_DATA/OCO2_L2_Lite_FP.11.3r/2026/oco2_LtCO2_260721_B11300Ar_260824193245s.nc4",
+      "opendapUrl": "https://opendap.earthdata.nasa.gov/collections/C4203038017-GES_DISC/granules/OCO2_L2_Lite_FP.11.3r%3Aoco2_LtCO2_260721_B11300Ar_260824193245s.nc4",
+      "doi": "10.5067/EWSGQD2MI070",
+      "boxes": [
+        "-90 -180 90 180"
+      ]
+    }
+  ],
+  "oco3": [
+    {
+      "id": "G4326893779-GES_DISC",
+      "producerGranuleId": "oco3_LtCO2_260831_B11080Ar_260928155304s.nc4",
+      "title": "OCO3_L2_Lite_FP.11r:oco3_LtCO2_260831_B11080Ar_260928155304s.nc4",
+      "timeStart": "2026-08-31T00:00:00.000Z",
+      "timeEnd": "2026-09-01T00:00:00.000Z",
+      "granuleSizeBytes": 28966532,
+      "downloadUrl": "https://data.gesdisc.earthdata.nasa.gov/data/OCO3_DATA/OCO3_L2_Lite_FP.11r/2026/oco3_LtCO2_260831_B11080Ar_260928155304s.nc4",
+      "opendapUrl": "https://opendap.earthdata.nasa.gov/collections/C2910086168-GES_DISC/granules/OCO3_L2_Lite_FP.11r%3Aoco3_LtCO2_260831_B11080Ar_260928155304s.nc4",
+      "doi": "10.5067/970B3NET4USM",
+      "boxes": [
+        "-90 -180 90 180"
+      ]
+    },
+    {
+      "id": "G4326893390-GES_DISC",
+      "producerGranuleId": "oco3_LtCO2_260830_B11080Ar_260928155254s.nc4",
+      "title": "OCO3_L2_Lite_FP.11r:oco3_LtCO2_260830_B11080Ar_260928155254s.nc4",
+      "timeStart": "2026-08-30T00:00:00.000Z",
+      "timeEnd": "2026-08-31T00:00:00.000Z",
+      "granuleSizeBytes": 35901241,
+      "downloadUrl": "https://data.gesdisc.earthdata.nasa.gov/data/OCO3_DATA/OCO3_L2_Lite_FP.11r/2026/oco3_LtCO2_260830_B11080Ar_260928155254s.nc4",
+      "opendapUrl": "https://opendap.earthdata.nasa.gov/collections/C2910086168-GES_DISC/granules/OCO3_L2_Lite_FP.11r%3Aoco3_LtCO2_260830_B11080Ar_260928155254s.nc4",
+      "doi": "10.5067/970B3NET4USM",
+      "boxes": [
+        "-90 -180 90 180"
+      ]
+    },
+    {
+      "id": "G4326893412-GES_DISC",
+      "producerGranuleId": "oco3_LtCO2_260829_B11080Ar_260928155241s.nc4",
+      "title": "OCO3_L2_Lite_FP.11r:oco3_LtCO2_260829_B11080Ar_260928155241s.nc4",
+      "timeStart": "2026-08-29T00:00:00.000Z",
+      "timeEnd": "2026-08-30T00:00:00.000Z",
+      "granuleSizeBytes": 39870675,
+      "downloadUrl": "https://data.gesdisc.earthdata.nasa.gov/data/OCO3_DATA/OCO3_L2_Lite_FP.11r/2026/oco3_LtCO2_260829_B11080Ar_260928155241s.nc4",
+      "opendapUrl": "https://opendap.earthdata.nasa.gov/collections/C2910086168-GES_DISC/granules/OCO3_L2_Lite_FP.11r%3Aoco3_LtCO2_260829_B11080Ar_260928155241s.nc4",
+      "doi": "10.5067/970B3NET4USM",
+      "boxes": [
+        "-90 -180 90 180"
+      ]
+    },
+    {
+      "id": "G4326893371-GES_DISC",
+      "producerGranuleId": "oco3_LtCO2_260828_B11080Ar_260928155235s.nc4",
+      "title": "OCO3_L2_Lite_FP.11r:oco3_LtCO2_260828_B11080Ar_260928155235s.nc4",
+      "timeStart": "2026-08-28T00:00:00.000Z",
+      "timeEnd": "2026-08-29T00:00:00.000Z",
+      "granuleSizeBytes": 32424981,
+      "downloadUrl": "https://data.gesdisc.earthdata.nasa.gov/data/OCO3_DATA/OCO3_L2_Lite_FP.11r/2026/oco3_LtCO2_260828_B11080Ar_260928155235s.nc4",
+      "opendapUrl": "https://opendap.earthdata.nasa.gov/collections/C2910086168-GES_DISC/granules/OCO3_L2_Lite_FP.11r%3Aoco3_LtCO2_260828_B11080Ar_260928155235s.nc4",
+      "doi": "10.5067/970B3NET4USM",
+      "boxes": [
+        "-90 -180 90 180"
+      ]
+    },
+    {
+      "id": "G4326893375-GES_DISC",
+      "producerGranuleId": "oco3_LtCO2_260827_B11080Ar_260928155219s.nc4",
+      "title": "OCO3_L2_Lite_FP.11r:oco3_LtCO2_260827_B11080Ar_260928155219s.nc4",
+      "timeStart": "2026-08-27T00:00:00.000Z",
+      "timeEnd": "2026-08-28T00:00:00.000Z",
+      "granuleSizeBytes": 23374261,
+      "downloadUrl": "https://data.gesdisc.earthdata.nasa.gov/data/OCO3_DATA/OCO3_L2_Lite_FP.11r/2026/oco3_LtCO2_260827_B11080Ar_260928155219s.nc4",
+      "opendapUrl": "https://opendap.earthdata.nasa.gov/collections/C2910086168-GES_DISC/granules/OCO3_L2_Lite_FP.11r%3Aoco3_LtCO2_260827_B11080Ar_260928155219s.nc4",
+      "doi": "10.5067/970B3NET4USM",
+      "boxes": [
+        "-90 -180 90 180"
+      ]
+    },
+    {
+      "id": "G4326893416-GES_DISC",
+      "producerGranuleId": "oco3_LtCO2_260826_B11080Ar_260928155205s.nc4",
+      "title": "OCO3_L2_Lite_FP.11r:oco3_LtCO2_260826_B11080Ar_260928155205s.nc4",
+      "timeStart": "2026-08-26T00:00:00.000Z",
+      "timeEnd": "2026-08-27T00:00:00.000Z",
+      "granuleSizeBytes": 66173154,
+      "downloadUrl": "https://data.gesdisc.earthdata.nasa.gov/data/OCO3_DATA/OCO3_L2_Lite_FP.11r/2026/oco3_LtCO2_260826_B11080Ar_260928155205s.nc4",
+      "opendapUrl": "https://opendap.earthdata.nasa.gov/collections/C2910086168-GES_DISC/granules/OCO3_L2_Lite_FP.11r%3Aoco3_LtCO2_260826_B11080Ar_260928155205s.nc4",
+      "doi": "10.5067/970B3NET4USM",
+      "boxes": [
+        "-90 -180 90 180"
+      ]
+    },
+    {
+      "id": "G4326893407-GES_DISC",
+      "producerGranuleId": "oco3_LtCO2_260825_B11080Ar_260928155132s.nc4",
+      "title": "OCO3_L2_Lite_FP.11r:oco3_LtCO2_260825_B11080Ar_260928155132s.nc4",
+      "timeStart": "2026-08-25T00:00:00.000Z",
+      "timeEnd": "2026-08-26T00:00:00.000Z",
+      "granuleSizeBytes": 91100799,
+      "downloadUrl": "https://data.gesdisc.earthdata.nasa.gov/data/OCO3_DATA/OCO3_L2_Lite_FP.11r/2026/oco3_LtCO2_260825_B11080Ar_260928155132s.nc4",
+      "opendapUrl": "https://opendap.earthdata.nasa.gov/collections/C2910086168-GES_DISC/granules/OCO3_L2_Lite_FP.11r%3Aoco3_LtCO2_260825_B11080Ar_260928155132s.nc4",
+      "doi": "10.5067/970B3NET4USM",
+      "boxes": [
+        "-90 -180 90 180"
+      ]
+    },
+    {
+      "id": "G4326893456-GES_DISC",
+      "producerGranuleId": "oco3_LtCO2_260824_B11080Ar_260928155104s.nc4",
+      "title": "OCO3_L2_Lite_FP.11r:oco3_LtCO2_260824_B11080Ar_260928155104s.nc4",
+      "timeStart": "2026-08-24T00:00:00.000Z",
+      "timeEnd": "2026-08-25T00:00:00.000Z",
+      "granuleSizeBytes": 123066753,
+      "downloadUrl": "https://data.gesdisc.earthdata.nasa.gov/data/OCO3_DATA/OCO3_L2_Lite_FP.11r/2026/oco3_LtCO2_260824_B11080Ar_260928155104s.nc4",
+      "opendapUrl": "https://opendap.earthdata.nasa.gov/collections/C2910086168-GES_DISC/granules/OCO3_L2_Lite_FP.11r%3Aoco3_LtCO2_260824_B11080Ar_260928155104s.nc4",
+      "doi": "10.5067/970B3NET4USM",
+      "boxes": [
+        "-90 -180 90 180"
+      ]
+    }
+  ]
+}

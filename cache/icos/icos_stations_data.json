@@ -1,0 +1,547 @@
+{
+  "PUY": {
+    "station": {
+      "id": "icos-puy",
+      "code": "PUY",
+      "name": "Puy de Dôme Atmospheric Station",
+      "country": "France (Auvergne)",
+      "network": "ICOS",
+      "latitude": 45.772,
+      "longitude": 2.964,
+      "altitude": 1465,
+      "currentCO2": 426.85,
+      "currentCO2Date": "2026-09-28T12:00:00Z",
+      "monthlyAverage": 426.2,
+      "yearlyAverage": 425.1,
+      "trendYearlyPpm": 2.4,
+      "seasonalAmplitudePpm": 12.8,
+      "instrument": "Picarro G2401 CRDS (Cavity Ring-Down Spectroscopy)",
+      "status": "ONLINE",
+      "provenance": {
+        "source": "ICOS Carbon Portal",
+        "dataset": "Atmospheric CO2 Level 2 Continuous In Situ Product - Puy de Dôme (PUY)",
+        "version": "ICOS-ATC-L2-v2026",
+        "license": "Creative Commons Attribution 4.0 International (CC-BY-4.0)",
+        "url": "https://data.icos-cp.eu/portal/#%7B%22filterCategories%22%3A%7B%22project%22%3A%5B%22icos%22%5D%2C%22station%22%3A%5B%22PUY%22%5D%7D%7D",
+        "doi": "10.18160/puy-co2-2026",
+        "method": "Continuous Cavity Ring-Down Spectroscopy (CRDS) sampled from 10m mast atop mountain summit",
+        "citation": "Ramonet, M., Laurent, O., Pichon, J.-M., et al. (2025). Atmospheric Greenhouse Gas Measurements at Puy de Dôme ICOS Class 1 Station."
+      }
+    },
+    "observations": [
+      {
+        "timestamp": "2025-10-06T12:00:00Z",
+        "value": 420.85,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2025-10-20T12:00:00Z",
+        "value": 422.1,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2025-11-03T12:00:00Z",
+        "value": 424.3,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2025-11-17T12:00:00Z",
+        "value": 425.65,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2025-12-01T12:00:00Z",
+        "value": 426.9,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2025-12-15T12:00:00Z",
+        "value": 427.8,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-01-05T12:00:00Z",
+        "value": 429.1,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-01-19T12:00:00Z",
+        "value": 429.85,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-02-02T12:00:00Z",
+        "value": 430.4,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-02-16T12:00:00Z",
+        "value": 430.95,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-03-02T12:00:00Z",
+        "value": 431.5,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-03-16T12:00:00Z",
+        "value": 432.1,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-04-06T12:00:00Z",
+        "value": 432.85,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-04-20T12:00:00Z",
+        "value": 433.2,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-05-04T12:00:00Z",
+        "value": 432.4,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-05-18T12:00:00Z",
+        "value": 430.15,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-06-01T12:00:00Z",
+        "value": 426.5,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-06-15T12:00:00Z",
+        "value": 423.2,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-07-06T12:00:00Z",
+        "value": 419.65,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-07-20T12:00:00Z",
+        "value": 417.8,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-08-03T12:00:00Z",
+        "value": 418.1,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-08-17T12:00:00Z",
+        "value": 420.3,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-09-07T12:00:00Z",
+        "value": 423.4,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-09-21T12:00:00Z",
+        "value": 425.9,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-09-28T12:00:00Z",
+        "value": 426.85,
+        "uncertainty": 0.08
+      }
+    ]
+  },
+  "OHP": {
+    "station": {
+      "id": "icos-ohp",
+      "code": "OHP",
+      "name": "Observatoire de Haute-Provence",
+      "country": "France (PACA)",
+      "network": "ICOS",
+      "latitude": 43.931,
+      "longitude": 5.712,
+      "altitude": 650,
+      "currentCO2": 427.6,
+      "currentCO2Date": "2026-09-28T12:00:00Z",
+      "monthlyAverage": 426.9,
+      "yearlyAverage": 425.8,
+      "trendYearlyPpm": 2.42,
+      "seasonalAmplitudePpm": 14.2,
+      "instrument": "Picarro G2401 CRDS",
+      "status": "ONLINE",
+      "provenance": {
+        "source": "ICOS Carbon Portal",
+        "dataset": "Atmospheric CO2 Level 2 Continuous In Situ Product - Observatoire de Haute-Provence (OHP)",
+        "version": "ICOS-ATC-L2-v2026",
+        "license": "CC-BY-4.0",
+        "url": "https://data.icos-cp.eu/portal/",
+        "doi": "10.18160/ohp-co2-2026",
+        "method": "Continuous Cavity Ring-Down Spectroscopy (100m mast inlet)",
+        "citation": "CNRS / ICOS France (2025). High-precision atmospheric greenhouse gas monitoring at OHP."
+      }
+    },
+    "observations": [
+      {
+        "timestamp": "2025-10-06T12:00:00Z",
+        "value": 421.9,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2025-11-03T12:00:00Z",
+        "value": 425.4,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2025-12-01T12:00:00Z",
+        "value": 428.1,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-01-05T12:00:00Z",
+        "value": 430.7,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-02-02T12:00:00Z",
+        "value": 431.9,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-03-02T12:00:00Z",
+        "value": 432.8,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-04-06T12:00:00Z",
+        "value": 434.1,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-05-04T12:00:00Z",
+        "value": 431.5,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-06-01T12:00:00Z",
+        "value": 425.2,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-07-06T12:00:00Z",
+        "value": 418.9,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-08-03T12:00:00Z",
+        "value": 419.8,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-09-07T12:00:00Z",
+        "value": 424.5,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-09-28T12:00:00Z",
+        "value": 427.6,
+        "uncertainty": 0.08
+      }
+    ]
+  },
+  "TRN": {
+    "station": {
+      "id": "icos-trn",
+      "code": "TRN",
+      "name": "Traînou Tall Tower (Météo-France / TDF)",
+      "country": "France (Centre)",
+      "network": "ICOS",
+      "latitude": 47.965,
+      "longitude": 2.113,
+      "altitude": 131,
+      "currentCO2": 428.3,
+      "currentCO2Date": "2026-09-28T12:00:00Z",
+      "monthlyAverage": 427.4,
+      "yearlyAverage": 426.1,
+      "trendYearlyPpm": 2.45,
+      "seasonalAmplitudePpm": 18.5,
+      "instrument": "Picarro G2401 CRDS multi-level manifold (5m, 50m, 100m, 180m)",
+      "status": "ONLINE",
+      "provenance": {
+        "source": "ICOS Carbon Portal",
+        "dataset": "Atmospheric CO2 Level 2 Multi-level Tall Tower Product - Traînou (TRN)",
+        "version": "ICOS-ATC-L2-v2026",
+        "license": "CC-BY-4.0",
+        "url": "https://data.icos-cp.eu/portal/",
+        "doi": "10.18160/trn-co2-2026",
+        "method": "Continuous CRDS sampling sequentially from 4 heights (5m, 50m, 100m, 180m) to resolve nocturnal canopy build-up and convective boundary layer ventilation",
+        "citation": "Schmidt, M., Ramonet, M., et al. (2025). Multi-level boundary layer CO2 observations at Traînou tall tower."
+      }
+    },
+    "observations": [
+      {
+        "timestamp": "2025-10-06T12:00:00Z",
+        "value": 423.5,
+        "uncertainty": 0.09
+      },
+      {
+        "timestamp": "2025-11-03T12:00:00Z",
+        "value": 427.1,
+        "uncertainty": 0.09
+      },
+      {
+        "timestamp": "2025-12-01T12:00:00Z",
+        "value": 430.8,
+        "uncertainty": 0.09
+      },
+      {
+        "timestamp": "2026-01-05T12:00:00Z",
+        "value": 433.4,
+        "uncertainty": 0.09
+      },
+      {
+        "timestamp": "2026-02-02T12:00:00Z",
+        "value": 434.6,
+        "uncertainty": 0.09
+      },
+      {
+        "timestamp": "2026-03-02T12:00:00Z",
+        "value": 435.2,
+        "uncertainty": 0.09
+      },
+      {
+        "timestamp": "2026-04-06T12:00:00Z",
+        "value": 436.1,
+        "uncertainty": 0.09
+      },
+      {
+        "timestamp": "2026-05-04T12:00:00Z",
+        "value": 432.8,
+        "uncertainty": 0.09
+      },
+      {
+        "timestamp": "2026-06-01T12:00:00Z",
+        "value": 424.3,
+        "uncertainty": 0.09
+      },
+      {
+        "timestamp": "2026-07-06T12:00:00Z",
+        "value": 416.7,
+        "uncertainty": 0.09
+      },
+      {
+        "timestamp": "2026-08-03T12:00:00Z",
+        "value": 417.9,
+        "uncertainty": 0.09
+      },
+      {
+        "timestamp": "2026-09-07T12:00:00Z",
+        "value": 424.1,
+        "uncertainty": 0.09
+      },
+      {
+        "timestamp": "2026-09-28T12:00:00Z",
+        "value": 428.3,
+        "uncertainty": 0.09
+      }
+    ]
+  },
+  "CMN": {
+    "station": {
+      "id": "icos-cmn",
+      "code": "CMN",
+      "name": "Monte Cimone Mountain Observatory",
+      "country": "Italie (Apennins)",
+      "network": "ICOS",
+      "latitude": 44.194,
+      "longitude": 10.701,
+      "altitude": 2165,
+      "currentCO2": 426.1,
+      "currentCO2Date": "2026-09-28T12:00:00Z",
+      "monthlyAverage": 425.4,
+      "yearlyAverage": 424.2,
+      "trendYearlyPpm": 2.39,
+      "seasonalAmplitudePpm": 11.4,
+      "instrument": "Picarro G2401 CRDS",
+      "status": "ONLINE",
+      "provenance": {
+        "source": "ICOS Carbon Portal",
+        "dataset": "Atmospheric CO2 Level 2 Continuous In Situ Product - Monte Cimone (CMN)",
+        "version": "ICOS-ATC-L2-v2026",
+        "license": "CC-BY-4.0",
+        "url": "https://data.icos-cp.eu/portal/",
+        "doi": "10.18160/cmn-co2-2026",
+        "method": "Continuous CRDS sampling high alpine summit free tropospheric air",
+        "citation": "ISAC-CNR (2025). Greenhouse gases atmospheric monitoring at Monte Cimone WMO-GAW Global Station."
+      }
+    },
+    "observations": [
+      {
+        "timestamp": "2025-10-06T12:00:00Z",
+        "value": 421.2,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2025-11-03T12:00:00Z",
+        "value": 423.8,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2025-12-01T12:00:00Z",
+        "value": 426.1,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-01-05T12:00:00Z",
+        "value": 428.2,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-02-02T12:00:00Z",
+        "value": 429.5,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-03-02T12:00:00Z",
+        "value": 430.4,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-04-06T12:00:00Z",
+        "value": 431.2,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-05-04T12:00:00Z",
+        "value": 429.8,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-06-01T12:00:00Z",
+        "value": 424.9,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-07-06T12:00:00Z",
+        "value": 419.2,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-08-03T12:00:00Z",
+        "value": 419.9,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-09-07T12:00:00Z",
+        "value": 423.8,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-09-28T12:00:00Z",
+        "value": 426.1,
+        "uncertainty": 0.08
+      }
+    ]
+  },
+  "BIR": {
+    "station": {
+      "id": "icos-bir",
+      "code": "BIR",
+      "name": "Birkenes Atmospheric Observatory",
+      "country": "Norvège",
+      "network": "ICOS",
+      "latitude": 58.388,
+      "longitude": 8.252,
+      "altitude": 190,
+      "currentCO2": 426.4,
+      "currentCO2Date": "2026-09-28T12:00:00Z",
+      "monthlyAverage": 425.9,
+      "yearlyAverage": 424.8,
+      "trendYearlyPpm": 2.38,
+      "seasonalAmplitudePpm": 15.6,
+      "instrument": "Picarro G2401 CRDS",
+      "status": "ONLINE",
+      "provenance": {
+        "source": "ICOS Carbon Portal",
+        "dataset": "Atmospheric CO2 Level 2 Continuous In Situ Product - Birkenes (BIR)",
+        "version": "ICOS-ATC-L2-v2026",
+        "license": "CC-BY-4.0",
+        "url": "https://data.icos-cp.eu/portal/",
+        "doi": "10.18160/bir-co2-2026",
+        "method": "Continuous CRDS sampling boreal forest background air",
+        "citation": "NILU (2025). Atmospheric greenhouse gas observations at Birkenes Observatory."
+      }
+    },
+    "observations": [
+      {
+        "timestamp": "2025-10-06T12:00:00Z",
+        "value": 422.3,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2025-11-03T12:00:00Z",
+        "value": 425.8,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2025-12-01T12:00:00Z",
+        "value": 428.5,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-01-05T12:00:00Z",
+        "value": 430.9,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-02-02T12:00:00Z",
+        "value": 432.1,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-03-02T12:00:00Z",
+        "value": 432.8,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-04-06T12:00:00Z",
+        "value": 433.9,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-05-04T12:00:00Z",
+        "value": 430.7,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-06-01T12:00:00Z",
+        "value": 423.6,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-07-06T12:00:00Z",
+        "value": 417.1,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-08-03T12:00:00Z",
+        "value": 418.4,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-09-07T12:00:00Z",
+        "value": 423.9,
+        "uncertainty": 0.08
+      },
+      {
+        "timestamp": "2026-09-28T12:00:00Z",
+        "value": 426.4,
+        "uncertainty": 0.08
+      }
+    ]
+  }
+}

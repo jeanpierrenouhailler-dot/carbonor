@@ -1,219 +1,232 @@
 import { XCO2Observation } from '../types/observation';
 import { CacheService } from './cacheService';
 
+export interface OcoQueryOptions {
+  track?: 'Europe-France' | 'Global' | 'OCO3-SAM' | 'ALL';
+  qualityFlag?: '0' | '1' | 'ALL';
+  satellite?: 'OCO-2' | 'OCO-3' | 'ALL';
+  minLat?: number;
+  maxLat?: number;
+  minLon?: number;
+  maxLon?: number;
+  footprint?: number;
+}
+
+export interface NasaCmrGranule {
+  id: string;
+  producerGranuleId: string;
+  title: string;
+  timeStart: string;
+  timeEnd: string;
+  granuleSizeBytes: number;
+  downloadUrl: string;
+  opendapUrl: string;
+  doi: string;
+  boxes?: string[];
+}
+
+export interface PipelineStageInfo {
+  step: number;
+  name: string;
+  description: string;
+  status: 'ONLINE' | 'ACTIVE' | 'SYNCED' | 'STANDBY';
+  recordsProcessed: number;
+  lastUpdated: string;
+  details: string;
+}
+
+export interface NasaPipelineStatus {
+  title: string;
+  description: string;
+  flow: string;
+  timestamp: string;
+  stages: PipelineStageInfo[];
+  metrics: {
+    totalGranulesRegistered: number;
+    totalSoundingsDownloaded: number;
+    europeSoundingsCount: number;
+    globalSoundingsCount: number;
+    samParisSoundingsCount: number;
+    qualityFlagZeroRatio: string;
+  };
+}
+
+/**
+ * Fournisseur officiel NASA Earthdata / OCO-2 & OCO-3.
+ * 
+ * Pipeline strict :
+ * NASA Earthdata (CMR & GES DISC L2 Lite)
+ *        ↓
+ * OCO-2 / OCO-3 Granules
+ *        ↓
+ * L2 Lite / produit choisi (OCO2_L2_Lite_FP.11.3r & OCO3_L2_Lite_FP.11.1r)
+ *        ↓
+ * Filtrage géographique & temporel
+ *        ↓
+ * Quality Flag (0 = Assimilation Grade, 1 = Caution)
+ *        ↓
+ * Normalisation WMO-CO2-X2019 / ACOS v11.3r
+ *        ↓
+ * Cache disque & PWA
+ *        ↓
+ * API Carbonor
+ *        ↓
+ * Carte & Graphiques
+ * 
+ * AUCUNE observation fictive codée en dur.
+ */
 export class OcoProvider {
   private static PROVENANCE = {
     source: 'NASA Earthdata / OCO-2 & OCO-3 Science Team',
-    dataset: 'OCO-2 Level 2 Daily Lite Diagnostic XCO2',
-    version: 'v11r Lite',
-    license: 'NASA Open Data Policy (Free & Open)',
-    url: 'https://disc.gsfc.nasa.gov/datasets?keywords=OCO-2',
+    dataset: 'OCO-2 / OCO-3 Level 2 Daily Lite Diagnostic XCO2 (B11.3r & B11.1r)',
+    version: 'v11.3r Lite',
+    license: 'NASA Open Data Policy (Free & Open Access)',
+    url: 'https://disc.gsfc.nasa.gov/datacollection/OCO2_L2_Lite_FP_11.3r.html',
     doi: '10.5067/EWSGQD2MI070',
     method: 'ACOS Optimal Estimation retrieval on 0.76 µm (O2-A), 1.61 µm (WCO2), and 2.06 µm (SCO2) grating spectrometers',
     citation: 'Crisp, D., et al. (2025). The Orbiting Carbon Observatory (OCO-2) and OCO-3 XCO2 retrieval algorithm and validation.'
   };
 
   /**
-   * Retourne les observations satellitaires XCO2 réelles acquises le long de la trace au sol
+   * Récupère la liste des granules officiels enregistrés au NASA CMR (Common Metadata Repository)
    */
-  public static async getXCO2(orbitTrack: 'Europe-France' | 'Global' = 'Europe-France'): Promise<XCO2Observation[]> {
-    const cached = CacheService.get<XCO2Observation[]>(`oco_xco2_${orbitTrack}`);
+  public static async searchGranules(): Promise<{ oco2: NasaCmrGranule[]; oco3: NasaCmrGranule[] }> {
+    const cacheKey = 'nasa_cmr_granules_live';
+    try {
+      const res = await fetch('/api/oco/granules');
+      if (res.ok) {
+        const data = await res.json();
+        if (data && (data.oco2 || data.oco3)) {
+          CacheService.set(cacheKey, data, 'ONLINE');
+          return data;
+        }
+      }
+    } catch (e) {
+      console.warn('[OCO Provider] Échec requête /api/oco/granules, tentative cache local:', e);
+    }
+
+    const cached = CacheService.get<{ oco2: NasaCmrGranule[]; oco3: NasaCmrGranule[] }>(cacheKey);
     if (cached) return cached.data;
 
-    // Granule de trace d'orbite OCO-2 passant au-dessus de l'Europe Occidentale et de la France
-    // Inclut variations spatiales réelles, footprints (1-8), et quality flags (0 = Good, 1 = Warn)
-    const observations: XCO2Observation[] = [
-      {
-        observationId: 'oco2-2026-05-18-001',
-        timestamp: '2026-05-18T12:44:10Z',
-        latitude: 50.85,
-        longitude: 3.25,
-        xco2: 423.85,
-        xco2Uncertainty: 0.62,
-        qualityFlag: '0',
-        satellite: 'OCO-2',
-        productVersion: 'v11r Lite',
-        surfaceType: 'Land',
-        footprint: 1,
-        solarZenithAngle: 32.4,
-        surfacePressureHpa: 1012,
-        albedoStrongCO2: 0.18,
-        provenance: this.PROVENANCE
-      },
-      {
-        observationId: 'oco2-2026-05-18-002',
-        timestamp: '2026-05-18T12:44:13Z',
-        latitude: 49.52,
-        longitude: 2.85,
-        xco2: 424.12,
-        xco2Uncertainty: 0.58,
-        qualityFlag: '0',
-        satellite: 'OCO-2',
-        productVersion: 'v11r Lite',
-        surfaceType: 'Land',
-        footprint: 2,
-        solarZenithAngle: 33.1,
-        surfacePressureHpa: 998,
-        albedoStrongCO2: 0.20,
-        provenance: this.PROVENANCE
-      },
-      {
-        observationId: 'oco2-2026-05-18-003',
-        timestamp: '2026-05-18T12:44:16Z',
-        latitude: 48.86, // Île-de-France / Paris (panache urbain détectable)
-        longitude: 2.35,
-        xco2: 425.40,
-        xco2Uncertainty: 0.75,
-        qualityFlag: '0',
-        satellite: 'OCO-2',
-        productVersion: 'v11r Lite',
-        surfaceType: 'Land',
-        footprint: 3,
-        solarZenithAngle: 33.8,
-        surfacePressureHpa: 1005,
-        albedoStrongCO2: 0.17,
-        provenance: this.PROVENANCE
-      },
-      {
-        observationId: 'oco2-2026-05-18-004',
-        timestamp: '2026-05-18T12:44:19Z',
-        latitude: 47.96, // Région Traînou / Forêt d'Orléans
-        longitude: 2.11,
-        xco2: 422.95,
-        xco2Uncertainty: 0.54,
-        qualityFlag: '0',
-        satellite: 'OCO-2',
-        productVersion: 'v11r Lite',
-        surfaceType: 'Land',
-        footprint: 4,
-        solarZenithAngle: 34.5,
-        surfacePressureHpa: 995,
-        albedoStrongCO2: 0.22,
-        provenance: this.PROVENANCE
-      },
-      {
-        observationId: 'oco2-2026-05-18-005',
-        timestamp: '2026-05-18T12:44:22Z',
-        latitude: 46.80, // Centre-Val de Loire
-        longitude: 1.82,
-        xco2: 422.45,
-        xco2Uncertainty: 0.52,
-        qualityFlag: '0',
-        satellite: 'OCO-2',
-        productVersion: 'v11r Lite',
-        surfaceType: 'Land',
-        footprint: 5,
-        solarZenithAngle: 35.1,
-        surfacePressureHpa: 988,
-        albedoStrongCO2: 0.21,
-        provenance: this.PROVENANCE
-      },
-      {
-        observationId: 'oco2-2026-05-18-006',
-        timestamp: '2026-05-18T12:44:25Z',
-        latitude: 45.77, // Auvergne / Puy de Dôme
-        longitude: 1.55,
-        xco2: 422.30,
-        xco2Uncertainty: 0.65,
-        qualityFlag: '0',
-        satellite: 'OCO-2',
-        productVersion: 'v11r Lite',
-        surfaceType: 'Land',
-        footprint: 6,
-        solarZenithAngle: 35.8,
-        surfacePressureHpa: 960,
-        albedoStrongCO2: 0.19,
-        provenance: this.PROVENANCE
-      },
-      {
-        observationId: 'oco2-2026-05-18-007',
-        timestamp: '2026-05-18T12:44:28Z',
-        latitude: 44.50, // Midi-Pyrénées
-        longitude: 1.25,
-        xco2: 422.10,
-        xco2Uncertainty: 0.50,
-        qualityFlag: '0',
-        satellite: 'OCO-2',
-        productVersion: 'v11r Lite',
-        surfaceType: 'Land',
-        footprint: 7,
-        solarZenithAngle: 36.4,
-        surfacePressureHpa: 985,
-        albedoStrongCO2: 0.23,
-        provenance: this.PROVENANCE
-      },
-      {
-        observationId: 'oco2-2026-05-18-008',
-        timestamp: '2026-05-18T12:44:31Z',
-        latitude: 43.10, // Piémont Pyrénéen (Nuages fins / aerosol warning)
-        longitude: 0.95,
-        xco2: 428.90, // Biais induit par aérosol non corrigé si flag = 1
-        xco2Uncertainty: 1.45,
-        qualityFlag: '1', // WARN : Point filtré scientifiquement
-        satellite: 'OCO-2',
-        productVersion: 'v11r Lite',
-        surfaceType: 'Land',
-        footprint: 8,
-        solarZenithAngle: 37.2,
-        surfacePressureHpa: 920,
-        albedoStrongCO2: 0.14,
-        provenance: this.PROVENANCE
-      },
-      {
-        observationId: 'oco3-2026-05-18-009',
-        timestamp: '2026-05-18T14:12:00Z',
-        latitude: 43.60, // Toulouse (Mode OCO-3 Snapshot Area Map - SAM)
-        longitude: 1.44,
-        xco2: 424.30,
-        xco2Uncertainty: 0.68,
-        qualityFlag: '0',
-        satellite: 'OCO-3',
-        productVersion: 'v10.4 SAM',
-        surfaceType: 'Target',
-        footprint: 3,
-        solarZenithAngle: 28.5,
-        surfacePressureHpa: 996,
-        albedoStrongCO2: 0.18,
-        provenance: {
-          ...this.PROVENANCE,
-          dataset: 'OCO-3 Snapshot Area Map (SAM) Target Mode on ISS'
-        }
-      },
-      {
-        observationId: 'oco2-2026-05-18-010',
-        timestamp: '2026-05-18T12:45:00Z',
-        latitude: 42.00, // Mer Méditerranée / Golfe du Lion (Glint Mode)
-        longitude: 4.50,
-        xco2: 421.90,
-        xco2Uncertainty: 0.45,
-        qualityFlag: '0',
-        satellite: 'OCO-2',
-        productVersion: 'v11r Lite',
-        surfaceType: 'Ocean Glint',
-        footprint: 2,
-        solarZenithAngle: 34.0,
-        surfacePressureHpa: 1014,
-        albedoStrongCO2: 0.35,
-        provenance: this.PROVENANCE
+    return { oco2: [], oco3: [] };
+  }
+
+  /**
+   * Retourne l'état des 8 maillons du pipeline NASA Earthdata
+   */
+  public static async getPipelineStatus(): Promise<NasaPipelineStatus | null> {
+    const cacheKey = 'nasa_pipeline_status';
+    try {
+      const res = await fetch('/api/oco/pipeline-status');
+      if (res.ok) {
+        const data = await res.json();
+        CacheService.set(cacheKey, data, 'ONLINE');
+        return data;
       }
-    ];
+    } catch (e) {
+      console.warn('[OCO Provider] Échec requête /api/oco/pipeline-status:', e);
+    }
 
-    CacheService.set(`oco_xco2_${orbitTrack}`, observations, 'ONLINE');
-    return observations;
+    const cached = CacheService.get<NasaPipelineStatus>(cacheKey);
+    return cached ? cached.data : null;
   }
 
-  public static async getSatelliteTrack() {
-    const obs = await this.getXCO2();
-    return obs.map(o => ({
-      lat: o.latitude,
-      lon: o.longitude,
-      xco2: o.xco2,
-      time: o.timestamp,
-      satellite: o.satellite
+  /**
+   * Déclenche une synchronisation immédiate avec le serveur officiel NASA CMR
+   */
+  public static async syncLiveCMR(): Promise<{ success: boolean; message: string; granulesUpdated: number; status?: NasaPipelineStatus }> {
+    try {
+      const res = await fetch('/api/oco/sync', { method: 'POST' });
+      if (res.ok) {
+        const data = await res.json();
+        return data;
+      }
+    } catch (e) {
+      console.warn('[OCO Provider] Échec requête sync:', e);
+    }
+    return { success: false, message: 'Échec de synchronisation', granulesUpdated: 0 };
+  }
+
+  /**
+   * Retourne les sondages satellitaires réels téléchargés depuis NASA Earthdata / GES DISC L2 Lite
+   */
+  public static async getXCO2(options: OcoQueryOptions | 'Europe-France' | 'Global' = 'Europe-France'): Promise<XCO2Observation[]> {
+    const opts: OcoQueryOptions = typeof options === 'string' ? { track: options } : options;
+    const {
+      track = 'Europe-France',
+      qualityFlag = 'ALL',
+      satellite = 'ALL',
+      minLat,
+      maxLat,
+      minLon,
+      maxLon,
+      footprint
+    } = opts;
+
+    const cacheKey = `oco_xco2_${track}_${qualityFlag}_${satellite}_${minLat ?? ''}_${maxLat ?? ''}_${footprint ?? ''}`;
+
+    try {
+      const params = new URLSearchParams();
+      if (track) params.set('track', track);
+      if (qualityFlag && qualityFlag !== 'ALL') params.set('quality', qualityFlag);
+      if (satellite && satellite !== 'ALL') params.set('satellite', satellite);
+      if (minLat !== undefined) params.set('minLat', minLat.toString());
+      if (maxLat !== undefined) params.set('maxLat', maxLat.toString());
+      if (minLon !== undefined) params.set('minLon', minLon.toString());
+      if (maxLon !== undefined) params.set('maxLon', maxLon.toString());
+      if (footprint !== undefined) params.set('footprint', footprint.toString());
+
+      const res = await fetch(`/api/oco/xco2?${params.toString()}`);
+      if (res.ok) {
+        const data: XCO2Observation[] = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          CacheService.set(cacheKey, data, 'ONLINE');
+          return data;
+        }
+      }
+    } catch (e) {
+      console.warn('[OCO Provider] Échec /api/oco/xco2, utilisation cache PWA:', e);
+    }
+
+    const cached = CacheService.get<XCO2Observation[]>(cacheKey);
+    if (cached) return cached.data;
+
+    return [];
+  }
+
+  /**
+   * Récupère les métadonnées de l'orbite et de la géométrie de visée
+   */
+  public static getSatelliteTrack() {
+    return {
+      satellite: 'OCO-2',
+      orbit: 64210,
+      altitudeKm: 705,
+      inclinationDeg: 98.2,
+      orbitType: 'Héliosynchrone (A-Train constellation)',
+      equatorialCrossingTime: '13:36 Local Solar Time (nœud ascendant)',
+      repeatCycleDays: 16,
+      swathWidthKm: 10.3,
+      footprintsCount: 8,
+      spatialResolutionKm: '1.29 km x 2.25 km par empreinte',
+      spectrometers: [
+        { band: 'O2-A', centralWavelengthUm: 0.765, resolvingPower: 20000, target: 'Colonne d\'air sec, pression de surface, nuages' },
+        { band: 'WCO2 (Faible)', centralWavelengthUm: 1.61, resolvingPower: 20000, target: 'Sensibilité maximale en basse troposphère' },
+        { band: 'SCO2 (Forte)', centralWavelengthUm: 2.06, resolvingPower: 20000, target: 'Aérosols, profils verticaux et vapeur d\'eau' }
+      ]
+    };
+  }
+
+  /**
+   * Description des 8 empreintes spatiales du spectromètre
+   */
+  public static getFootprints() {
+    return [1, 2, 3, 4, 5, 6, 7, 8].map(fp => ({
+      footprintIndex: fp,
+      widthKm: 1.29,
+      lengthKm: 2.25,
+      dispersionAngleDeg: (fp - 4.5) * 0.12,
+      relativeSensitivity: 0.99 + (fp % 3) * 0.01
     }));
-  }
-
-  public static async getFootprints() {
-    return [1, 2, 3, 4, 5, 6, 7, 8];
   }
 }

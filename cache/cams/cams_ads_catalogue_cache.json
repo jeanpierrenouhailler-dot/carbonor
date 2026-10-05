@@ -1,0 +1,69 @@
+{
+  "fetchedAt": "2026-10-05T09:25:58.372Z",
+  "apiEndpoint": "https://ads.atmosphere.copernicus.eu/api",
+  "catalogueVersion": "CADS v1",
+  "modelCycle": "ECMWF IFS Cycle 49r1 (Integrated Forecasting System)",
+  "collections": [
+    {
+      "id": "cams-global-greenhouse-gas-forecasts",
+      "title": "CAMS global greenhouse gas forecasts",
+      "type": "Collection",
+      "spatialExtent": {
+        "bbox": [
+          [
+            0,
+            -89,
+            360,
+            89
+          ]
+        ]
+      },
+      "temporalInterval": [
+        [
+          "2024-03-01T00:00:00+00:00",
+          "2026-10-04T00:00:00+00:00"
+        ]
+      ],
+      "variables": [
+        "carbon_dioxide",
+        "methane",
+        "carbon_monoxide"
+      ],
+      "levels": [
+        "1000",
+        "925",
+        "850",
+        "700",
+        "500",
+        "400",
+        "300",
+        "200",
+        "100",
+        "70",
+        "50",
+        "25",
+        "10"
+      ],
+      "license": "Copernicus Open Access Software & Data License",
+      "doi": "10.24380/cams-co2-forecast"
+    },
+    {
+      "id": "cams-global-greenhouse-gas-inversion",
+      "title": "CAMS global inversion-optimised greenhouse gas fluxes and concentrations",
+      "type": "Collection",
+      "temporalInterval": [
+        [
+          "1979-01-01T00:00:00+00:00",
+          "2025-12-31T00:00:00+00:00"
+        ]
+      ],
+      "variables": [
+        "surface_flux_nee",
+        "surface_flux_fossil",
+        "surface_flux_ocean"
+      ],
+      "license": "Copernicus Open Access Software & Data License",
+      "doi": "10.24380/cams-flux-inversion"
+    }
+  ]
+}

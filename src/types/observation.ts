@@ -65,6 +65,7 @@ export interface Station {
 
 export interface XCO2Observation {
   observationId: string;
+  soundingId?: string;         // Identifiant NASA sounding officiel 16 chiffres
   timestamp: string;
   latitude: number;
   longitude: number;
@@ -72,12 +73,15 @@ export interface XCO2Observation {
   xco2Uncertainty: number;     // ppm (ex: ±0.65 ppm)
   qualityFlag: '0' | '1';      // '0' = Good (assimilation grade), '1' = Warn (filtré)
   satellite: 'OCO-2' | 'OCO-3';
-  productVersion: string;      // 'v11r Lite'
-  surfaceType: 'Land' | 'Ocean Glint' | 'Target' | 'Transition';
+  productVersion?: string;     // 'v11.3r Lite'
+  surfaceType?: 'Land' | 'Ocean' | 'Ocean Glint' | 'Target' | 'Transition' | string;
   footprint: number;           // 1 à 8
   solarZenithAngle?: number;   // degrés
   surfacePressureHpa?: number; // hPa
   albedoStrongCO2?: number;    // réflectance 2.06 µm
+  orbit?: number;
+  operationMode?: string;      // 'Nadir', 'Glint', 'SAM'
+  granuleTitle?: string;
   provenance: DataProvenance;
 }
 

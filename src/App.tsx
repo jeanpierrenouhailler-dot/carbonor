@@ -22,6 +22,7 @@ import { FluxEmissionsView } from './components/flux/FluxEmissionsView';
 import { MultiSourceCompareView } from './components/compare/MultiSourceCompareView';
 import { FranceEuropeView } from './components/regional/FranceEuropeView';
 import { DocumentationView } from './components/docs/DocumentationView';
+import { RealDataAuditView } from './components/audit/RealDataAuditView';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<ViewKey>('dashboard');
@@ -54,6 +55,8 @@ export default function App() {
         return <MultiSourceCompareView />;
       case 'france':
         return <FranceEuropeView />;
+      case 'pipeline-audit':
+        return <RealDataAuditView />;
       case 'sources':
       case 'docs':
         return <DocumentationView />;

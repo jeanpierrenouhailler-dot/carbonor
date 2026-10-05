@@ -13,7 +13,8 @@ import {
   Database, 
   BookOpen, 
   ChevronRight,
-  Flame
+  Flame,
+  ShieldCheck
 } from 'lucide-react';
 
 export type ViewKey = 
@@ -29,6 +30,7 @@ export type ViewKey =
   | 'emissions'
   | 'compare'
   | 'france'
+  | 'pipeline-audit'
   | 'sources'
   | 'docs';
 
@@ -81,6 +83,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       title: 'Analyse & Validation',
       items: [
         { id: 'compare' as ViewKey, label: 'Comparateur Multi-Sources', icon: Scale },
+        { id: 'pipeline-audit' as ViewKey, label: 'Audit Données Réelles', icon: ShieldCheck, badge: 'GML & ERDDAP' },
         { id: 'sources' as ViewKey, label: 'Sources, Licences & Provenance', icon: Database },
         { id: 'docs' as ViewKey, label: 'Documentation Scientifique', icon: BookOpen }
       ]

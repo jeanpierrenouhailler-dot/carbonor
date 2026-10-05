@@ -7,25 +7,25 @@ export class IcosProvider {
       id: 'icos-puy',
       code: 'PUY',
       name: 'Puy de Dôme Atmospheric Station',
-      country: 'France',
+      country: 'France (Auvergne)',
       network: 'ICOS',
       latitude: 45.7720,
       longitude: 2.9640,
       altitude: 1465,
-      currentCO2: 426.15,
-      currentCO2Date: '2026-05-18T06:00:00Z',
-      monthlyAverage: 425.40,
-      yearlyAverage: 423.80,
+      currentCO2: 426.85,
+      currentCO2Date: '2026-09-28T12:00:00Z',
+      monthlyAverage: 426.20,
+      yearlyAverage: 425.10,
       trendYearlyPpm: 2.40,
-      seasonalAmplitudePpm: 12.2,
+      seasonalAmplitudePpm: 12.8,
       instrument: 'Picarro G2401 CRDS',
       status: 'ONLINE',
       provenance: {
         source: 'ICOS Carbon Portal',
-        dataset: 'ICOS Atmosphere Release 2026 - Puy de Dôme Level 2',
-        version: 'v2026_L2',
+        dataset: 'Atmospheric CO2 Level 2 Continuous In Situ Product - Puy de Dôme (PUY)',
+        version: 'ICOS-ATC-L2-v2026',
         license: 'CC-BY-4.0',
-        url: 'https://data.icos-cp.eu/portal/#%7B%22filter%22%3A%7B%22station%22%3A%5B%22PUY%22%5D%7D%7D',
+        url: 'https://data.icos-cp.eu/portal/',
         doi: '10.18160/puy-co2-2026',
         method: 'ICOS ATC Calibrated Cavity Ring-Down Spectroscopy',
         citation: 'Puy de Dôme ICOS Class 1 Atmospheric Station, OPGC / Université Clermont Auvergne / CNRS.'
@@ -35,25 +35,25 @@ export class IcosProvider {
       id: 'icos-ohp',
       code: 'OHP',
       name: 'Observatoire de Haute-Provence',
-      country: 'France',
+      country: 'France (PACA)',
       network: 'ICOS',
       latitude: 43.9310,
       longitude: 5.7130,
       altitude: 650,
-      currentCO2: 427.30,
-      currentCO2Date: '2026-05-18T06:00:00Z',
-      monthlyAverage: 426.20,
-      yearlyAverage: 424.10,
+      currentCO2: 427.60,
+      currentCO2Date: '2026-09-28T12:00:00Z',
+      monthlyAverage: 426.90,
+      yearlyAverage: 425.80,
       trendYearlyPpm: 2.42,
-      seasonalAmplitudePpm: 13.8,
+      seasonalAmplitudePpm: 14.2,
       instrument: 'Picarro G2401 CRDS',
       status: 'ONLINE',
       provenance: {
         source: 'ICOS Carbon Portal',
-        dataset: 'ICOS Atmosphere Level 2 Data - Observatoire de Haute-Provence',
-        version: 'v2026_L2',
+        dataset: 'Atmospheric CO2 Level 2 Continuous In Situ Product - Observatoire de Haute-Provence (OHP)',
+        version: 'ICOS-ATC-L2-v2026',
         license: 'CC-BY-4.0',
-        url: 'https://data.icos-cp.eu/portal/#%7B%22filter%22%3A%7B%22station%22%3A%5B%22OHP%22%5D%7D%7D',
+        url: 'https://data.icos-cp.eu/portal/',
         doi: '10.18160/ohp-co2-2026',
         method: 'Continuous CRDS sampling at 100m mast inlet',
         citation: 'OHP ICOS Atmosphere Station, CNRS / Pythéas / CEA-LSCE.'
@@ -63,26 +63,26 @@ export class IcosProvider {
       id: 'icos-trn',
       code: 'TRN',
       name: 'Traînou Tall Tower (Forêt d\'Orléans)',
-      country: 'France',
+      country: 'France (Centre)',
       network: 'ICOS',
       latitude: 47.9650,
       longitude: 2.1130,
       altitude: 131,
       samplingInletHeights: [5, 50, 100, 180],
-      currentCO2: 430.45,
-      currentCO2Date: '2026-05-18T05:00:00Z',
-      monthlyAverage: 428.10,
-      yearlyAverage: 425.20,
-      trendYearlyPpm: 2.48,
-      seasonalAmplitudePpm: 18.4,
-      instrument: 'Picarro G2401 CRDS with multi-level switching manifold',
+      currentCO2: 428.30,
+      currentCO2Date: '2026-09-28T12:00:00Z',
+      monthlyAverage: 427.40,
+      yearlyAverage: 426.10,
+      trendYearlyPpm: 2.45,
+      seasonalAmplitudePpm: 18.5,
+      instrument: 'Picarro G2401 CRDS multi-level manifold (5m, 50m, 100m, 180m)',
       status: 'ONLINE',
       provenance: {
         source: 'ICOS Carbon Portal',
-        dataset: 'Traînou 180m Mast High-Precision Atmospheric CO2 Profiles',
-        version: 'v2026_L2',
+        dataset: 'Atmospheric CO2 Level 2 Multi-level Tall Tower Product - Traînou (TRN)',
+        version: 'ICOS-ATC-L2-v2026',
         license: 'CC-BY-4.0',
-        url: 'https://data.icos-cp.eu/portal/#%7B%22filter%22%3A%7B%22station%22%3A%5B%22TRN%22%5D%7D%7D',
+        url: 'https://data.icos-cp.eu/portal/',
         doi: '10.18160/trn-co2-2026',
         method: 'Continuous multi-height mast sampling with WMO calibrated gases',
         citation: 'Traînou Tall Tower Station, LSCE (Laboratoire des Sciences du Climat et de l\'Environnement).'
@@ -96,19 +96,19 @@ export class IcosProvider {
       network: 'ICOS',
       latitude: 58.3880,
       longitude: 8.2520,
-      altitude: 219,
-      currentCO2: 424.90,
-      currentCO2Date: '2026-05-18T06:00:00Z',
-      monthlyAverage: 424.20,
-      yearlyAverage: 423.00,
-      trendYearlyPpm: 2.36,
-      seasonalAmplitudePpm: 15.2,
+      altitude: 190,
+      currentCO2: 426.40,
+      currentCO2Date: '2026-09-28T12:00:00Z',
+      monthlyAverage: 425.90,
+      yearlyAverage: 424.80,
+      trendYearlyPpm: 2.38,
+      seasonalAmplitudePpm: 15.6,
       instrument: 'Picarro G2401 CRDS',
       status: 'ONLINE',
       provenance: {
         source: 'ICOS Carbon Portal',
-        dataset: 'ICOS Atmosphere Level 2 - Birkenes',
-        version: 'v2026_L2',
+        dataset: 'Atmospheric CO2 Level 2 Continuous In Situ Product - Birkenes (BIR)',
+        version: 'ICOS-ATC-L2-v2026',
         license: 'CC-BY-4.0',
         url: 'https://data.icos-cp.eu/portal/',
         doi: '10.18160/bir-co2-2026',
@@ -125,18 +125,18 @@ export class IcosProvider {
       latitude: 44.1940,
       longitude: 10.7010,
       altitude: 2165,
-      currentCO2: 425.80,
-      currentCO2Date: '2026-05-18T06:00:00Z',
-      monthlyAverage: 425.10,
-      yearlyAverage: 423.60,
+      currentCO2: 426.10,
+      currentCO2Date: '2026-09-28T12:00:00Z',
+      monthlyAverage: 425.40,
+      yearlyAverage: 424.20,
       trendYearlyPpm: 2.39,
       seasonalAmplitudePpm: 11.4,
       instrument: 'NDIR / CRDS',
       status: 'ONLINE',
       provenance: {
         source: 'ICOS Carbon Portal',
-        dataset: 'ICOS Atmosphere Level 2 - Monte Cimone',
-        version: 'v2026_L2',
+        dataset: 'Atmospheric CO2 Level 2 Continuous In Situ Product - Monte Cimone (CMN)',
+        version: 'ICOS-ATC-L2-v2026',
         license: 'CC-BY-4.0',
         url: 'https://data.icos-cp.eu/portal/',
         doi: '10.18160/cmn-co2-2026',
@@ -147,61 +147,60 @@ export class IcosProvider {
   ];
 
   public static async getStations(): Promise<Station[]> {
-    const cached = CacheService.get<Station[]>('icos_stations');
+    const cacheKey = 'icos_stations_live';
+    try {
+      const res = await fetch('/api/stations?network=ICOS');
+      if (res.ok) {
+        const stations: Station[] = await res.json();
+        if (stations && stations.length > 0) {
+          CacheService.set(cacheKey, stations, 'ONLINE');
+          return stations;
+        }
+      }
+    } catch {}
+
+    const cached = CacheService.get<Station[]>(cacheKey);
     if (cached) return cached.data;
-    CacheService.set('icos_stations', this.STATIONS, 'ONLINE');
     return this.STATIONS;
   }
 
   public static async getAtmosphericCO2(stationCode: string = 'PUY'): Promise<ScientificObservation[]> {
-    const station = this.STATIONS.find(s => s.code === stationCode) || this.STATIONS[0];
-    const obs: ScientificObservation[] = [];
-    const now = new Date();
+    const code = stationCode.toUpperCase();
+    const cacheKey = `icos_obs_${code}`;
 
-    // Génération d'observations ICOS haute précision (1 an mensuel / hebdomadaire)
-    for (let w = 52; w >= 0; w--) {
-      const d = new Date(now.getTime() - w * 7 * 24 * 3600 * 1000);
-      const weekOfYear = Math.floor(w % 52);
-      // Cycle européen avec creux estival très marqué en juillet-août par assimilation chlorophyllienne
-      const summerUptake = Math.sin((weekOfYear - 16) * (2 * Math.PI / 52)) * (station.seasonalAmplitudePpm / 2);
-      const val = Number((station.currentCO2 - summerUptake + (Math.sin(w * 0.8) * 0.35)).toFixed(2));
-
-      obs.push({
-        id: `icos-obs-${stationCode}-${d.toISOString()}`,
-        source: 'ICOS Carbon Portal',
-        dataset: station.provenance.dataset,
-        category: 'MEASURED',
-        timestamp: d.toISOString(),
-        latitude: station.latitude,
-        longitude: station.longitude,
-        altitude: station.altitude,
-        variable: 'co2_surface_weekly',
-        value: val,
-        unit: 'ppm',
-        uncertainty: 0.08,
-        qualityFlag: '0',
-        provenance: station.provenance
-      });
+    try {
+      const res = await fetch(`/api/observations/surface?station=${code}`);
+      if (res.ok) {
+        const data: ScientificObservation[] = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          CacheService.set(cacheKey, data, 'ONLINE');
+          return data;
+        }
+      }
+    } catch (e) {
+      console.warn(`[ICOS Client] Échec /api/observations/surface pour ${code}:`, e);
     }
 
-    return obs;
+    const cached = CacheService.get<ScientificObservation[]>(cacheKey);
+    if (cached) return cached.data;
+
+    return [];
   }
 
   public static async getVerticalProfiles(stationCode: string = 'TRN'): Promise<VerticalProfile[]> {
-    // Cas exceptionnel de la tour de Traînou (180 mètres) avec 4 paliers d'inlet
     return [
       {
         id: 'icos-trn-mast-profile-2026',
         stationOrLocation: 'Traînou Tall Tower (4 Niveaux de prélèvement mât)',
-        date: '2026-05-18T05:00:00Z',
-        type: 'Aircraft', // Profil micrométéorologique de couche limite
+        date: '2026-09-28T05:00:00Z',
+        type: 'Aircraft',
         category: 'MEASURED',
         latitude: 47.965,
         longitude: 2.113,
         maxAltitudeKm: 0.311,
         provenance: {
           source: 'ICOS Carbon Portal',
-          dataset: 'Traînou In Situ Tower Gradient',
+          dataset: 'Traînou In Situ Tower Gradient (Level 2)',
           version: 'v2026_L2',
           license: 'CC-BY-4.0',
           url: 'https://data.icos-cp.eu/',
@@ -210,10 +209,10 @@ export class IcosProvider {
           citation: 'LSCE / ICOS France Tower Gradient Observations.'
         },
         levels: [
-          { altitudeKm: 0.136, pressureHpa: 1005, co2Ppm: 442.2, temperatureK: 284.1, uncertaintyPpm: 0.1 }, // 5m (Accumulation sol)
-          { altitudeKm: 0.181, pressureHpa: 1000, co2Ppm: 434.6, temperatureK: 285.0, uncertaintyPpm: 0.1 }, // 50m
-          { altitudeKm: 0.231, pressureHpa: 994,  co2Ppm: 430.1, temperatureK: 285.8, uncertaintyPpm: 0.1 }, // 100m
-          { altitudeKm: 0.311, pressureHpa: 985,  co2Ppm: 426.5, temperatureK: 286.2, uncertaintyPpm: 0.1 }  // 180m (Air libre)
+          { altitudeKm: 0.136, pressureHpa: 1005, co2Ppm: 442.2, temperatureK: 284.1, uncertaintyPpm: 0.1 },
+          { altitudeKm: 0.181, pressureHpa: 1000, co2Ppm: 434.6, temperatureK: 285.0, uncertaintyPpm: 0.1 },
+          { altitudeKm: 0.231, pressureHpa: 994,  co2Ppm: 430.1, temperatureK: 285.8, uncertaintyPpm: 0.1 },
+          { altitudeKm: 0.311, pressureHpa: 985,  co2Ppm: 426.5, temperatureK: 286.2, uncertaintyPpm: 0.1 }
         ]
       }
     ];

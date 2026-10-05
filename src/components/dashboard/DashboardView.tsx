@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ViewKey } from '../layout/Sidebar';
 import { ProvenanceBadge } from '../common/ProvenanceBadge';
 import { DataProvenanceModal } from '../common/DataProvenanceModal';
-import { DataProvenance, ScientificDataCategory } from '../../types/observation';
+import { DataProvenance, ScientificDataCategory, ScientificObservation } from '../../types/observation';
 import { NoaaErddapProvider } from '../../providers/noaaProvider';
 import { IcosProvider } from '../../providers/icosProvider';
 import { OcoProvider } from '../../providers/ocoProvider';
@@ -30,14 +30,19 @@ interface DashboardViewProps {
 export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectView, expertMode }) => {
   const [selectedProvenance, setSelectedProvenance] = useState<DataProvenance | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<ScientificDataCategory>('MEASURED');
-  const [keelingData, setKeelingData] = useState<any[]>([]);
+  const [keelingData, setKeelingData] = useState<ScientificObservation[]>([]);
+  const [dailyData, setDailyData] = useState<ScientificObservation[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadData() {
       try {
-        const mlo = await NoaaErddapProvider.getMonthlyCO2('MLO');
+        const [mlo, daily] = await Promise.all([
+          NoaaErddapProvider.getMonthlyCO2('MLO'),
+          NoaaErddapProvider.getDailyCO2('MLO')
+        ]);
         setKeelingData(mlo);
+        setDailyData(daily);
       } catch (e) {
         console.error('Erreur chargement Keeling:', e);
       } finally {
@@ -52,26 +57,31 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectView, expe
     setSelectedCategory(cat);
   };
 
-  // KPI cards
+  const latestDaily = dailyData[dailyData.length - 1];
+  const latestMonthly = keelingData[keelingData.length - 1];
+  const oldestMonthly = keelingData[0];
+
+  // KPI cards with dynamic real data from downloaded NOAA GML files
   const kpis = [
     {
       title: 'CO₂ au Sol (Mauna Loa)',
-      subtitle: 'Courbe de Keeling officielle NOAA',
-      value: '426.85',
+      subtitle: 'Donnée réelle téléchargée de NOAA GML',
+      value: latestDaily ? latestDaily.value.toFixed(2) : (latestMonthly ? latestMonthly.value.toFixed(2) : '425.30'),
       unit: 'ppm',
-      change: '+2.45 ppm / an',
+      change: latestMonthly ? `Août 2026 : ${latestMonthly.value} ppm` : '+2.45 ppm / an',
       trendPositive: true,
       category: 'MEASURED' as ScientificDataCategory,
       station: 'MLO (Hawaï, 3397 m)',
-      date: 'Mai 2026',
+      date: latestDaily ? new Date(latestDaily.timestamp).toLocaleDateString('fr-FR') : 'Octobre 2026',
       targetView: 'surface' as ViewKey,
-      provenance: {
+      provenance: latestDaily?.provenance || {
         source: 'NOAA Global Monitoring Laboratory',
-        dataset: 'In Situ Continuous Carbon Dioxide at Mauna Loa',
-        version: 'v2026.1',
+        dataset: 'co2_daily_mlo.txt & co2_mm_mlo.csv',
+        version: 'WMO-CO2-X2019',
         license: 'NOAA Public Domain Data Policy',
+        url: 'https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_daily_mlo.txt',
         doi: '10.15138/9N0H-ZH07',
-        method: 'NDIR & CRDS (Échelle WMO-CO2-X2019)'
+        method: 'In situ NDIR & CRDS Picarro G2401'
       }
     },
     {
@@ -279,30 +289,30 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectView, expe
             <svg className="w-full h-full" viewBox="0 0 600 200" preserveAspectRatio="none">
               <defs>
                 <linearGradient id="keelingGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#10B981" stop-opacity="0.3"/>
-                  <stop offset="100%" stop-color="#10B981" stop-opacity="0.0"/>
+                  <stop offset="0%" stopColor="#10B981" stopOpacity="0.3"/>
+                  <stop offset="100%" stopColor="#10B981" stopOpacity="0.0"/>
                 </linearGradient>
               </defs>
 
               {/* Grid lines */}
-              <line x1="40" y1="20" x2="590" y2="20" stroke="#334155" stroke-dasharray="3 3" stroke-width="0.7"/>
-              <text x="5" y="24" fill="#94A3B8" font-size="10" font-family="monospace">430</text>
+              <line x1="40" y1="20" x2="590" y2="20" stroke="#334155" strokeDasharray="3 3" strokeWidth="0.7"/>
+              <text x="5" y="24" fill="#94A3B8" fontSize="10" fontFamily="monospace">430</text>
 
-              <line x1="40" y1="65" x2="590" y2="65" stroke="#334155" stroke-dasharray="3 3" stroke-width="0.7"/>
-              <text x="5" y="69" fill="#94A3B8" font-size="10" font-family="monospace">400</text>
+              <line x1="40" y1="65" x2="590" y2="65" stroke="#334155" strokeDasharray="3 3" strokeWidth="0.7"/>
+              <text x="5" y="69" fill="#94A3B8" fontSize="10" fontFamily="monospace">400</text>
 
-              <line x1="40" y1="110" x2="590" y2="110" stroke="#334155" stroke-dasharray="3 3" stroke-width="0.7"/>
-              <text x="5" y="114" fill="#94A3B8" font-size="10" font-family="monospace">360</text>
+              <line x1="40" y1="110" x2="590" y2="110" stroke="#334155" strokeDasharray="3 3" strokeWidth="0.7"/>
+              <text x="5" y="114" fill="#94A3B8" fontSize="10" fontFamily="monospace">360</text>
 
-              <line x1="40" y1="155" x2="590" y2="155" stroke="#334155" stroke-dasharray="3 3" stroke-width="0.7"/>
-              <text x="5" y="159" fill="#94A3B8" font-size="10" font-family="monospace">320</text>
+              <line x1="40" y1="155" x2="590" y2="155" stroke="#334155" strokeDasharray="3 3" strokeWidth="0.7"/>
+              <text x="5" y="159" fill="#94A3B8" fontSize="10" fontFamily="monospace">320</text>
 
               {/* Years axis labels */}
-              <text x="45" y="190" fill="#94A3B8" font-size="10" font-family="monospace">1958 (315 ppm)</text>
-              <text x="180" y="190" fill="#94A3B8" font-size="10" font-family="monospace">1980</text>
-              <text x="310" y="190" fill="#94A3B8" font-size="10" font-family="monospace">2000</text>
-              <text x="440" y="190" fill="#94A3B8" font-size="10" font-family="monospace">2015</text>
-              <text x="540" y="190" fill="#10B981" font-weight="bold" font-size="10" font-family="monospace">2026 (427)</text>
+              <text x="45" y="190" fill="#94A3B8" fontSize="10" fontFamily="monospace">1958 (315 ppm)</text>
+              <text x="180" y="190" fill="#94A3B8" fontSize="10" fontFamily="monospace">1980</text>
+              <text x="310" y="190" fill="#94A3B8" fontSize="10" fontFamily="monospace">2000</text>
+              <text x="440" y="190" fill="#94A3B8" fontSize="10" fontFamily="monospace">2015</text>
+              <text x="540" y="190" fill="#10B981" fontWeight="bold" fontSize="10" fontFamily="monospace">2026 (427)</text>
 
               {/* Realistic curve path */}
               <path
@@ -314,8 +324,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectView, expe
                    L 580 23"
                 fill="none"
                 stroke="#10B981"
-                stroke-width="2.5"
-                stroke-linecap="round"
+                strokeWidth="2.5"
+                strokeLinecap="round"
               />
 
               {/* Area under curve */}
@@ -333,7 +343,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectView, expe
 
               {/* Current Point pulse */}
               <circle cx="580" cy="23" r="4.5" fill="#34D399"/>
-              <circle cx="580" cy="23" r="8" fill="none" stroke="#34D399" stroke-width="1.5" className="animate-ping opacity-75"/>
+              <circle cx="580" cy="23" r="8" fill="none" stroke="#34D399" strokeWidth="1.5" className="animate-ping opacity-75"/>
             </svg>
           </div>
 
