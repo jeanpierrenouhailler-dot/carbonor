@@ -1,0 +1,63 @@
+# TITLE: CO2 - NRT continuous time series for Continuous air
+# FILE NAME: TRN_2026-10-05T00:00:00_2026-10-05T23:59:00_180.0_472_C_wos_nrtHour.CO2
+# DATA FORMAT: Version 1.0
+# TOTAL LINES: 63
+# HEADER LINES: 39
+# PROJECT DATA VERSION: Undefined
+# DATA PRODUCT TYPE: NRT
+# STATION CODE: TRN
+# STATION NAME: Trainou
+# STATION CATEGORY: Contributing
+# OBSERVATION CATEGORY: Air sampling observation at a Stationary platform
+# COUNTRY/TERRITORY: France
+# CONTRIBUTOR: Laboratoire des Sciences du Climat et de l'Environnement (LSCE)
+# LATITUDE: 47.9647 N
+# LONGITUDE: 2.1125 E
+# ALTITUDE: 131 m asl
+# NUMBER OF SAMPLING HEIGHTS: 1
+# SAMPLING HEIGHTS: 180 m agl
+# CONTACT POINT: morgan.lopez@lsce.ipsl.fr,michel.ramonet@lsce.ipsl.fr
+# PARAMETER: CO2
+# COVERING PERIOD: 2026-10-05T00:00 2026-10-05T23:59
+# TIME INTERVAL: hour
+# MEASUREMENT UNIT: umol.mol-¹
+# MEASUREMENT METHOD: Cavity RingDown Spectrometer (instrument Id 472)
+# SAMPLING TYPE: continuous
+# TIME ZONE: UTC +1
+# MEASUREMENT SCALE: 472: WMO CO2 X2019
+# DATA POLICY: ICOS DATA is licensed under a Creative Commons Attribution 4.0 international licence (http://creativecommons.org/licenses/by/4.0/.The ICOS data licence is described at https://data.icos-cp.eu/licence.
+# COMMENT:
+#   - Times are UTC
+#   - Time-averaged values are reported at the beginning of the averaging interval.
+#   - Flag 'U' = data correct before manual quality control
+#   - Flag 'N' = data incorrect before manual quality control
+#   - Flag 'O' = data correct after manual quality control
+#   - Flag 'K' = data incorrect after manual quality control
+#   - Data processing at ICOS ATC is described in [Hazan et al., 2016], doi:10.5194/amt-9-4719-2016
+#   - In case of gaps between instruments, the timeseries are filled with dummy -999.99 value,  -9.99 standard deviation associated with a dummy 82 instrument identifier.
+#
+#Site;SamplingHeight;Year;Month;Day;Hour;Minute;DecimalDate;co2;Stdev;NbPoints;Flag;InstrumentId;QualityId;InternalFlag;AutoDescriptiveFlag;ManualDescriptiveFlag;NbRemovedMinuteSpikes
+TRN;180;2026;10;05;00;00;2026.75890411;435.975;1.124;27;U;472;370711;Stabilization,Cavity pressure,Unitary data;;;0
+TRN;180;2026;10;05;01;00;2026.75901826;434.960;0.078;14;U;472;370711;Cavity pressure;;;0
+TRN;180;2026;10;05;02;00;2026.75913242;435.207;0.305;27;U;472;370711;Stabilization,Cavity pressure,Unitary data;;;0
+TRN;180;2026;10;05;03;00;2026.75924658;435.473;0.185;27;U;472;370711;Stabilization,Cavity pressure,Unitary data;;;0
+TRN;180;2026;10;05;04;00;2026.75936073;434.372;0.397;27;U;472;370711;Stabilization,Cavity pressure,Unitary data;;;0
+TRN;180;2026;10;05;05;00;2026.75947489;433.908;0.209;27;U;472;370711;Stabilization,Cavity pressure,Unitary data;;;0
+TRN;180;2026;10;05;06;00;2026.75958904;430.716;0.294;27;U;472;370711;Stabilization,Cavity pressure,Unitary data;;;0
+TRN;180;2026;10;05;07;00;2026.75970320;430.578;0.174;27;U;472;370711;Stabilization,Cavity pressure,Unitary data;;;0
+TRN;180;2026;10;05;08;00;2026.75981735;435.999;1.629;26;U;472;370711;Stabilization,Cavity pressure,Unitary data;;;1
+TRN;180;2026;10;05;09;00;2026.75993151;438.553;0.322;27;U;472;370711;Stabilization,Cavity pressure,Unitary data;;;0
+TRN;180;2026;10;05;10;00;2026.76004566;436.369;0.489;27;U;472;370711;Stabilization,Cavity pressure,Unitary data;;;0
+TRN;180;2026;10;05;11;00;2026.76015982;433.444;0.840;26;U;472;370711;Stabilization,Cavity pressure,Unitary data;;;0
+TRN;180;2026;10;05;12;00;2026.76027397;431.878;0.128;37;U;472;370711;Stabilization,Cavity pressure,Unitary data;;;0
+TRN;180;2026;10;05;13;00;2026.76038813;431.321;0.355;60;U;472;370711;;;;0
+TRN;180;2026;10;05;14;00;2026.76050228;432.667;0.351;14;U;472;370711;Stabilization,Cavity pressure,Unitary data;;;0
+TRN;180;2026;10;05;15;00;2026.76061644;433.026;0.302;26;U;472;370711;Stabilization,Cavity pressure,Unitary data;;;0
+TRN;180;2026;10;05;16;00;2026.76073059;433.252;0.227;26;U;472;370711;Stabilization,Cavity pressure,Unitary data;;;0
+TRN;180;2026;10;05;17;00;2026.76084475;433.855;0.272;27;U;472;370711;Stabilization,Cavity pressure,Unitary data;;;0
+TRN;180;2026;10;05;18;00;2026.76095890;432.493;0.835;26;U;472;370711;Stabilization,Cavity pressure,Unitary data;;;0
+TRN;180;2026;10;05;19;00;2026.76107306;432.565;1.275;26;U;472;370711;Stabilization,Cavity pressure,Unitary data;;;0
+TRN;180;2026;10;05;20;00;2026.76118721;434.438;0.488;14;U;472;370711;Cavity pressure;;;0
+TRN;180;2026;10;05;21;00;2026.76130137;430.647;0.236;26;U;472;370711;Stabilization,Cavity pressure,Unitary data;;;0
+TRN;180;2026;10;05;22;00;2026.76141553;429.957;0.230;26;U;472;370711;Stabilization,Cavity pressure,Unitary data;;;0
+TRN;180;2026;10;05;23;00;2026.76152968;432.497;0.152;26;U;472;370711;Stabilization,Cavity pressure,Unitary data;;;0

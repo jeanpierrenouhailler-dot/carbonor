@@ -8,6 +8,7 @@ import {
 } from '../../scientific/unitConversions';
 import { ProvenanceBadge } from '../common/ProvenanceBadge';
 import { ExportButton } from '../common/ExportButton';
+import { ScienceTooltip, PedagogicBanner } from '../common/ScienceTooltip';
 import { Wind, Atom, ArrowRightLeft, Info, HelpCircle } from 'lucide-react';
 
 export const PQRVisualizationView: React.FC = () => {
@@ -39,7 +40,20 @@ export const PQRVisualizationView: React.FC = () => {
           <div className="flex items-center gap-2">
             <h2 className="text-xl font-bold text-white flex items-center gap-2">
               <Wind className="w-5 h-5 text-cyan-400" />
-              Visualisation Quantique des Branches P / Q / R
+              <span>Visualisation Quantique des Branches P / Q / R</span>
+              <ScienceTooltip
+                title="Structure fine rotation-vibration des branches P / Q / R"
+                summary="Décomposition quantique d'une bande d'absorption moléculaire en transitions rotationnelles discrètes."
+                details={[
+                  "Une bande vibrationnelle n'est pas une raie unique mais un ensemble de centaines de raies correspondant aux changements d'énergie de rotation de la molécule en même temps que la vibration.",
+                  "Branche P (ΔJ = -1) : transition où le quantum de rotation diminue (plus basse fréquence, plus grand λ).",
+                  "Branche Q (ΔJ = 0) : transition de pure vibration sans changement de rotation (très concentrée au centre, autorisée pour le pliage ν₂ à 15 µm).",
+                  "Branche R (ΔJ = +1) : transition où le quantum de rotation augmente (plus haute fréquence, plus petit λ).",
+                  "Pourquoi pas de branche Q à 4.3 µm ? Pour une transition parallèle Σ_g⁺ → Σ_u⁺, le moment dipolaire est aligné avec l'axe moléculaire, interdisant quantiquement ΔJ = 0."
+                ]}
+                formula="ν(m) = ν₀ + (B' + B'') m + (B' - B'') m² avec m = -J'' (P), +J''+1 (R)"
+                badge="PHYSIQUE QUANTIQUE"
+              />
             </h2>
             <ProvenanceBadge category="SIMULATED" />
           </div>
@@ -280,6 +294,20 @@ export const PQRVisualizationView: React.FC = () => {
           <h3 className="text-sm font-bold text-white font-mono uppercase tracking-wider">
             Convertisseur Exact CODATA : Nombre d'Onde ↔ Longueur d'Onde ↔ Fréquence
           </h3>
+          <ScienceTooltip
+            title="Conversions Spectroscopiques Fondamentales"
+            summary="Relations exactes basées sur la vitesse de la lumière sous vide c = 299 792 458 m/s (CODATA)."
+            details={[
+              "Nombre d'onde ν (cm⁻¹) : ν = 10 000 / λ (µm). Il est directement proportionnel à l'énergie quantique du photon (E = h·c·ν).",
+              "Longueur d'onde λ (µm) : λ = 10 000 / ν (cm⁻¹). Utilisé par les ingénieurs optiques et les filtres interférométriques.",
+              "Fréquence temporelle f (THz) : f = c · ν · 100 / 10¹². Représente le nombre d'oscillations du champ électromagnétique par seconde (1 THz = 10¹² Hz).",
+              "15.00 µm ↔ 666.67 cm⁻¹ ↔ 19.986 THz (Cœur de l'effet de serre CO₂).",
+              "4.26 µm ↔ 2349.14 cm⁻¹ ↔ 70.426 THz (Élongation asymétrique ν₃)."
+            ]}
+            formula="E = h · c · ν = h · f = h · c / λ"
+            badge="UNITÉS CODATA"
+            variant="cyan"
+          />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

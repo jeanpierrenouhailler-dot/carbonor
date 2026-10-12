@@ -73,7 +73,9 @@ export interface NasaPipelineStatus {
  *        ↓
  * Carte & Graphiques
  * 
- * AUCUNE observation fictive codée en dur.
+ * Distinction stricte :
+ * 🟡 MODE DÉMONSTRATION : Fixtures scientifiques d'échantillons représentatifs embarqués.
+ * 🟢 MODE DONNÉES RÉELLES : Données officielles téléchargées depuis NASA Earthdata / CMR.
  */
 export class OcoProvider {
   private static PROVENANCE = {
@@ -180,7 +182,18 @@ export class OcoProvider {
       if (res.ok) {
         const data: XCO2Observation[] = await res.json();
         if (Array.isArray(data) && data.length > 0) {
-          CacheService.set(cacheKey, data, 'ONLINE');
+          const first = data[0];
+          CacheService.set(cacheKey, data, 'ONLINE', {
+            source: first?.provenance?.source || 'NASA Earthdata / OCO-2 Science Team',
+            dataset: first?.provenance?.dataset || 'OCO-2 Level 2 Daily Lite Diagnostic XCO2 (B11.3r)',
+            version: first?.provenance?.version || 'v11.3r Lite',
+            retrievedAt: first?.provenance?.retrievedAt || new Date().toISOString(),
+            validFrom: first?.timestamp,
+            validTo: data[data.length - 1]?.timestamp || first?.timestamp,
+            quality: first?.provenance?.quality || (first?.qualityFlag === '0' ? 'GOOD' : 'CAUTION'),
+            requestParameters: opts as Record<string, any>,
+            isRealData: true
+          });
           return data;
         }
       }

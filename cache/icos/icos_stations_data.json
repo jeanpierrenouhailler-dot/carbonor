@@ -6,13 +6,13 @@
       "name": "Puy de Dôme Atmospheric Station",
       "country": "France (Auvergne)",
       "network": "ICOS",
-      "latitude": 45.772,
-      "longitude": 2.964,
+      "latitude": 45.7719,
+      "longitude": 2.9658,
       "altitude": 1465,
-      "currentCO2": 426.85,
-      "currentCO2Date": "2026-09-28T12:00:00Z",
-      "monthlyAverage": 426.2,
-      "yearlyAverage": 425.1,
+      "currentCO2": 430.821,
+      "currentCO2Date": "2026-10-05T23:00:00Z",
+      "monthlyAverage": 428.72,
+      "yearlyAverage": 425.42,
       "trendYearlyPpm": 2.4,
       "seasonalAmplitudePpm": 12.8,
       "instrument": "Picarro G2401 CRDS (Cavity Ring-Down Spectroscopy)",
@@ -20,139 +20,388 @@
       "provenance": {
         "source": "ICOS Carbon Portal",
         "dataset": "Atmospheric CO2 Level 2 Continuous In Situ Product - Puy de Dôme (PUY)",
-        "version": "ICOS-ATC-L2-v2026",
+        "version": "ICOS-ATC-NRT-v2026",
         "license": "Creative Commons Attribution 4.0 International (CC-BY-4.0)",
-        "url": "https://data.icos-cp.eu/portal/#%7B%22filterCategories%22%3A%7B%22project%22%3A%5B%22icos%22%5D%2C%22station%22%3A%5B%22PUY%22%5D%7D%7D",
+        "url": "https://data.icos-cp.eu/portal/#%7B%22filterCategories%22%3A%7B%22station%22%3A%5B%22PUY%22%5D%7D%7D",
         "doi": "10.18160/puy-co2-2026",
         "method": "Continuous Cavity Ring-Down Spectroscopy (CRDS) sampled from 10m mast atop mountain summit",
-        "citation": "Ramonet, M., Laurent, O., Pichon, J.-M., et al. (2025). Atmospheric Greenhouse Gas Measurements at Puy de Dôme ICOS Class 1 Station."
+        "citation": "Ramonet, M., Laurent, O., Pichon, J.-M., et al. (2026). Atmospheric Greenhouse Gas Measurements at Puy de Dôme ICOS Class 1 Station."
       }
     },
     "observations": [
       {
-        "timestamp": "2025-10-06T12:00:00Z",
-        "value": 420.85,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T00:00:00Z",
+        "height": 10,
+        "value": 426.264,
+        "uncertainty": 0.115,
+        "flag": "U"
       },
       {
-        "timestamp": "2025-10-20T12:00:00Z",
-        "value": 422.1,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T01:00:00Z",
+        "height": 10,
+        "value": 426.02,
+        "uncertainty": 0.134,
+        "flag": "U"
       },
       {
-        "timestamp": "2025-11-03T12:00:00Z",
-        "value": 424.3,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T02:00:00Z",
+        "height": 10,
+        "value": 425.984,
+        "uncertainty": 0.087,
+        "flag": "U"
       },
       {
-        "timestamp": "2025-11-17T12:00:00Z",
-        "value": 425.65,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T03:00:00Z",
+        "height": 10,
+        "value": 426.667,
+        "uncertainty": 0.274,
+        "flag": "U"
       },
       {
-        "timestamp": "2025-12-01T12:00:00Z",
-        "value": 426.9,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T04:00:00Z",
+        "height": 10,
+        "value": 426.7,
+        "uncertainty": 0.192,
+        "flag": "U"
       },
       {
-        "timestamp": "2025-12-15T12:00:00Z",
-        "value": 427.8,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T05:00:00Z",
+        "height": 10,
+        "value": 426.751,
+        "uncertainty": 0.093,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-01-05T12:00:00Z",
-        "value": 429.1,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T06:00:00Z",
+        "height": 10,
+        "value": 426.147,
+        "uncertainty": 0.313,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-01-19T12:00:00Z",
-        "value": 429.85,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T07:00:00Z",
+        "height": 10,
+        "value": 425.687,
+        "uncertainty": 0.196,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-02-02T12:00:00Z",
-        "value": 430.4,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T08:00:00Z",
+        "height": 10,
+        "value": 425.649,
+        "uncertainty": 0.31,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-02-16T12:00:00Z",
-        "value": 430.95,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T09:00:00Z",
+        "height": 10,
+        "value": 427.148,
+        "uncertainty": 0.793,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-03-02T12:00:00Z",
-        "value": 431.5,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T10:00:00Z",
+        "height": 10,
+        "value": 429.928,
+        "uncertainty": 0.667,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-03-16T12:00:00Z",
-        "value": 432.1,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T11:00:00Z",
+        "height": 10,
+        "value": 430.328,
+        "uncertainty": 0.888,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-04-06T12:00:00Z",
-        "value": 432.85,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T12:00:00Z",
+        "height": 10,
+        "value": 430.142,
+        "uncertainty": 0.973,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-04-20T12:00:00Z",
-        "value": 433.2,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T13:00:00Z",
+        "height": 10,
+        "value": 429.134,
+        "uncertainty": 0.65,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-05-04T12:00:00Z",
-        "value": 432.4,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T14:00:00Z",
+        "height": 10,
+        "value": 429.435,
+        "uncertainty": 0.326,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-05-18T12:00:00Z",
-        "value": 430.15,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T15:00:00Z",
+        "height": 10,
+        "value": 430.654,
+        "uncertainty": 0.367,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-06-01T12:00:00Z",
-        "value": 426.5,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T16:00:00Z",
+        "height": 10,
+        "value": 432.168,
+        "uncertainty": 0.559,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-06-15T12:00:00Z",
-        "value": 423.2,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T17:00:00Z",
+        "height": 10,
+        "value": 430.991,
+        "uncertainty": 0.916,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-07-06T12:00:00Z",
-        "value": 419.65,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T18:00:00Z",
+        "height": 10,
+        "value": 430.277,
+        "uncertainty": 0.493,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-07-20T12:00:00Z",
-        "value": 417.8,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T19:00:00Z",
+        "height": 10,
+        "value": 428.468,
+        "uncertainty": 0.086,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-08-03T12:00:00Z",
-        "value": 418.1,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T20:00:00Z",
+        "height": 10,
+        "value": 430.778,
+        "uncertainty": 1.089,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-08-17T12:00:00Z",
-        "value": 420.3,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T21:00:00Z",
+        "height": 10,
+        "value": 431.091,
+        "uncertainty": 0.75,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-09-07T12:00:00Z",
-        "value": 423.4,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T22:00:00Z",
+        "height": 10,
+        "value": 432.004,
+        "uncertainty": 0.567,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-09-21T12:00:00Z",
-        "value": 425.9,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T23:00:00Z",
+        "height": 10,
+        "value": 430.821,
+        "uncertainty": 0.82,
+        "flag": "U"
+      }
+    ]
+  },
+  "TRN": {
+    "station": {
+      "id": "icos-trn",
+      "code": "TRN",
+      "name": "Traînou Tall Tower (Forêt d'Orléans)",
+      "country": "France (Centre)",
+      "network": "ICOS",
+      "latitude": 47.9647,
+      "longitude": 2.1125,
+      "altitude": 131,
+      "samplingInletHeights": [
+        5,
+        50,
+        100,
+        180
+      ],
+      "currentCO2": 432.497,
+      "currentCO2Date": "2026-10-05T23:00:00Z",
+      "monthlyAverage": 433.51,
+      "yearlyAverage": 426.11,
+      "trendYearlyPpm": 2.45,
+      "seasonalAmplitudePpm": 18.5,
+      "instrument": "Picarro G2401 CRDS multi-level manifold (5m, 50m, 100m, 180m)",
+      "status": "ONLINE",
+      "provenance": {
+        "source": "ICOS Carbon Portal",
+        "dataset": "Atmospheric CO2 Level 2 Multi-level Tall Tower Product - Traînou (TRN)",
+        "version": "ICOS-ATC-NRT-v2026",
+        "license": "Creative Commons Attribution 4.0 International (CC-BY-4.0)",
+        "url": "https://data.icos-cp.eu/portal/#%7B%22filterCategories%22%3A%7B%22station%22%3A%5B%22TRN%22%5D%7D%7D",
+        "doi": "10.18160/trn-co2-2026",
+        "method": "Continuous multi-height mast sampling with WMO calibrated gases",
+        "citation": "Traînou Tall Tower Station, LSCE (Laboratoire des Sciences du Climat et de l'Environnement)."
+      }
+    },
+    "observations": [
+      {
+        "timestamp": "2026-10-05T00:00:00Z",
+        "height": 180,
+        "value": 435.975,
+        "uncertainty": 1.124,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-09-28T12:00:00Z",
-        "value": 426.85,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T01:00:00Z",
+        "height": 180,
+        "value": 434.96,
+        "uncertainty": 0.078,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T02:00:00Z",
+        "height": 180,
+        "value": 435.207,
+        "uncertainty": 0.305,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T03:00:00Z",
+        "height": 180,
+        "value": 435.473,
+        "uncertainty": 0.185,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T04:00:00Z",
+        "height": 180,
+        "value": 434.372,
+        "uncertainty": 0.397,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T05:00:00Z",
+        "height": 180,
+        "value": 433.908,
+        "uncertainty": 0.209,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T06:00:00Z",
+        "height": 180,
+        "value": 430.716,
+        "uncertainty": 0.294,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T07:00:00Z",
+        "height": 180,
+        "value": 430.578,
+        "uncertainty": 0.174,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T08:00:00Z",
+        "height": 180,
+        "value": 435.999,
+        "uncertainty": 1.629,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T09:00:00Z",
+        "height": 180,
+        "value": 438.553,
+        "uncertainty": 0.322,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T10:00:00Z",
+        "height": 180,
+        "value": 436.369,
+        "uncertainty": 0.489,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T11:00:00Z",
+        "height": 180,
+        "value": 433.444,
+        "uncertainty": 0.84,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T12:00:00Z",
+        "height": 180,
+        "value": 431.878,
+        "uncertainty": 0.128,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T13:00:00Z",
+        "height": 180,
+        "value": 431.321,
+        "uncertainty": 0.355,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T14:00:00Z",
+        "height": 180,
+        "value": 432.667,
+        "uncertainty": 0.351,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T15:00:00Z",
+        "height": 180,
+        "value": 433.026,
+        "uncertainty": 0.302,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T16:00:00Z",
+        "height": 180,
+        "value": 433.252,
+        "uncertainty": 0.227,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T17:00:00Z",
+        "height": 180,
+        "value": 433.855,
+        "uncertainty": 0.272,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T18:00:00Z",
+        "height": 180,
+        "value": 432.493,
+        "uncertainty": 0.835,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T19:00:00Z",
+        "height": 180,
+        "value": 432.565,
+        "uncertainty": 1.275,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T20:00:00Z",
+        "height": 180,
+        "value": 434.438,
+        "uncertainty": 0.488,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T21:00:00Z",
+        "height": 180,
+        "value": 430.647,
+        "uncertainty": 0.236,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T22:00:00Z",
+        "height": 180,
+        "value": 429.957,
+        "uncertainty": 0.23,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T23:00:00Z",
+        "height": 180,
+        "value": 432.497,
+        "uncertainty": 0.152,
+        "flag": "U"
       }
     ]
   },
@@ -166,284 +415,725 @@
       "latitude": 43.931,
       "longitude": 5.712,
       "altitude": 650,
-      "currentCO2": 427.6,
-      "currentCO2Date": "2026-09-28T12:00:00Z",
-      "monthlyAverage": 426.9,
-      "yearlyAverage": 425.8,
+      "currentCO2": 428.096,
+      "currentCO2Date": "2023-03-31T23:00:00Z",
+      "monthlyAverage": 427.29,
+      "yearlyAverage": 426.19,
       "trendYearlyPpm": 2.42,
       "seasonalAmplitudePpm": 14.2,
-      "instrument": "Picarro G2401 CRDS",
+      "instrument": "Picarro G2401 CRDS (10m mast inlet)",
       "status": "ONLINE",
       "provenance": {
         "source": "ICOS Carbon Portal",
         "dataset": "Atmospheric CO2 Level 2 Continuous In Situ Product - Observatoire de Haute-Provence (OHP)",
-        "version": "ICOS-ATC-L2-v2026",
-        "license": "CC-BY-4.0",
-        "url": "https://data.icos-cp.eu/portal/",
-        "doi": "10.18160/ohp-co2-2026",
-        "method": "Continuous Cavity Ring-Down Spectroscopy (100m mast inlet)",
-        "citation": "CNRS / ICOS France (2025). High-precision atmospheric greenhouse gas monitoring at OHP."
+        "version": "ICOS-ATC-L2-v2023",
+        "license": "Creative Commons Attribution 4.0 International (CC-BY-4.0)",
+        "url": "https://data.icos-cp.eu/portal/#%7B%22filterCategories%22%3A%7B%22station%22%3A%5B%22OHP%22%5D%7D%7D",
+        "doi": "10.18160/ohp-co2-2023",
+        "method": "Continuous CRDS sampling at 10m mast inlet",
+        "citation": "OHP ICOS Atmosphere Station, CNRS / Pythéas / CEA-LSCE."
       }
     },
     "observations": [
       {
-        "timestamp": "2025-10-06T12:00:00Z",
-        "value": 421.9,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-27T20:00:00Z",
+        "height": 10,
+        "value": 426.561,
+        "uncertainty": 0.093,
+        "flag": "U"
       },
       {
-        "timestamp": "2025-11-03T12:00:00Z",
-        "value": 425.4,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-27T21:00:00Z",
+        "height": 10,
+        "value": 426.763,
+        "uncertainty": 0.317,
+        "flag": "U"
       },
       {
-        "timestamp": "2025-12-01T12:00:00Z",
-        "value": 428.1,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-27T22:00:00Z",
+        "height": 10,
+        "value": 426.884,
+        "uncertainty": 0.164,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-01-05T12:00:00Z",
-        "value": 430.7,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-27T23:00:00Z",
+        "height": 10,
+        "value": 427.331,
+        "uncertainty": 0.142,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-02-02T12:00:00Z",
-        "value": 431.9,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-28T00:00:00Z",
+        "height": 10,
+        "value": 426.91,
+        "uncertainty": 0.127,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-03-02T12:00:00Z",
-        "value": 432.8,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-28T01:00:00Z",
+        "height": 10,
+        "value": 426.894,
+        "uncertainty": 0.061,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-04-06T12:00:00Z",
-        "value": 434.1,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-28T02:00:00Z",
+        "height": 10,
+        "value": 427.367,
+        "uncertainty": 0.059,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-05-04T12:00:00Z",
-        "value": 431.5,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-28T03:00:00Z",
+        "height": 10,
+        "value": 427.975,
+        "uncertainty": 0.142,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-06-01T12:00:00Z",
-        "value": 425.2,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-28T04:00:00Z",
+        "height": 10,
+        "value": 428.016,
+        "uncertainty": 0.242,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-07-06T12:00:00Z",
-        "value": 418.9,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-28T05:00:00Z",
+        "height": 10,
+        "value": 427.543,
+        "uncertainty": 0.264,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-08-03T12:00:00Z",
-        "value": 419.8,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-28T06:00:00Z",
+        "height": 10,
+        "value": 429.106,
+        "uncertainty": 0.407,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-09-07T12:00:00Z",
-        "value": 424.5,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-28T07:00:00Z",
+        "height": 10,
+        "value": 428.911,
+        "uncertainty": 0.204,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-09-28T12:00:00Z",
-        "value": 427.6,
-        "uncertainty": 0.08
-      }
-    ]
-  },
-  "TRN": {
-    "station": {
-      "id": "icos-trn",
-      "code": "TRN",
-      "name": "Traînou Tall Tower (Météo-France / TDF)",
-      "country": "France (Centre)",
-      "network": "ICOS",
-      "latitude": 47.965,
-      "longitude": 2.113,
-      "altitude": 131,
-      "currentCO2": 428.3,
-      "currentCO2Date": "2026-09-28T12:00:00Z",
-      "monthlyAverage": 427.4,
-      "yearlyAverage": 426.1,
-      "trendYearlyPpm": 2.45,
-      "seasonalAmplitudePpm": 18.5,
-      "instrument": "Picarro G2401 CRDS multi-level manifold (5m, 50m, 100m, 180m)",
-      "status": "ONLINE",
-      "provenance": {
-        "source": "ICOS Carbon Portal",
-        "dataset": "Atmospheric CO2 Level 2 Multi-level Tall Tower Product - Traînou (TRN)",
-        "version": "ICOS-ATC-L2-v2026",
-        "license": "CC-BY-4.0",
-        "url": "https://data.icos-cp.eu/portal/",
-        "doi": "10.18160/trn-co2-2026",
-        "method": "Continuous CRDS sampling sequentially from 4 heights (5m, 50m, 100m, 180m) to resolve nocturnal canopy build-up and convective boundary layer ventilation",
-        "citation": "Schmidt, M., Ramonet, M., et al. (2025). Multi-level boundary layer CO2 observations at Traînou tall tower."
-      }
-    },
-    "observations": [
-      {
-        "timestamp": "2025-10-06T12:00:00Z",
-        "value": 423.5,
-        "uncertainty": 0.09
+        "timestamp": "2023-03-28T08:00:00Z",
+        "height": 10,
+        "value": 429.208,
+        "uncertainty": 0.33,
+        "flag": "U"
       },
       {
-        "timestamp": "2025-11-03T12:00:00Z",
-        "value": 427.1,
-        "uncertainty": 0.09
+        "timestamp": "2023-03-28T09:00:00Z",
+        "height": 10,
+        "value": 427.077,
+        "uncertainty": 0.122,
+        "flag": "U"
       },
       {
-        "timestamp": "2025-12-01T12:00:00Z",
-        "value": 430.8,
-        "uncertainty": 0.09
+        "timestamp": "2023-03-28T10:00:00Z",
+        "height": 10,
+        "value": 426.306,
+        "uncertainty": 0.092,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-01-05T12:00:00Z",
-        "value": 433.4,
-        "uncertainty": 0.09
+        "timestamp": "2023-03-28T11:00:00Z",
+        "height": 10,
+        "value": 425.772,
+        "uncertainty": 0.141,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-02-02T12:00:00Z",
-        "value": 434.6,
-        "uncertainty": 0.09
+        "timestamp": "2023-03-28T12:00:00Z",
+        "height": 10,
+        "value": 425.114,
+        "uncertainty": 0.1,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-03-02T12:00:00Z",
-        "value": 435.2,
-        "uncertainty": 0.09
+        "timestamp": "2023-03-28T13:00:00Z",
+        "height": 10,
+        "value": 424.834,
+        "uncertainty": 0.039,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-04-06T12:00:00Z",
-        "value": 436.1,
-        "uncertainty": 0.09
+        "timestamp": "2023-03-28T14:00:00Z",
+        "height": 10,
+        "value": 424.504,
+        "uncertainty": 0.062,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-05-04T12:00:00Z",
-        "value": 432.8,
-        "uncertainty": 0.09
+        "timestamp": "2023-03-28T15:00:00Z",
+        "height": 10,
+        "value": 424.126,
+        "uncertainty": 0.019,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-06-01T12:00:00Z",
-        "value": 424.3,
-        "uncertainty": 0.09
+        "timestamp": "2023-03-28T16:00:00Z",
+        "height": 10,
+        "value": 424.008,
+        "uncertainty": 0.037,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-07-06T12:00:00Z",
-        "value": 416.7,
-        "uncertainty": 0.09
+        "timestamp": "2023-03-28T17:00:00Z",
+        "height": 10,
+        "value": 424.688,
+        "uncertainty": 0.081,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-08-03T12:00:00Z",
-        "value": 417.9,
-        "uncertainty": 0.09
+        "timestamp": "2023-03-28T18:00:00Z",
+        "height": 10,
+        "value": 425.81,
+        "uncertainty": 0.082,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-09-07T12:00:00Z",
-        "value": 424.1,
-        "uncertainty": 0.09
+        "timestamp": "2023-03-28T19:00:00Z",
+        "height": 10,
+        "value": 426.496,
+        "uncertainty": 0.295,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-09-28T12:00:00Z",
-        "value": 428.3,
-        "uncertainty": 0.09
-      }
-    ]
-  },
-  "CMN": {
-    "station": {
-      "id": "icos-cmn",
-      "code": "CMN",
-      "name": "Monte Cimone Mountain Observatory",
-      "country": "Italie (Apennins)",
-      "network": "ICOS",
-      "latitude": 44.194,
-      "longitude": 10.701,
-      "altitude": 2165,
-      "currentCO2": 426.1,
-      "currentCO2Date": "2026-09-28T12:00:00Z",
-      "monthlyAverage": 425.4,
-      "yearlyAverage": 424.2,
-      "trendYearlyPpm": 2.39,
-      "seasonalAmplitudePpm": 11.4,
-      "instrument": "Picarro G2401 CRDS",
-      "status": "ONLINE",
-      "provenance": {
-        "source": "ICOS Carbon Portal",
-        "dataset": "Atmospheric CO2 Level 2 Continuous In Situ Product - Monte Cimone (CMN)",
-        "version": "ICOS-ATC-L2-v2026",
-        "license": "CC-BY-4.0",
-        "url": "https://data.icos-cp.eu/portal/",
-        "doi": "10.18160/cmn-co2-2026",
-        "method": "Continuous CRDS sampling high alpine summit free tropospheric air",
-        "citation": "ISAC-CNR (2025). Greenhouse gases atmospheric monitoring at Monte Cimone WMO-GAW Global Station."
-      }
-    },
-    "observations": [
-      {
-        "timestamp": "2025-10-06T12:00:00Z",
-        "value": 421.2,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-28T20:00:00Z",
+        "height": 10,
+        "value": 426.81,
+        "uncertainty": 0.105,
+        "flag": "U"
       },
       {
-        "timestamp": "2025-11-03T12:00:00Z",
-        "value": 423.8,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-28T21:00:00Z",
+        "height": 10,
+        "value": 428.186,
+        "uncertainty": 0.118,
+        "flag": "U"
       },
       {
-        "timestamp": "2025-12-01T12:00:00Z",
-        "value": 426.1,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-28T22:00:00Z",
+        "height": 10,
+        "value": 428.52,
+        "uncertainty": 0.063,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-01-05T12:00:00Z",
-        "value": 428.2,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-28T23:00:00Z",
+        "height": 10,
+        "value": 428.449,
+        "uncertainty": 0.053,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-02-02T12:00:00Z",
-        "value": 429.5,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-29T00:00:00Z",
+        "height": 10,
+        "value": 427.86,
+        "uncertainty": 0.404,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-03-02T12:00:00Z",
-        "value": 430.4,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-29T01:00:00Z",
+        "height": 10,
+        "value": 427.281,
+        "uncertainty": 0.26,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-04-06T12:00:00Z",
-        "value": 431.2,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-29T02:00:00Z",
+        "height": 10,
+        "value": 426.672,
+        "uncertainty": 0.647,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-05-04T12:00:00Z",
-        "value": 429.8,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-29T03:00:00Z",
+        "height": 10,
+        "value": 426.107,
+        "uncertainty": 0.102,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-06-01T12:00:00Z",
-        "value": 424.9,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-29T04:00:00Z",
+        "height": 10,
+        "value": 427.982,
+        "uncertainty": 1.699,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-07-06T12:00:00Z",
-        "value": 419.2,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-29T05:00:00Z",
+        "height": 10,
+        "value": 429.91,
+        "uncertainty": 0.496,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-08-03T12:00:00Z",
-        "value": 419.9,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-29T06:00:00Z",
+        "height": 10,
+        "value": 429.581,
+        "uncertainty": 0.809,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-09-07T12:00:00Z",
-        "value": 423.8,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-29T07:00:00Z",
+        "height": 10,
+        "value": 430.451,
+        "uncertainty": 0.563,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-09-28T12:00:00Z",
-        "value": 426.1,
-        "uncertainty": 0.08
+        "timestamp": "2023-03-29T08:00:00Z",
+        "height": 10,
+        "value": 430.422,
+        "uncertainty": 0.224,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-29T09:00:00Z",
+        "height": 10,
+        "value": 430.059,
+        "uncertainty": 0.267,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-29T10:00:00Z",
+        "height": 10,
+        "value": 427.173,
+        "uncertainty": 0.171,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-29T11:00:00Z",
+        "height": 10,
+        "value": 422.841,
+        "uncertainty": 0.384,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-29T12:00:00Z",
+        "height": 10,
+        "value": 421.847,
+        "uncertainty": 0.129,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-29T13:00:00Z",
+        "height": 10,
+        "value": 421.404,
+        "uncertainty": 0.221,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-29T14:00:00Z",
+        "height": 10,
+        "value": 421.303,
+        "uncertainty": 0.146,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-29T15:00:00Z",
+        "height": 10,
+        "value": 421.267,
+        "uncertainty": 0.092,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-29T16:00:00Z",
+        "height": 10,
+        "value": 420.59,
+        "uncertainty": 0.091,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-29T17:00:00Z",
+        "height": 10,
+        "value": 422.835,
+        "uncertainty": 0.177,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-29T18:00:00Z",
+        "height": 10,
+        "value": 425.832,
+        "uncertainty": 0.101,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-29T19:00:00Z",
+        "height": 10,
+        "value": 426.126,
+        "uncertainty": 0.421,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-29T20:00:00Z",
+        "height": 10,
+        "value": 427.462,
+        "uncertainty": 0.287,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-29T21:00:00Z",
+        "height": 10,
+        "value": 429.49,
+        "uncertainty": 0.163,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-29T22:00:00Z",
+        "height": 10,
+        "value": 429.331,
+        "uncertainty": 0.112,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-29T23:00:00Z",
+        "height": 10,
+        "value": 427.867,
+        "uncertainty": 0.165,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T00:00:00Z",
+        "height": 10,
+        "value": 427.678,
+        "uncertainty": 0.184,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T01:00:00Z",
+        "height": 10,
+        "value": 428.08,
+        "uncertainty": 0.389,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T02:00:00Z",
+        "height": 10,
+        "value": 426.028,
+        "uncertainty": 0.197,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T03:00:00Z",
+        "height": 10,
+        "value": 426.387,
+        "uncertainty": 0.136,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T04:00:00Z",
+        "height": 10,
+        "value": 428.75,
+        "uncertainty": 0.058,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T05:00:00Z",
+        "height": 10,
+        "value": 427.84,
+        "uncertainty": 0.503,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T06:00:00Z",
+        "height": 10,
+        "value": 427.68,
+        "uncertainty": 0.205,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T07:00:00Z",
+        "height": 10,
+        "value": 426.213,
+        "uncertainty": 0.159,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T08:00:00Z",
+        "height": 10,
+        "value": 425.301,
+        "uncertainty": 0.069,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T09:00:00Z",
+        "height": 10,
+        "value": 424.551,
+        "uncertainty": 0.647,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T10:00:00Z",
+        "height": 10,
+        "value": 423.341,
+        "uncertainty": 0.397,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T11:00:00Z",
+        "height": 10,
+        "value": 422.698,
+        "uncertainty": 0.335,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T12:00:00Z",
+        "height": 10,
+        "value": 422.228,
+        "uncertainty": 0.189,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T13:00:00Z",
+        "height": 10,
+        "value": 421.792,
+        "uncertainty": 0.205,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T14:00:00Z",
+        "height": 10,
+        "value": 421.656,
+        "uncertainty": 0.085,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T15:00:00Z",
+        "height": 10,
+        "value": 421.479,
+        "uncertainty": 0.115,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T16:00:00Z",
+        "height": 10,
+        "value": 421.478,
+        "uncertainty": 0.145,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T17:00:00Z",
+        "height": 10,
+        "value": 421.985,
+        "uncertainty": 0.338,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T18:00:00Z",
+        "height": 10,
+        "value": 423.094,
+        "uncertainty": 0.469,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T19:00:00Z",
+        "height": 10,
+        "value": 423.639,
+        "uncertainty": 0.119,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T20:00:00Z",
+        "height": 10,
+        "value": 424.228,
+        "uncertainty": 0.281,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T21:00:00Z",
+        "height": 10,
+        "value": 425.195,
+        "uncertainty": 0.766,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T22:00:00Z",
+        "height": 10,
+        "value": 428.489,
+        "uncertainty": 0.544,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-30T23:00:00Z",
+        "height": 10,
+        "value": 428.596,
+        "uncertainty": 0.184,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T00:00:00Z",
+        "height": 10,
+        "value": 428.91,
+        "uncertainty": 0.378,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T01:00:00Z",
+        "height": 10,
+        "value": 429.978,
+        "uncertainty": 0.111,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T02:00:00Z",
+        "height": 10,
+        "value": 428.478,
+        "uncertainty": 0.058,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T03:00:00Z",
+        "height": 10,
+        "value": 430.233,
+        "uncertainty": 0.421,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T04:00:00Z",
+        "height": 10,
+        "value": 430.232,
+        "uncertainty": 2.127,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T05:00:00Z",
+        "height": 10,
+        "value": 424.703,
+        "uncertainty": 0.59,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T06:00:00Z",
+        "height": 10,
+        "value": 424.347,
+        "uncertainty": 0.45,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T07:00:00Z",
+        "height": 10,
+        "value": 429.239,
+        "uncertainty": 1.269,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T08:00:00Z",
+        "height": 10,
+        "value": 434.409,
+        "uncertainty": 0.328,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T09:00:00Z",
+        "height": 10,
+        "value": 429.272,
+        "uncertainty": 0.206,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T10:00:00Z",
+        "height": 10,
+        "value": 426.241,
+        "uncertainty": 0.115,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T11:00:00Z",
+        "height": 10,
+        "value": 429.258,
+        "uncertainty": 0.444,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T12:00:00Z",
+        "height": 10,
+        "value": 425.773,
+        "uncertainty": 0.067,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T13:00:00Z",
+        "height": 10,
+        "value": 425.297,
+        "uncertainty": 0.05,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T14:00:00Z",
+        "height": 10,
+        "value": 425.039,
+        "uncertainty": 0.056,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T15:00:00Z",
+        "height": 10,
+        "value": 425.02,
+        "uncertainty": 0.094,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T16:00:00Z",
+        "height": 10,
+        "value": 424.575,
+        "uncertainty": 0.058,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T17:00:00Z",
+        "height": 10,
+        "value": 424.371,
+        "uncertainty": 0.077,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T18:00:00Z",
+        "height": 10,
+        "value": 425.344,
+        "uncertainty": 0.04,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T19:00:00Z",
+        "height": 10,
+        "value": 425.627,
+        "uncertainty": 0.153,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T20:00:00Z",
+        "height": 10,
+        "value": 426.414,
+        "uncertainty": 0.43,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T21:00:00Z",
+        "height": 10,
+        "value": 426.988,
+        "uncertainty": 0.215,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T22:00:00Z",
+        "height": 10,
+        "value": 427.327,
+        "uncertainty": 0.212,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2023-03-31T23:00:00Z",
+        "height": 10,
+        "value": 428.096,
+        "uncertainty": 0.409,
+        "flag": "U"
       }
     ]
   },
@@ -454,93 +1144,396 @@
       "name": "Birkenes Atmospheric Observatory",
       "country": "Norvège",
       "network": "ICOS",
-      "latitude": 58.388,
-      "longitude": 8.252,
-      "altitude": 190,
-      "currentCO2": 426.4,
-      "currentCO2Date": "2026-09-28T12:00:00Z",
-      "monthlyAverage": 425.9,
-      "yearlyAverage": 424.8,
+      "latitude": 58.3886,
+      "longitude": 8.2519,
+      "altitude": 219,
+      "currentCO2": 427.797,
+      "currentCO2Date": "2026-10-05T23:00:00Z",
+      "monthlyAverage": 428.11,
+      "yearlyAverage": 424.81,
       "trendYearlyPpm": 2.38,
       "seasonalAmplitudePpm": 15.6,
-      "instrument": "Picarro G2401 CRDS",
+      "instrument": "Picarro G2401 CRDS (75m mast inlet)",
       "status": "ONLINE",
       "provenance": {
         "source": "ICOS Carbon Portal",
         "dataset": "Atmospheric CO2 Level 2 Continuous In Situ Product - Birkenes (BIR)",
-        "version": "ICOS-ATC-L2-v2026",
-        "license": "CC-BY-4.0",
-        "url": "https://data.icos-cp.eu/portal/",
+        "version": "ICOS-ATC-NRT-v2026",
+        "license": "Creative Commons Attribution 4.0 International (CC-BY-4.0)",
+        "url": "https://data.icos-cp.eu/portal/#%7B%22filterCategories%22%3A%7B%22station%22%3A%5B%22BIR%22%5D%7D%7D",
         "doi": "10.18160/bir-co2-2026",
-        "method": "Continuous CRDS sampling boreal forest background air",
-        "citation": "NILU (2025). Atmospheric greenhouse gas observations at Birkenes Observatory."
+        "method": "CRDS calibrated against WMO-CO2-X2019 standards",
+        "citation": "NILU - Norwegian Institute for Air Research & ICOS Norway."
       }
     },
     "observations": [
       {
-        "timestamp": "2025-10-06T12:00:00Z",
-        "value": 422.3,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T00:00:00Z",
+        "height": 75,
+        "value": 429.45,
+        "uncertainty": 0.131,
+        "flag": "U"
       },
       {
-        "timestamp": "2025-11-03T12:00:00Z",
-        "value": 425.8,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T01:00:00Z",
+        "height": 75,
+        "value": 429.302,
+        "uncertainty": 0.166,
+        "flag": "U"
       },
       {
-        "timestamp": "2025-12-01T12:00:00Z",
-        "value": 428.5,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T02:00:00Z",
+        "height": 75,
+        "value": 429.043,
+        "uncertainty": 0.185,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-01-05T12:00:00Z",
-        "value": 430.9,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T03:00:00Z",
+        "height": 75,
+        "value": 429.164,
+        "uncertainty": 0.191,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-02-02T12:00:00Z",
-        "value": 432.1,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T04:00:00Z",
+        "height": 75,
+        "value": 429.697,
+        "uncertainty": 0.305,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-03-02T12:00:00Z",
-        "value": 432.8,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T05:00:00Z",
+        "height": 75,
+        "value": 430.614,
+        "uncertainty": 0.279,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-04-06T12:00:00Z",
-        "value": 433.9,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T06:00:00Z",
+        "height": 75,
+        "value": 430.167,
+        "uncertainty": 0.344,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-05-04T12:00:00Z",
-        "value": 430.7,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T07:00:00Z",
+        "height": 75,
+        "value": 428.899,
+        "uncertainty": 0.499,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-06-01T12:00:00Z",
-        "value": 423.6,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T08:00:00Z",
+        "height": 75,
+        "value": 427.598,
+        "uncertainty": 0.341,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-07-06T12:00:00Z",
-        "value": 417.1,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T09:00:00Z",
+        "height": 75,
+        "value": 426.389,
+        "uncertainty": 0.567,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-08-03T12:00:00Z",
-        "value": 418.4,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T10:00:00Z",
+        "height": 75,
+        "value": 426.723,
+        "uncertainty": 0.229,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-09-07T12:00:00Z",
-        "value": 423.9,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T11:00:00Z",
+        "height": 75,
+        "value": 426.647,
+        "uncertainty": 0.13,
+        "flag": "U"
       },
       {
-        "timestamp": "2026-09-28T12:00:00Z",
-        "value": 426.4,
-        "uncertainty": 0.08
+        "timestamp": "2026-10-05T12:00:00Z",
+        "height": 75,
+        "value": 426.468,
+        "uncertainty": 0.077,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T13:00:00Z",
+        "height": 75,
+        "value": 426.478,
+        "uncertainty": 0.12,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T14:00:00Z",
+        "height": 75,
+        "value": 427.068,
+        "uncertainty": 0.298,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T15:00:00Z",
+        "height": 75,
+        "value": 427.949,
+        "uncertainty": 0.164,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T16:00:00Z",
+        "height": 75,
+        "value": 428.075,
+        "uncertainty": 0.099,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T17:00:00Z",
+        "height": 75,
+        "value": 427.966,
+        "uncertainty": 0.251,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T18:00:00Z",
+        "height": 75,
+        "value": 427.61,
+        "uncertainty": 0.224,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T19:00:00Z",
+        "height": 75,
+        "value": 427.954,
+        "uncertainty": 0.115,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T20:00:00Z",
+        "height": 75,
+        "value": 428,
+        "uncertainty": 0.094,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T21:00:00Z",
+        "height": 75,
+        "value": 427.77,
+        "uncertainty": 0.176,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T22:00:00Z",
+        "height": 75,
+        "value": 427.814,
+        "uncertainty": 0.178,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T23:00:00Z",
+        "height": 75,
+        "value": 427.797,
+        "uncertainty": 0.105,
+        "flag": "U"
+      }
+    ]
+  },
+  "CMN": {
+    "station": {
+      "id": "icos-cmn",
+      "code": "CMN",
+      "name": "Monte Cimone Mountain Observatory",
+      "country": "Italie",
+      "network": "ICOS",
+      "latitude": 44.1936,
+      "longitude": 10.6999,
+      "altitude": 2165,
+      "currentCO2": 425.54,
+      "currentCO2Date": "2026-10-05T23:00:00Z",
+      "monthlyAverage": 423.34,
+      "yearlyAverage": 424.24,
+      "trendYearlyPpm": 2.39,
+      "seasonalAmplitudePpm": 11.4,
+      "instrument": "NDIR / CRDS High Altitude Mountain Laboratory",
+      "status": "ONLINE",
+      "provenance": {
+        "source": "ICOS Carbon Portal",
+        "dataset": "Atmospheric CO2 Level 2 Continuous In Situ Product - Monte Cimone (CMN)",
+        "version": "ICOS-ATC-NRT-v2026",
+        "license": "Creative Commons Attribution 4.0 International (CC-BY-4.0)",
+        "url": "https://data.icos-cp.eu/portal/#%7B%22filterCategories%22%3A%7B%22station%22%3A%5B%22CMN%22%5D%7D%7D",
+        "doi": "10.18160/cmn-co2-2026",
+        "method": "High mountain free-tropospheric in situ sampling at 2165m altitude",
+        "citation": "ISAC-CNR, Monte Cimone Climate Observatory."
+      }
+    },
+    "observations": [
+      {
+        "timestamp": "2026-10-05T00:00:00Z",
+        "height": 8,
+        "value": 425.672,
+        "uncertainty": 0.249,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T01:00:00Z",
+        "height": 8,
+        "value": 425.793,
+        "uncertainty": 0.143,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T02:00:00Z",
+        "height": 8,
+        "value": 425.851,
+        "uncertainty": 0.101,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T03:00:00Z",
+        "height": 8,
+        "value": 425.854,
+        "uncertainty": 0.094,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T04:00:00Z",
+        "height": 8,
+        "value": 425.699,
+        "uncertainty": 0.207,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T05:00:00Z",
+        "height": 8,
+        "value": 425.314,
+        "uncertainty": 0.109,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T06:00:00Z",
+        "height": 8,
+        "value": 425.196,
+        "uncertainty": 0.124,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T07:00:00Z",
+        "height": 8,
+        "value": 424.485,
+        "uncertainty": 0.395,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T08:00:00Z",
+        "height": 8,
+        "value": 423.616,
+        "uncertainty": 0.581,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T09:00:00Z",
+        "height": 8,
+        "value": 423.167,
+        "uncertainty": 0.703,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T10:00:00Z",
+        "height": 8,
+        "value": 421.875,
+        "uncertainty": 1.451,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T11:00:00Z",
+        "height": 8,
+        "value": 420.449,
+        "uncertainty": 0.451,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T12:00:00Z",
+        "height": 8,
+        "value": 420.111,
+        "uncertainty": 0.463,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T13:00:00Z",
+        "height": 8,
+        "value": 419.793,
+        "uncertainty": 0.574,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T14:00:00Z",
+        "height": 8,
+        "value": 419.633,
+        "uncertainty": 0.534,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T15:00:00Z",
+        "height": 8,
+        "value": 419.47,
+        "uncertainty": 0.437,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T16:00:00Z",
+        "height": 8,
+        "value": 420.146,
+        "uncertainty": 2.177,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T17:00:00Z",
+        "height": 8,
+        "value": 423.695,
+        "uncertainty": 0.99,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T18:00:00Z",
+        "height": 8,
+        "value": 421.602,
+        "uncertainty": 0.721,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T19:00:00Z",
+        "height": 8,
+        "value": 422.693,
+        "uncertainty": 0.412,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T20:00:00Z",
+        "height": 8,
+        "value": 424.215,
+        "uncertainty": 0.336,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T21:00:00Z",
+        "height": 8,
+        "value": 424.909,
+        "uncertainty": 0.162,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T22:00:00Z",
+        "height": 8,
+        "value": 425.33,
+        "uncertainty": 0.223,
+        "flag": "U"
+      },
+      {
+        "timestamp": "2026-10-05T23:00:00Z",
+        "height": 8,
+        "value": 425.54,
+        "uncertainty": 0.116,
+        "flag": "U"
       }
     ]
   }

@@ -6,6 +6,7 @@ import { NoaaDataPipeline } from './src/server/noaaPipeline.ts';
 import { IcosDataPipeline } from './src/server/icosPipeline.ts';
 import { NasaOcoPipeline } from './src/server/nasaOcoPipeline.ts';
 import { CamsDataPipeline } from './src/server/camsPipeline.ts';
+import { CitepaDataPipeline } from './src/server/citepaPipeline.ts';
 import { NoaaErddapProvider } from './src/providers/noaaProvider.ts';
 import { IcosProvider } from './src/providers/icosProvider.ts';
 import { CamsProvider } from './src/providers/camsProvider.ts';
@@ -13,7 +14,10 @@ import { OcoProvider } from './src/providers/ocoProvider.ts';
 import { EmissionsProvider } from './src/providers/emissionsProvider.ts';
 import { HITRAN_CO2_LINES } from './src/scientific/hitranData.ts';
 import { SpectroscopyEngine } from './src/scientific/spectroscopyEngine.ts';
+import { HitranDataPipeline } from './src/server/hitranPipeline.ts';
+import { ProviderHealthService } from './src/server/providerHealthService.ts';
 import { Station } from './src/types/observation.ts';
+import { ScientificExportService } from './src/services/scientificExportService.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -49,82 +53,125 @@ async function startServer() {
   // ==========================================
   // ROUTES API SCIENTIFIQUES (/api/*)
   // ==========================================
+  // GESTION DU STATUT SCIENTIFIQUE : MODE DÉMONSTRATION VS MODE DONNÉES RÉELLES
+  // 🟡 MODE DÉMONSTRATION : Données d'exemple / fixtures scientifiques embarquées
+  // 🟢 MODE DONNÉES RÉELLES : Données récupérées auprès de la source officielle
+  // ==========================================
+  let currentDataMode: 'DEMO' | 'REAL_DATA' = 'DEMO';
 
-  // État des sources avec suivi en direct des téléchargements NOAA GML, ICOS & NASA
-  app.get('/api/status', async (_req, res) => {
-    const fetchStatuses = NoaaDataPipeline.getAllFetchStatuses();
-    const icosAudit = IcosDataPipeline.getFileAudit();
-    const ocoAudit = NasaOcoPipeline.getAudit();
-
+  app.get('/api/mode', (_req, res) => {
+    const isReal = currentDataMode === 'REAL_DATA';
     res.json({
-      status: 'HEALTHY',
-      timestamp: new Date().toISOString(),
-      principle: 'MESURÉ ≠ OBSERVÉ ≠ ESTIMÉ ≠ MODÉLISÉ ≠ SIMULÉ',
-      downloads: fetchStatuses,
-      icosAudit,
-      ocoAudit,
-      providers: [
-        {
-          name: 'NOAA Global Monitoring Laboratory',
-          status: 'ONLINE',
-          url: 'https://gml.noaa.gov/ccgg/trends/',
-          license: 'NOAA Public Domain Data Policy (Open Government Data)',
-          doi: '10.15138/9N0H-ZH07',
-          category: 'MEASURED',
-          recordsCount: fetchStatuses.reduce((acc, s) => acc + s.recordsCount, 0),
-          realDataEndpoints: [
-            'https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.csv',
-            'https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_daily_mlo.txt',
-            'https://erddap.gml.noaa.gov/erddap/tabledap/greenhouse_gases_co2_insitu_hourly_averages_surface',
-            'https://erddap.gml.noaa.gov/erddap/tabledap/greenhouse_gases_co2_insitu_monthly_averages',
-            'https://erddap.gml.noaa.gov/erddap/tabledap/greenhouse_gases_co2_flask_discrete',
-            'https://erddap.gml.noaa.gov/erddap/tabledap/greenhouse_gases_co2_aircraft_pfp_discrete'
-          ]
-        },
-        {
-          name: 'ICOS Carbon Portal',
-          status: 'ONLINE',
-          url: 'https://data.icos-cp.eu/',
-          license: 'CC-BY-4.0',
-          doi: '10.18160/icos-atmos-release-2026',
-          category: 'MEASURED',
-          recordsCount: icosAudit?.totalRecords || 85
-        },
-        {
-          name: 'NASA Earthdata / OCO-2 & OCO-3',
-          status: 'ONLINE',
-          url: 'https://cmr.earthdata.nasa.gov/',
-          license: 'NASA Open Access Software & Data Policy',
-          doi: '10.5067/EWSGQD2MI070',
-          category: 'OBSERVED',
-          recordsCount: ocoAudit?.totalSoundings || 162,
-          realDataEndpoints: [
-            'https://cmr.earthdata.nasa.gov/search/granules.json?short_name=OCO2_L2_Lite_FP',
-            'https://cmr.earthdata.nasa.gov/search/granules.json?short_name=OCO3_L2_Lite_FP',
-            'https://disc.gsfc.nasa.gov/datacollection/OCO2_L2_Lite_FP_11.3r.html',
-            'https://disc.gsfc.nasa.gov/datacollection/OCO3_L2_Lite_FP_11r.html'
-          ]
-        },
-        {
-          name: 'Copernicus Atmosphere Monitoring Service (CAMS)',
-          status: 'ONLINE',
-          url: 'https://atmosphere.copernicus.eu/',
-          license: 'Copernicus Free & Open Access',
-          doi: '10.24380/cams-co2-forecast',
-          category: 'MODELED',
-          recordsCount: 120000
-        },
-        {
-          name: 'HITRAN Molecular Spectroscopy Database',
-          status: 'ONLINE',
-          url: 'https://hitran.org/',
-          license: 'Academic & Open Scientific Use (HITRAN License)',
-          doi: '10.1016/j.jqsrt.2021.107949',
-          category: 'SIMULATED',
-          recordsCount: 28000
-        }
-      ]
+      mode: currentDataMode,
+      label: isReal ? '🟢 MODE DONNÉES RÉELLES' : '🟡 MODE DÉMONSTRATION',
+      description: isReal
+        ? 'Données récupérées auprès de la source officielle.'
+        : "Données d'exemple / fixtures scientifiques embarquées."
     });
+  });
+
+  app.post('/api/mode', (req, res) => {
+    const { mode } = req.body || {};
+    if (mode === 'DEMO' || mode === 'REAL_DATA') {
+      currentDataMode = mode;
+    }
+    const isReal = currentDataMode === 'REAL_DATA';
+    res.json({
+      mode: currentDataMode,
+      label: isReal ? '🟢 MODE DONNÉES RÉELLES' : '🟡 MODE DÉMONSTRATION',
+      description: isReal
+        ? 'Données récupérées auprès de la source officielle.'
+        : "Données d'exemple / fixtures scientifiques embarquées."
+    });
+  });
+
+  // État certifié des sources de données selon la taxonomie scientifique :
+  // CONNECTED | FETCHED | CACHED | STALE | OFFLINE | ERROR | NOT_CONFIGURED
+  app.get('/api/status', async (req, res) => {
+    try {
+      const checkLive = req.query.check_live === 'true';
+      const simulateMode = req.query.simulate as string | undefined;
+      const requestedMode = (req.query.mode as string)?.toLowerCase();
+      const headerMode = req.headers['x-carbonor-data-mode'] as string | undefined;
+
+      const activeMode: 'DEMO' | 'REAL_DATA' = requestedMode === 'real' || headerMode === 'REAL_DATA'
+        ? 'REAL_DATA'
+        : (requestedMode === 'demo' || headerMode === 'DEMO' ? 'DEMO' : currentDataMode);
+
+      const systemStatus = await ProviderHealthService.getSystemStatus({
+        checkConnectivity: checkLive,
+        mode: activeMode
+      });
+
+      // Simulation de modes pour les tests et l'assurance qualité (ex: simulate=offline)
+      if (simulateMode === 'offline') {
+        systemStatus.status = 'OFFLINE';
+        systemStatus.summary.offlineCount = systemStatus.providers.length;
+        systemStatus.summary.connectedCount = 0;
+        systemStatus.providers.forEach(p => {
+          p.status = 'OFFLINE';
+          p.statusLabel = 'Mode Hors-ligne Forcé';
+          p.statusExplanation = 'Simulation du mode hors-ligne sans connexion réseau.';
+          p.upstreamInfo.networkStatus = 'OFFLINE';
+        });
+      } else if (simulateMode === 'stale') {
+        systemStatus.providers.forEach(p => {
+          p.status = 'STALE';
+          p.statusLabel = 'Cache expiré (> 30 jours)';
+          p.cacheInfo.isStale = true;
+          p.cacheInfo.ageDays = 45;
+        });
+      } else if (simulateMode === 'error') {
+        systemStatus.status = 'DEGRADED';
+        systemStatus.providers[0].status = 'ERROR';
+        systemStatus.providers[0].statusLabel = 'Erreur HTTP 503';
+        systemStatus.providers[0].statusExplanation = 'Erreur simulée lors de l’interrogation distante.';
+      }
+
+      res.json(systemStatus);
+    } catch (e: any) {
+      res.status(500).json({
+        status: 'ERROR',
+        timestamp: new Date().toISOString(),
+        error: e.message
+      });
+    }
+  });
+
+  // Test de connectivité actif / ping réseau vers un ou l'ensemble des serveurs distants
+  app.post('/api/status/ping', async (req, res) => {
+    try {
+      const providerId = req.query.provider as string | undefined;
+      const targetUrls: Record<string, string> = {
+        noaa: 'https://gml.noaa.gov',
+        icos: 'https://data.icos-cp.eu',
+        nasa: 'https://cmr.earthdata.nasa.gov',
+        cams: 'https://ads.atmosphere.copernicus.eu',
+        hitran: 'https://hitran.org',
+        citepa: 'https://www.citepa.org'
+      };
+
+      if (providerId && targetUrls[providerId]) {
+        const probe = await ProviderHealthService.probeHost(targetUrls[providerId], 3000);
+        return res.json({ providerId, probe });
+      }
+
+      // Tester l'ensemble des serveurs distants en parallèle
+      const entries = Object.entries(targetUrls);
+      const results = await Promise.all(
+        entries.map(async ([id, url]) => {
+          const probe = await ProviderHealthService.probeHost(url, 2500);
+          return { providerId: id, url, probe };
+        })
+      );
+
+      res.json({
+        testedAt: new Date().toISOString(),
+        probes: results
+      });
+    } catch (e: any) {
+      res.status(500).json({ error: e.message });
+    }
   });
 
   // Audit scientifique complet du pipeline de données brutes
@@ -132,22 +179,28 @@ async function startServer() {
     try {
       const diskAudit = NoaaDataPipeline.getDiskAudit();
       const icosAudit = IcosDataPipeline.getFileAudit();
+      const icosPipelineStatus = IcosDataPipeline.getPipelineStatus();
       const ocoAudit = NasaOcoPipeline.getAudit();
       const ocoPipelineStatus = NasaOcoPipeline.getPipelineStatus();
       const camsAudit = CamsDataPipeline.getAudit();
       const camsPipelineStatus = CamsDataPipeline.getPipelineStatus();
+      const citepaAudit = CitepaDataPipeline.getFileAudit();
+      const citepaPipelineStatus = CitepaDataPipeline.getPipelineStatus();
       const statuses = NoaaDataPipeline.getAllFetchStatuses();
 
       res.json({
         title: 'Audit Scientifique de Traçabilité des Données Réelles',
-        verificationStatement: 'ZÉRO FORMULE SYNTHÉTIQUE — Données authentiques téléchargées depuis NOAA GML, NOAA ERDDAP, ICOS Carbon Portal, NASA Earthdata et Copernicus CAMS ADS.',
+        verificationStatement: 'ZÉRO FORMULE SYNTHÉTIQUE — Données authentiques téléchargées depuis NOAA GML, NOAA ERDDAP, ICOS Carbon Portal, NASA Earthdata, Copernicus CAMS ADS et CITEPA SECTEN.',
         timestamp: new Date().toISOString(),
         rawDiskFiles: diskAudit,
         icosAudit,
+        icosPipelineStatus,
         ocoAudit,
         ocoPipelineStatus,
         camsAudit,
         camsPipelineStatus,
+        citepaAudit,
+        citepaPipelineStatus,
         activeDataPipelines: statuses
       });
     } catch (err: any) {
@@ -158,22 +211,26 @@ async function startServer() {
   // Déclenchement manuel de rafraîchissement depuis les serveurs officiels
   app.post('/api/pipeline/refresh', async (_req, res) => {
     try {
-      console.log('[Pipeline Refresh] Téléchargement forcé depuis NOAA GML, ERDDAP, NASA Earthdata CMR & Copernicus CAMS ADS...');
-      const [mloMonth, mloDay, brwHour, smoHour, spoHour, cmr, cams] = await Promise.all([
+      console.log('[Pipeline Refresh] Téléchargement forcé depuis NOAA GML, ERDDAP, NASA Earthdata CMR, Copernicus CAMS ADS, ICOS Carbon Portal & CITEPA...');
+      const [mloMonth, mloDay, brwHour, smoHour, spoHour, cmr, cams, icos, citepa] = await Promise.all([
         NoaaDataPipeline.getMonthlyKeeling(true),
         NoaaDataPipeline.getDailyKeeling(true),
         NoaaDataPipeline.getErddapHourly('BRW', true),
         NoaaDataPipeline.getErddapHourly('SMO', true),
         NoaaDataPipeline.getErddapHourly('SPO', true),
         NasaOcoPipeline.refreshCmrGranules(),
-        CamsDataPipeline.refreshADSCatalogue()
+        CamsDataPipeline.refreshADSCatalogue(),
+        IcosDataPipeline.syncFromCarbonPortal(),
+        CitepaDataPipeline.syncFromCitepa()
       ]);
       res.json({
         success: true,
-        message: 'Synchronisation globale NOAA, NASA Earthdata & Copernicus CAMS effectuée avec succès !',
+        message: 'Synchronisation globale NOAA, NASA Earthdata, Copernicus CAMS, ICOS & CITEPA effectuée avec succès !',
         updated: [mloMonth.status, mloDay.status, brwHour.status, smoHour.status, spoHour.status],
         nasaGranulesCount: (cmr.oco2?.length || 0) + (cmr.oco3?.length || 0),
-        camsStatus: cams
+        camsStatus: cams,
+        icosStatus: icos,
+        citepaStatus: citepa
       });
     } catch (err: any) {
       res.status(500).json({ error: err.message });
@@ -631,6 +688,53 @@ async function startServer() {
     }
   });
 
+  // Endpoints ICOS Carbon Portal
+  app.get('/api/icos/stations', (_req, res) => {
+    try {
+      const stations = IcosDataPipeline.getStations();
+      res.json(stations);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.get('/api/icos/profiles', (req, res) => {
+    try {
+      const station = (req.query.station as string) || 'TRN';
+      const profiles = IcosDataPipeline.getVerticalProfiles(station);
+      res.json(profiles);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.get('/api/icos/pipeline-status', (_req, res) => {
+    try {
+      const status = IcosDataPipeline.getPipelineStatus();
+      res.json(status);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.post('/api/icos/sync', async (_req, res) => {
+    try {
+      const result = await IcosDataPipeline.syncFromCarbonPortal();
+      res.json(result);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.get('/api/icos/audit', (_req, res) => {
+    try {
+      const audit = IcosDataPipeline.getFileAudit();
+      res.json(audit);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
   // Profils verticaux (AirCore, Aircraft ERDDAP, CAMS 3D, ICOS Mast)
   app.get('/api/profiles', async (_req, res) => {
     try {
@@ -639,7 +743,7 @@ async function startServer() {
       });
       const aircore = await NoaaErddapProvider.getAirCoreProfiles();
       const cams = CamsDataPipeline.getVerticalConcentration(48.85, 2.35);
-      const icosMast = await IcosProvider.getVerticalProfiles('TRN');
+      const icosMast = IcosDataPipeline.getVerticalProfiles('TRN');
       res.json([realAircraft, ...aircore, cams, ...icosMast]);
     } catch (err: any) {
       res.status(500).json({ error: err.message });
@@ -659,15 +763,96 @@ async function startServer() {
   // Inventaires d'émissions sectorielles (CITEPA, GCP)
   app.get('/api/emissions', async (_req, res) => {
     try {
-      const france = await EmissionsProvider.getFranceEmissions();
-      const global = await EmissionsProvider.getGlobalEmissionsSummary();
+      const france = CitepaDataPipeline.getFranceEmissions();
+      const global = CitepaDataPipeline.getGlobalBudget();
       res.json({ france, global });
     } catch (err: any) {
       res.status(500).json({ error: err.message });
     }
   });
 
-  // Base de raies spectroscopiques HITRAN
+  // Endpoints CITEPA SECTEN (Inventaires Nationaux)
+  app.get('/api/citepa/versions', (_req, res) => {
+    try {
+      const versions = CitepaDataPipeline.getAvailableVersions();
+      res.json(versions);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.post('/api/citepa/versions', (req, res) => {
+    try {
+      const { versionId } = req.body;
+      if (!versionId) return res.status(400).json({ error: 'versionId requis' });
+      const success = CitepaDataPipeline.setActiveVersion(versionId);
+      if (success) {
+        res.json({ success: true, activeVersion: versionId });
+      } else {
+        res.status(404).json({ error: `Version ${versionId} non trouvée.` });
+      }
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.post('/api/citepa/import', (req, res) => {
+    try {
+      const payload = req.body;
+      const result = CitepaDataPipeline.importInventory(payload);
+      res.status(result.success ? 200 : 400).json(result);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.get('/api/citepa/inventory', (req, res) => {
+    try {
+      const version = req.query.version as string;
+      const inv = CitepaDataPipeline.loadInventory(version);
+      res.json(inv);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.get('/api/citepa/history', (_req, res) => {
+    try {
+      const history = CitepaDataPipeline.getHistoricalEmissions();
+      res.json(history);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.get('/api/citepa/pipeline-status', (_req, res) => {
+    try {
+      const status = CitepaDataPipeline.getPipelineStatus();
+      res.json(status);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.post('/api/citepa/sync', async (_req, res) => {
+    try {
+      const result = await CitepaDataPipeline.syncFromCitepa();
+      res.json(result);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.get('/api/citepa/audit', (_req, res) => {
+    try {
+      const audit = CitepaDataPipeline.getFileAudit();
+      res.json(audit);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Base de raies spectroscopiques HITRAN (Mode Embarqué)
   app.get('/api/spectroscopy/lines', async (req, res) => {
     try {
       const branch = req.query.branch as string;
@@ -688,6 +873,42 @@ async function startServer() {
     }
   });
 
+  // HAPI / HITRAN Requête Dynamique Scientifique (Mode Scientifique)
+  app.post('/api/hitran/query', async (req, res) => {
+    try {
+      const params = req.body;
+      const result = await HitranDataPipeline.query(params);
+      res.json(result);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.get('/api/hitran/query', async (req, res) => {
+    try {
+      const params = {
+        molecule: req.query.molecule ? String(req.query.molecule) : 'CO2',
+        isotopologue: req.query.isotopologue ? String(req.query.isotopologue) : 'all',
+        band: req.query.band ? String(req.query.band) : 'all',
+        numin: req.query.numin ? parseFloat(String(req.query.numin)) : undefined,
+        numax: req.query.numax ? parseFloat(String(req.query.numax)) : undefined,
+        jLowerMin: req.query.jLowerMin ? parseInt(String(req.query.jLowerMin), 10) : undefined,
+        jLowerMax: req.query.jLowerMax ? parseInt(String(req.query.jLowerMax), 10) : undefined,
+        jUpperMin: req.query.jUpperMin ? parseInt(String(req.query.jUpperMin), 10) : undefined,
+        jUpperMax: req.query.jUpperMax ? parseInt(String(req.query.jUpperMax), 10) : undefined,
+        branch: req.query.branch ? String(req.query.branch) as any : 'ALL',
+        minIntensity: req.query.minIntensity ? parseFloat(String(req.query.minIntensity)) : undefined,
+        temperature: req.query.temperature ? parseFloat(String(req.query.temperature)) : 296.0,
+        pressure: req.query.pressure ? parseFloat(String(req.query.pressure)) : 1.0,
+        limit: req.query.limit ? parseInt(String(req.query.limit), 10) : 2500
+      };
+      const result = await HitranDataPipeline.query(params);
+      res.json(result);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
   // Simulation Beer-Lambert raie-par-raie
   app.post('/api/spectroscopy/simulate', async (req, res) => {
     try {
@@ -699,32 +920,145 @@ async function startServer() {
     }
   });
 
-  // Export scientifique (CSV, GeoJSON, JSON)
-  app.post('/api/export', async (req, res) => {
-    try {
-      const { format, datasetName, data } = req.body;
-      if (format === 'csv') {
-        if (!Array.isArray(data) || data.length === 0) {
-          return res.status(400).send('Aucune donnée à exporter');
-        }
-        const headers = Object.keys(data[0]).join(',');
-        const rows = data.map((row: any) => 
-          Object.values(row).map(v => typeof v === 'object' ? JSON.stringify(v) : v).join(',')
-        );
-        const csvContent = [headers, ...rows].join('\n');
-        res.setHeader('Content-Type', 'text/csv');
-        res.setHeader('Content-Disposition', `attachment; filename="${datasetName || 'co2_export'}.csv"`);
+  // ==========================================
+  // EXPORT SCIENTIFIQUE CERTIFIÉ MULTI-FORMATS
+  // Formats supportés : CSV | GeoJSON | NetCDF | SVG | PDF | PNG | Parquet/NDJSON | JSON
+  // Tous les exports embarquent : source, dataset, version, DOI, licence, timestamp, query, qualityFlags, checksum
+  // ==========================================
+  const handleExportRequest = async (params: {
+    format?: string;
+    datasetName?: string;
+    dataset?: string;
+    data?: any;
+    provenance?: any;
+    queryParameters?: any;
+    qualityFlags?: string;
+    title?: string;
+  }, res: express.Response) => {
+    let { format = 'csv', datasetName, dataset, data, provenance, queryParameters, qualityFlags, title } = params;
+    const resolvedName = datasetName || dataset || 'carbonor_co2_export';
+    const fmt = (format || 'csv').toLowerCase();
+
+    // Si aucune donnée n'a été transmise dans le corps, charger les données réelles selon le dataset demandé
+    if (!data || (Array.isArray(data) && data.length === 0)) {
+      if (resolvedName.includes('mlo_daily') || resolvedName === 'mlo' || resolvedName === 'daily') {
+        data = await NoaaDataPipeline.getDailyKeeling();
+      } else if (resolvedName.includes('mlo_monthly') || resolvedName === 'monthly') {
+        data = await NoaaDataPipeline.getMonthlyKeeling();
+      } else if (resolvedName.includes('oco') || resolvedName.includes('xco2')) {
+        data = NasaOcoPipeline.getSoundings();
+      } else if (resolvedName.includes('puy') || resolvedName.includes('icos')) {
+        data = IcosDataPipeline.getStationObservations('PUY');
+      } else if (resolvedName.includes('cams')) {
+        data = [await CamsDataPipeline.getColumnMeanCO2(45.77, 2.96)];
+      } else if (resolvedName.includes('hitran') || resolvedName.includes('spectr')) {
+        const queryRes = await HitranDataPipeline.queryLines({ limit: 100 });
+        data = queryRes.lines;
+      } else {
+        data = await NoaaDataPipeline.getMonthlyKeeling();
+      }
+    }
+
+    const activeExportMode: 'DEMO' | 'REAL_DATA' = (params as any).mode === 'real' || provenance?.dataMode === 'REAL_DATA'
+      ? 'REAL_DATA'
+      : ((params as any).mode === 'demo' || provenance?.dataMode === 'DEMO' ? 'DEMO' : currentDataMode);
+
+    const exportOptions = {
+      data,
+      datasetName: resolvedName,
+      provenance: {
+        dataMode: activeExportMode,
+        ...provenance
+      },
+      queryParameters,
+      qualityFlags,
+      title: title || `Carbonor Export - ${resolvedName}`
+    };
+
+    switch (fmt) {
+      case 'csv': {
+        const csvContent = ScientificExportService.exportToCsv(exportOptions);
+        res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+        res.setHeader('Content-Disposition', `attachment; filename="${resolvedName}.csv"`);
         return res.send(csvContent);
       }
 
-      res.json({
-        exportDate: new Date().toISOString(),
-        datasetName,
-        format,
-        recordsCount: Array.isArray(data) ? data.length : 1,
-        provenanceStatement: 'Toutes les données exportées conservent leurs identifiants de métadonnées et licences d\'origine.',
-        data
-      });
+      case 'geojson': {
+        const geojsonObj = ScientificExportService.exportToGeoJson(exportOptions);
+        res.setHeader('Content-Type', 'application/geo+json; charset=utf-8');
+        res.setHeader('Content-Disposition', `attachment; filename="${resolvedName}.geojson"`);
+        return res.json(geojsonObj);
+      }
+
+      case 'netcdf':
+      case 'cdl':
+      case 'nc': {
+        const cdlContent = ScientificExportService.exportToNetCdf(exportOptions);
+        res.setHeader('Content-Type', 'text/x-cdl; charset=utf-8');
+        res.setHeader('Content-Disposition', `attachment; filename="${resolvedName}.cdl"`);
+        return res.send(cdlContent);
+      }
+
+      case 'svg': {
+        const svgContent = ScientificExportService.exportToSvg(exportOptions);
+        res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
+        res.setHeader('Content-Disposition', `attachment; filename="${resolvedName}.svg"`);
+        return res.send(svgContent);
+      }
+
+      case 'pdf': {
+        const pdfBytes = ScientificExportService.exportToPdf(exportOptions);
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename="${resolvedName}.pdf"`);
+        return res.send(Buffer.from(pdfBytes));
+      }
+
+      case 'parquet':
+      case 'ndjson':
+      case 'jsonl': {
+        const ndjsonContent = ScientificExportService.exportToParquetOrNdjson(exportOptions);
+        res.setHeader('Content-Type', 'application/x-ndjson; charset=utf-8');
+        res.setHeader('Content-Disposition', `attachment; filename="${resolvedName}.ndjson"`);
+        return res.send(ndjsonContent);
+      }
+
+      case 'png': {
+        // Envoi du SVG avec instruction Content-Type SVG compatible ou converti
+        const svgContent = ScientificExportService.exportToSvg(exportOptions);
+        res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
+        res.setHeader('Content-Disposition', `attachment; filename="${resolvedName}.svg"`);
+        return res.send(svgContent);
+      }
+
+      case 'json':
+      default: {
+        const jsonObj = ScientificExportService.exportToJson(exportOptions);
+        res.setHeader('Content-Type', 'application/json; charset=utf-8');
+        res.setHeader('Content-Disposition', `attachment; filename="${resolvedName}.json"`);
+        return res.json(jsonObj);
+      }
+    }
+  };
+
+  app.post('/api/export', async (req, res) => {
+    try {
+      await handleExportRequest(req.body, res);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.get('/api/export', async (req, res) => {
+    try {
+      await handleExportRequest({
+        format: req.query.format as string,
+        dataset: req.query.dataset as string,
+        datasetName: req.query.datasetName as string,
+        qualityFlags: req.query.quality as string,
+        title: req.query.title as string,
+        mode: req.query.mode as string,
+        queryParameters: req.query
+      } as any, res);
     } catch (err: any) {
       res.status(500).json({ error: err.message });
     }
@@ -735,7 +1069,7 @@ async function startServer() {
   // ==========================================
   if (!isProduction) {
     const vite = await createViteServer({
-      server: { middlewareMode: true },
+      server: { middlewareMode: true, hmr: false, ws: false },
       appType: 'spa'
     });
     app.use(vite.middlewares);

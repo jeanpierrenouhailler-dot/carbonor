@@ -26,6 +26,7 @@ export type ViewKey =
   | 'spectroscopy-lines'
   | 'spectroscopy-pqr'
   | 'spectroscopy-lab'
+  | 'spectroscopy-validation'
   | 'flux'
   | 'emissions'
   | 'compare'
@@ -68,7 +69,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
       items: [
         { id: 'spectroscopy-lines' as ViewKey, label: 'Explorateur de Raies HITRAN', icon: Atom },
         { id: 'spectroscopy-pqr' as ViewKey, label: 'Structure P / Q / R (15 & 4.3 µm)', icon: Wind },
-        { id: 'spectroscopy-lab' as ViewKey, label: 'Laboratoire CO₂ (Beer-Lambert)', icon: SlidersHorizontal, badge: '280-1000 ppm' }
+        { id: 'spectroscopy-lab' as ViewKey, label: 'Laboratoire CO₂ (Beer-Lambert)', icon: SlidersHorizontal, badge: '280-1000 ppm' },
+        { id: 'spectroscopy-validation' as ViewKey, label: 'Validation Transfert Radiatif', icon: ShieldCheck, badge: 'RADIS & HAPI' }
       ]
     },
     {

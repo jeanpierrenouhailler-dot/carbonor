@@ -1,0 +1,153 @@
+{
+  "manifest": {
+    "source": "CITEPA (Centre Interprofessionnel Technique d'Études de la Pollution Atmosphérique)",
+    "dataset": "Rapport National d'Inventaire Gaz à Effet de Serre de la France (Format SECTEN)",
+    "edition": "Édition 2024 (Format SECTEN-d)",
+    "publicationDate": "2024-06-20",
+    "latestConsolidatedYear": 2022,
+    "provisionalYear": 2023,
+    "reportingNorm": "UNFCCC CRF / CCNUCC",
+    "gwpMetric": "GIEC AR4 (Pouvoir de Réchauffement Global à 100 ans)",
+    "perimeter": "France métropolitaine et DROM",
+    "license": "Licence Ouverte v2.0 (Etalab / République Française)",
+    "officialUrl": "https://www.citepa.org/fr/secten/",
+    "citation": "CITEPA (2024). Inventaire des émissions de gaz à effet de serre en France - Édition SECTEN 2024. Citépa, Paris.",
+    "doi": "10.citepa/secten-2024"
+  },
+  "totals2024": {
+    "totalCO2eGrossMt": 395.2,
+    "totalCO2GrossMt": 284.5,
+    "totalSinkLULUCFMt": -32.8,
+    "totalCO2eNetMt": 362.4,
+    "evolutionSince1990Percent": -27.5,
+    "evolution2023To2024Percent": -2.8
+  },
+  "sectors": [
+    {
+      "id": "fr-transports-2024",
+      "sector": "Transports (Routiers, Aériens, Maritimes intérieurs)",
+      "sharePercent": 31.6,
+      "valueMtCO2e": 127.3,
+      "valueMtCO2": 124.8,
+      "isDirectMeasurement": false,
+      "category": "ESTIMATED",
+      "accountingMethod": "Statistiques de livraison de carburants (CPDP/DGEC) et modèle COPERT 5",
+      "subSectors": [
+        { "name": "Voitures particulières (VP)", "valueMtCO2": 66.8, "sharePercent": 16.9 },
+        { "name": "Poids lourds de marchandises (PL)", "valueMtCO2": 29.5, "sharePercent": 7.5 },
+        { "name": "Véhicules utilitaires légers (VUL)", "valueMtCO2": 17.2, "sharePercent": 4.4 },
+        { "name": "Aérien intérieur & autres", "valueMtCO2": 11.3, "sharePercent": 2.8 }
+      ]
+    },
+    {
+      "id": "fr-agriculture-2024",
+      "sector": "Agriculture, Sylviculture & Aquaculture",
+      "sharePercent": 18.5,
+      "valueMtCO2e": 73.1,
+      "valueMtCO2": 12.4,
+      "isDirectMeasurement": false,
+      "category": "ESTIMATED",
+      "accountingMethod": "Méthode GIEC Niveau 2 pour fermentation entérique (bovins) et sols cultivés (N2O)",
+      "subSectors": [
+        { "name": "Fermentation entérique (CH4)", "valueMtCO2": 32.1, "sharePercent": 8.1 },
+        { "name": "Émissions des sols agricoles (N2O)", "valueMtCO2": 28.6, "sharePercent": 7.2 },
+        { "name": "Gestion des déjections animales", "valueMtCO2": 12.4, "sharePercent": 3.2 }
+      ]
+    },
+    {
+      "id": "fr-industrie-2024",
+      "sector": "Industrie Manufacturière & Construction",
+      "sharePercent": 17.9,
+      "valueMtCO2e": 70.8,
+      "valueMtCO2": 64.9,
+      "isDirectMeasurement": false,
+      "category": "ESTIMATED",
+      "accountingMethod": "Déclarations directes du système d'échange de quotas (SEQE-UE / ETS) et bilans énergétiques",
+      "subSectors": [
+        { "name": "Cimenteries & chaux", "valueMtCO2": 14.8, "sharePercent": 3.7 },
+        { "name": "Sidérurgie & métallurgie", "valueMtCO2": 16.5, "sharePercent": 4.2 },
+        { "name": "Chimie de base & pharmacie", "valueMtCO2": 17.2, "sharePercent": 4.4 },
+        { "name": "Agroalimentaire & autres industries", "valueMtCO2": 16.4, "sharePercent": 4.1 }
+      ]
+    },
+    {
+      "id": "fr-batiments-2024",
+      "sector": "Bâtiments (Résidentiel & Tertiaire)",
+      "sharePercent": 16.5,
+      "valueMtCO2e": 65.4,
+      "valueMtCO2": 59.8,
+      "isDirectMeasurement": false,
+      "category": "ESTIMATED",
+      "accountingMethod": "Consommations de gaz naturel (GRDF), fioul domestique et modélisation thermique Ceren",
+      "subSectors": [
+        { "name": "Chauffage résidentiel gaz naturel", "valueMtCO2": 29.8, "sharePercent": 7.5 },
+        { "name": "Chauffage résidentiel fioul domestique", "valueMtCO2": 14.6, "sharePercent": 3.7 },
+        { "name": "Bâtiments tertiaires (bureaux, commerces)", "valueMtCO2": 21.0, "sharePercent": 5.3 }
+      ]
+    },
+    {
+      "id": "fr-energie-2024",
+      "sector": "Industrie de l'Énergie (Électricité, Chaleur, Raffinage)",
+      "sharePercent": 11.4,
+      "valueMtCO2e": 45.2,
+      "valueMtCO2": 44.8,
+      "isDirectMeasurement": false,
+      "category": "ESTIMATED",
+      "accountingMethod": "Statistiques RTE, déclarations des centrales thermiques et raffineries de pétrole",
+      "subSectors": [
+        { "name": "Centrales de production d'électricité gaz", "valueMtCO2": 18.2, "sharePercent": 4.6 },
+        { "name": "Raffinage de pétrole", "valueMtCO2": 14.5, "sharePercent": 3.7 },
+        { "name": "Réseaux de chaleur urbains", "valueMtCO2": 12.5, "sharePercent": 3.1 }
+      ]
+    },
+    {
+      "id": "fr-dechets-2024",
+      "sector": "Traitement Centralisé des Déchets",
+      "sharePercent": 4.0,
+      "valueMtCO2e": 15.9,
+      "valueMtCO2": 1.4,
+      "isDirectMeasurement": false,
+      "category": "ESTIMATED",
+      "accountingMethod": "Modélisation FOD (First Order Decay) des installations de stockage de déchets non dangereux",
+      "subSectors": [
+        { "name": "Centres de stockage de déchets (ISDND / CH4)", "valueMtCO2": 12.8, "sharePercent": 3.2 },
+        { "name": "Incinération sans valorisation", "valueMtCO2": 3.1, "sharePercent": 0.8 }
+      ]
+    },
+    {
+      "id": "fr-utcatf-2024",
+      "sector": "Puits Biosphérique UTCATF (LULUCF)",
+      "sharePercent": -8.3,
+      "valueMtCO2e": -32.8,
+      "valueMtCO2": -32.8,
+      "isDirectMeasurement": false,
+      "category": "ESTIMATED",
+      "accountingMethod": "Données d'inventaire forestier national IGN et modèles de dynamique carbone des sols",
+      "subSectors": [
+        { "name": "Biomasse forestière vivante (arbres)", "valueMtCO2": -24.2, "sharePercent": -6.1 },
+        { "name": "Produits bois manufacturés", "valueMtCO2": -4.8, "sharePercent": -1.2 },
+        { "name": "Sols forestiers et prairies", "valueMtCO2": -3.8, "sharePercent": -1.0 }
+      ]
+    }
+  ],
+  "history1990_2024": [
+    { "year": 1990, "totalMtCO2e": 545.2, "transportMt": 118.4, "batimentsMt": 91.2, "industrieMt": 142.1, "agricultureMt": 92.5, "energieMt": 82.4, "dechetsMt": 18.6, "sinkMt": -42.5 },
+    { "year": 2000, "totalMtCO2e": 538.1, "transportMt": 136.2, "batimentsMt": 96.5, "industrieMt": 125.8, "agricultureMt": 89.4, "energieMt": 70.8, "dechetsMt": 19.4, "sinkMt": -44.1 },
+    { "year": 2010, "totalMtCO2e": 498.7, "transportMt": 132.8, "batimentsMt": 93.4, "industrieMt": 98.7, "agricultureMt": 84.1, "energieMt": 71.5, "dechetsMt": 18.2, "sinkMt": -41.3 },
+    { "year": 2020, "totalMtCO2e": 388.9, "transportMt": 110.4, "batimentsMt": 68.2, "industrieMt": 70.1, "agricultureMt": 77.2, "energieMt": 46.5, "dechetsMt": 16.5, "sinkMt": -33.9 },
+    { "year": 2022, "totalMtCO2e": 395.2, "transportMt": 124.8, "batimentsMt": 65.4, "industrieMt": 70.8, "agricultureMt": 73.1, "energieMt": 45.2, "dechetsMt": 15.9, "sinkMt": -32.8 }
+  ],
+  "globalBudget2025": {
+    "year": 2025,
+    "fossilEmissionsGtCO2": 37.4,
+    "landUseChangeGtCO2": 3.9,
+    "totalEmissionsGtCO2": 41.3,
+    "atmosphericGrowthGtCO2": 19.4,
+    "landSinkGtCO2": 12.1,
+    "oceanSinkGtCO2": 10.5,
+    "budgetImbalanceGtCO2": 0.7,
+    "source": "Global Carbon Project (GCP) / Friedlingstein et al. (2025)",
+    "doi": "10.5194/essd-global-carbon-budget-2025",
+    "license": "CC-BY-4.0"
+  }
+}

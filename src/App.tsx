@@ -8,6 +8,8 @@ import { Navbar } from './components/layout/Navbar';
 import { Sidebar, ViewKey } from './components/layout/Sidebar';
 import { OfflineIndicator } from './components/pwa/OfflineIndicator';
 import { ScientificReportModal } from './components/report/ScientificReportModal';
+import { CloudflareDeployModal } from './components/common/CloudflareDeployModal';
+import { DataModeProvider } from './context/DataModeContext';
 
 // Views
 import { DashboardView } from './components/dashboard/DashboardView';
@@ -18,6 +20,7 @@ import { VerticalProfilesView } from './components/profiles/VerticalProfilesView
 import { LinesExplorerView } from './components/spectroscopy/LinesExplorerView';
 import { PQRVisualizationView } from './components/spectroscopy/PQRVisualizationView';
 import { SpectroscopyLabView } from './components/spectroscopy/SpectroscopyLabView';
+import { RadiativeTransferValidationView } from './components/spectroscopy/RadiativeTransferValidationView';
 import { FluxEmissionsView } from './components/flux/FluxEmissionsView';
 import { MultiSourceCompareView } from './components/compare/MultiSourceCompareView';
 import { FranceEuropeView } from './components/regional/FranceEuropeView';
@@ -29,6 +32,7 @@ export default function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [expertMode, setExpertMode] = useState(false);
   const [isReportOpen, setIsReportOpen] = useState(false);
+  const [isCloudflareOpen, setIsCloudflareOpen] = useState(false);
 
   const renderActiveView = () => {
     switch (currentView) {
@@ -48,6 +52,8 @@ export default function App() {
         return <PQRVisualizationView />;
       case 'spectroscopy-lab':
         return <SpectroscopyLabView />;
+      case 'spectroscopy-validation':
+        return <RadiativeTransferValidationView />;
       case 'flux':
       case 'emissions':
         return <FluxEmissionsView />;
@@ -66,39 +72,48 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-cyan-500 selection:text-white">
-      {/* Top Navigation */}
-      <Navbar
-        expertMode={expertMode}
-        onToggleExpertMode={() => setExpertMode(!expertMode)}
-        onOpenReport={() => setIsReportOpen(true)}
-        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-      />
-
-      {/* Main Body */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Sidebar */}
-        <Sidebar
-          currentView={currentView}
-          onSelectView={setCurrentView}
-          isOpen={isSidebarOpen}
-          onCloseMobile={() => setIsSidebarOpen(false)}
+    <DataModeProvider>
+      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-cyan-500 selection:text-white">
+        {/* Top Navigation */}
+        <Navbar
+          expertMode={expertMode}
+          onToggleExpertMode={() => setExpertMode(!expertMode)}
+          onOpenReport={() => setIsReportOpen(true)}
+          onOpenCloudflareModal={() => setIsCloudflareOpen(true)}
+          onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         />
 
-        {/* Dynamic Content View Container */}
-        <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 max-w-7xl mx-auto w-full">
-          {renderActiveView()}
-        </main>
+        {/* Main Body */}
+        <div className="flex-1 flex overflow-hidden">
+          {/* Sidebar */}
+          <Sidebar
+            currentView={currentView}
+            onSelectView={setCurrentView}
+            isOpen={isSidebarOpen}
+            onCloseMobile={() => setIsSidebarOpen(false)}
+          />
+
+          {/* Dynamic Content View Container */}
+          <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 max-w-7xl mx-auto w-full">
+            {renderActiveView()}
+          </main>
+        </div>
+
+        {/* PWA Offline indicator */}
+        <OfflineIndicator />
+
+        {/* Scientific Audit Report Generator Modal */}
+        <ScientificReportModal
+          isOpen={isReportOpen}
+          onClose={() => setIsReportOpen(false)}
+        />
+
+        {/* Cloudflare Pages Deployment Guide Modal */}
+        <CloudflareDeployModal
+          isOpen={isCloudflareOpen}
+          onClose={() => setIsCloudflareOpen(false)}
+        />
       </div>
-
-      {/* PWA Offline indicator */}
-      <OfflineIndicator />
-
-      {/* Scientific Audit Report Generator Modal */}
-      <ScientificReportModal
-        isOpen={isReportOpen}
-        onClose={() => setIsReportOpen(false)}
-      />
-    </div>
+    </DataModeProvider>
   );
 }

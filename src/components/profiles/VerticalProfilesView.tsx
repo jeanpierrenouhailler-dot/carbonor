@@ -6,6 +6,7 @@ import { IcosProvider } from '../../providers/icosProvider';
 import { ProvenanceBadge } from '../common/ProvenanceBadge';
 import { DataProvenanceModal } from '../common/DataProvenanceModal';
 import { ExportButton } from '../common/ExportButton';
+import { ScienceTooltip, PedagogicBanner } from '../common/ScienceTooltip';
 import { 
   Layers, 
   ArrowDownUp, 
@@ -56,7 +57,21 @@ export const VerticalProfilesView: React.FC = () => {
           <div className="flex items-center gap-2">
             <h2 className="text-xl font-bold text-white flex items-center gap-2">
               <Layers className="w-5 h-5 text-cyan-400" />
-              Profils Verticaux de CO₂ (De la Surface à la Stratosphère)
+              <span>Profils Verticaux de CO₂ (De la Surface à la Stratosphère)</span>
+              <ScienceTooltip
+                title="Sondage Vertical In Situ : AirCore & Spirales d'Aéronefs"
+                summary="Mesure ininterrompue de la concentration de CO₂ en fonction de l'altitude, reliant la couche limite planétaire à la moyenne stratosphère."
+                details={[
+                  "Le système AirCore (inventé par Pieter Tans à la NOAA) est un tube enroulé en spirale de ~100 m sous un ballon stratosphérique. Lors de la descente sous parachute, l'augmentation barométrique remplit le tube en continu, capturant une carotte d'air atmosphérique préservée de 0 à 30 km d'altitude sans pompe.",
+                  "Les avions scientifiques instrumentés (spirales NOAA CCGG et campagne ICOS) mesurent le CO₂ jusqu'à 8 à 10 km d'altitude avec des analyseurs rapides.",
+                  "Dans la troposphère libre (2 à 10 km), le CO₂ est bien mélangé et stable. Au-delà de la tropopause (~10-12 km), l'air stratosphérique plus ancien présente un retard d'environ 4 à 5 ans, ce qui conduit à des concentrations plus basses de ~10 ppm par rapport à la surface actuelle."
+                ]}
+                instrument="AirCore Tube hélicoïdal passif & Spirales d'avions NOAA"
+                unitMeaning="ppm de CO₂ en fonction de l'altitude géométrique (km) ou barométrique (hPa)"
+                whyItMatters="Fournit l'unique standard de vérité-terrain (ground truth) pour valider les colonnes satellitaires OCO-2 et les modèles CAMS."
+                source="NOAA Global Monitoring Laboratory & ICOS Atmosphere"
+                badge="MESURÉ"
+              />
             </h2>
             <ProvenanceBadge category="MEASURED" />
             <ProvenanceBadge category="MODELED" />
@@ -75,6 +90,31 @@ export const VerticalProfilesView: React.FC = () => {
           )}
         </div>
       </div>
+
+      {/* Pedagogic Banner for Vertical Structure */}
+      <PedagogicBanner
+        title="Guide Scientifique : Comment le CO₂ se répartit-il de bas en haut dans l'atmosphère ?"
+        badge="Dynamique Verticale"
+        description="L'atmosphère n'est pas un bloc homogène. La concentration de CO₂ subit l'influence combinée des émissions terrestres au sol, du brassage convectif de la troposphère et de la circulation lente de Brewer-Dobson dans la stratosphère."
+        bullets={[
+          {
+            title: "La couche limite planétaire (0 - 1.5 km)",
+            text: "C'est la couche en contact direct avec la Terre. Elle est très turbulente et subit les émissions humaines (usines, véhicules, chauffage) et la respiration des sols. En hiver ou la nuit, les inversions thermiques y piègent des concentrations très élevées (> 440 ppm)."
+          },
+          {
+            title: "La troposphère libre (1.5 - 11 km)",
+            text: "Au-dessus de la couche limite, le vent zonal et méridien homogénéise rapidement les masses d'air. Le CO₂ y est représentatif de la moyenne hémisphérique. C'est cette zone qui est échantillonnée par les observatoires de haute montagne (Mauna Loa, Jungfraujoch)."
+          },
+          {
+            title: "Le décalage de la stratosphère (12 - 30 km)",
+            text: "L'air pénètre dans la stratosphère principalement au niveau de la ceinture convective équatoriale, puis monte et migre lentement vers les pôles (circulation de Brewer-Dobson). Il faut environ 4 à 5 ans pour que l'air troposphérique atteigne la haute stratosphère. Par conséquent, la stratosphère reflète les concentrations terrestres d'il y a 4 ans (soit environ 10 ppm de moins qu'aujourd'hui) !"
+          },
+          {
+            title: "Pourquoi l'AirCore est révolutionnaire pour les satellites",
+            text: "Un satellite comme OCO-2 mesure une moyenne de colonne intégrée verticalement. Pour savoir si le satellite est exact, les scientifiques comparent son intégration mathématique avec le profil physique continu réel capturé par un AirCore au même instant."
+          }
+        ]}
+      />
 
       {/* Profile Selector & Axis Mode Toolbar */}
       <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-slate-900 border border-slate-800 text-xs font-mono">

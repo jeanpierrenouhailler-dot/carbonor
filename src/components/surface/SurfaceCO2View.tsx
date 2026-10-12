@@ -5,6 +5,7 @@ import { IcosProvider } from '../../providers/icosProvider';
 import { ProvenanceBadge } from '../common/ProvenanceBadge';
 import { DataProvenanceModal } from '../common/DataProvenanceModal';
 import { ExportButton } from '../common/ExportButton';
+import { ScienceTooltip, PedagogicBanner } from '../common/ScienceTooltip';
 import { 
   Thermometer, 
   Calendar, 
@@ -124,7 +125,21 @@ export const SurfaceCO2View: React.FC = () => {
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold text-white flex items-center gap-2">
               <Thermometer className="w-5 h-5 text-emerald-400" />
-              Concentrations de CO₂ au Sol (In Situ Authentiques)
+              <span>Concentrations de CO₂ au Sol (In Situ Authentiques)</span>
+              <ScienceTooltip
+                title="Réseau Mondial de Surveillance du CO₂ In Situ"
+                summary="Mesure physico-chimique continue de la concentration de dioxyde de carbone au niveau du sol ou sur tour haute."
+                details={[
+                  "Les observatoires de référence (NOAA GML aux États-Unis/Hawaï, ICOS en Europe) prélèvent l'air ambiant et le déshydratent (élimination de l'eau H2O) pour mesurer la fraction molaire d'air sec.",
+                  "Les technologies dominantes sont la spectroscopie par cavité optique résonnante (CRDS Picarro G2401) et l'absorption infrarouge non dispersive (NDIR), étalonnées en continu sur des bouteilles de gaz certifiées par l'Organisation Météorologique Mondiale (OMM / WMO-CO2-X2019).",
+                  "L'incertitude métrologique des stations ICOS et NOAA est inférieure à ±0.05 ppm, ce qui garantit la comparabilité internationale des mesures depuis plus de 60 ans."
+                ]}
+                instrument="CRDS (Cavity Ring-Down Spectroscopy) & Étalons WMO"
+                unitMeaning="ppm (parties par million) = micromoles de CO₂ par mole d'air sec"
+                whyItMatters="Fournit le socle métrologique absolu de la surveillance climatique mondiale sans aucune modélisation intermédiaire."
+                source="WMO GAW, NOAA GML & ICOS RI"
+                badge="MESURÉ"
+              />
             </h1>
             <ProvenanceBadge category="MEASURED" />
           </div>
@@ -258,7 +273,21 @@ export const SurfaceCO2View: React.FC = () => {
       {currentStation && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
-            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Dernier Relevé Réel</span>
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Dernier Relevé Réel</span>
+              <ScienceTooltip
+                title="Dernière Concentration de CO₂ Enregistrée"
+                summary="Fraction molaire de CO₂ mesurée dans l'air sec à la date la plus récente."
+                details={[
+                  "La valeur est exprimée en ppm (parties par million), ce qui signifie le nombre de micromoles de dioxyde de carbone pour une mole d'air sec.",
+                  "Sur les stations continentales ou de plaine (comme Traînou ou Heidelberg), le chiffre instantané varie fortement au cours de la journée en raison du cycle photosynthèse/respiration et du confinement sous l'inversion nocturne.",
+                  "Sur les stations d'altitude (Mauna Loa 3397 m, Puy de Dôme 1465 m, Jungfraujoch 3580 m), la mesure reflète le fond troposphérique régional."
+                ]}
+                unitMeaning="ppm = 1 molécule de CO₂ pour 1 000 000 molécules d'air sec"
+                source={currentStation.provenance.source}
+                badge="MESURÉ"
+              />
+            </div>
             <div className="mt-1 flex items-baseline gap-1.5">
               <span className="text-2xl font-black text-white font-mono">
                 {latestObs ? latestObs.value : currentStation.currentCO2}
@@ -271,7 +300,20 @@ export const SurfaceCO2View: React.FC = () => {
           </div>
 
           <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
-            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Premier Relevé Historique</span>
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Premier Relevé Historique</span>
+              <ScienceTooltip
+                title="Point Zéro de la Série Chronologique"
+                summary="Première observation enregistrée par la station au début de son historique instrumental."
+                details={[
+                  "À Mauna Loa (MLO), la série débute en mars 1958 avec un premier point historique à 315.71 ppm.",
+                  "La comparaison avec les valeurs actuelles permet de mesurer l'ampleur sans précédent de l'accumulation anthropique sur une échelle de vie humaine.",
+                  "Avant la révolution industrielle (~1750), la concentration moyenne était stable autour de 278 à 280 ppm selon les carottes de glace de l'Antarctique (dômes C et Law Dome)."
+                ]}
+                unitMeaning="ppm (air sec)"
+                badge="HISTORIQUE"
+              />
+            </div>
             <div className="mt-1 flex items-baseline gap-1.5">
               <span className="text-2xl font-black text-slate-200 font-mono">
                 {oldestObs ? oldestObs.value : 315.71}
@@ -284,7 +326,20 @@ export const SurfaceCO2View: React.FC = () => {
           </div>
 
           <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
-            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Variation Nette</span>
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Variation Nette</span>
+              <ScienceTooltip
+                title="Hausse Nette Observée (Delta CO₂)"
+                summary="Différence arithmétique et pourcentage d'augmentation entre le premier et le dernier relevé."
+                details={[
+                  "Une hausse de plus de +110 ppm en 68 ans représente une perturbation biogéochimique 100 à 200 fois plus rapide que les transitions glaciaires-interglaciaires naturelles du Pléistocène.",
+                  "Sur les derniers 800 000 ans, les variations naturelles de CO₂ n'ont jamais dépassé ~20 ppm par millénaire.",
+                  "Cette accumulation nette correspond à la fraction aéroportée (~45%) des émissions totales de combustibles fossiles qui n'a pas pu être absorbée par les océans et la végétation terrestre."
+                ]}
+                formula="ΔC = C_récent - C_initial ; Fraction aéroportée ~ 45%"
+                badge="TENDANCE"
+              />
+            </div>
             <div className="mt-1 flex items-baseline gap-1.5">
               <span className="text-2xl font-black text-rose-400 font-mono">
                 {latestObs && oldestObs ? `${(latestObs.value - oldestObs.value) > 0 ? '+' : ''}${(latestObs.value - oldestObs.value).toFixed(2)}` : '+109.59'}
@@ -297,7 +352,21 @@ export const SurfaceCO2View: React.FC = () => {
           </div>
 
           <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
-            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Tendance Linéaire</span>
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Tendance Linéaire</span>
+              <ScienceTooltip
+                title="Pente d'Accroissement Annuel Décennal"
+                summary="Taux d'augmentation moyen du CO₂ par an calculé par régression linéaire sur 10 ans."
+                details={[
+                  "Dans les années 1960, le CO₂ augmentait d'environ +0.9 ppm par an.",
+                  "Dans les années 1990, le taux atteignait environ +1.5 ppm par an.",
+                  "Au cours de la décennie 2015-2025, le taux moyen s'est accéléré à +2.4 à +2.5 ppm par an, reflétant des émissions mondiales de gaz à effet de serre toujours proches de leurs records historiques (~37-40 GtCO₂/an)."
+                ]}
+                unitMeaning="ppm / an = parties par million ajoutées chaque année"
+                formula="Pente = dC / dt ~ +2.45 ppm / an"
+                badge="ACCÉLÉRATION"
+              />
+            </div>
             <div className="mt-1 flex items-baseline gap-1.5">
               <span className="text-2xl font-black text-emerald-400 font-mono">+{currentStation.trendYearlyPpm}</span>
               <span className="text-xs text-slate-400 font-mono">ppm/an</span>
@@ -306,7 +375,22 @@ export const SurfaceCO2View: React.FC = () => {
           </div>
 
           <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
-            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Amplitude Saisonnière</span>
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Amplitude Saisonnière</span>
+              <ScienceTooltip
+                title="Amplitude Saisonnière du Cycle Biologique"
+                summary="Écart pic-à-creux de concentration au cours d'une même année civile."
+                details={[
+                  "L'amplitude saisonnière varie fortement selon la latitude et la proximité de la végétation continentale :",
+                  "• Point Barrow (Arctique, 71°N) : ~15 à 18 ppm d'amplitude en raison de l'immense forêt boréale et de la toundra eurasiatique/canadienne.",
+                  "• Mauna Loa (Pacifique tropical, 19°N) : ~6 à 7 ppm d'amplitude.",
+                  "• Pôle Sud (Antarctique, 90°S) : seulement ~1 ppm d'amplitude car l'hémisphère Sud est dominé par les océans et possède très peu de terres émergées boisées.",
+                  "Le réchauffement climatique a provoqué une augmentation de ~50% de cette amplitude en haute latitude boréale depuis 50 ans en raison d'une saison de croissance végétale allongée."
+                ]}
+                unitMeaning="ppm de battement pic-creux annuel"
+                badge="BIOSPHÈRE"
+              />
+            </div>
             <div className="mt-1 flex items-baseline gap-1.5">
               <span className="text-2xl font-black text-cyan-400 font-mono">±{(currentStation.seasonalAmplitudePpm / 2).toFixed(1)}</span>
               <span className="text-xs text-slate-400 font-mono">ppm</span>
@@ -315,6 +399,31 @@ export const SurfaceCO2View: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Pedagogic Guide Banner for Ground Dynamics */}
+      <PedagogicBanner
+        title="Guide Scientifique : Comment interpréter les mesures de CO₂ au sol ?"
+        badge="Physique Atmosphérique"
+        description="Les concentrations mesurées au sol ne sont pas uniformes. Elles reflètent la superposition d'une tendance mondiale à long terme, d'une pulsation saisonnière biosphérique et d'un cycle diurne local gouverné par la météo et la couche limite planétaire."
+        bullets={[
+          {
+            title: "Le cycle diurne & l'inversion nocturne (PBL)",
+            text: "La nuit, le sol se refroidit par rayonnement infrarouge, créant une couche d'inversion thermique très stable de 50 à 200 m de hauteur. La respiration des plantes et du sol, ainsi que la circulation automobile, y accumulent du CO₂, provoquant des pics pouvant dépasser 450 à 480 ppm au petit matin. En milieu de journée, le soleil réchauffe le sol, la convection brise l'inversion et la photosynthèse absorbe le CO₂, faisant chuter la concentration."
+          },
+          {
+            title: "Pourquoi des tours hautes comme Traînou (180 m) ?",
+            text: "Les stations ICOS équipées de mâts à plusieurs niveaux (50 m, 100 m, 180 m) mesurent le gradient vertical de concentration. Les prises d'air au sommet (180 m) permettent d'échapper à l'influence directe de la canopée et d'échantillonner une masse d'air régionale représentative sur des centaines de kilomètres carrés."
+          },
+          {
+            title: "Pourquoi Mauna Loa et le Puy de Dôme sont-ils en montagne ?",
+            text: "Situées à 3397 m et 1465 m d'altitude, ces stations se trouvent la nuit au-dessus de la couche limite planétaire, directement dans la troposphère libre. Elles mesurent ainsi le 'bruit de fond' atmosphérique global sans être contaminées par les sources locales de surface."
+          },
+          {
+            title: "L'échelle d'étalonnage mondiale WMO-CO2-X2019",
+            text: "Toutes les stations officielles du réseau OMM / GAW utilisent des étalons de gaz étalons primaires conservés au laboratoire central de Boulder (Colorado). Cela garantit qu'une variation de 0.1 ppm mesurée à Birkenes en Norvège est rigoureusement comparable à celle mesurée à Cape Grim en Tasmanie."
+          }
+        ]}
+      />
 
       {/* Main Graph / Data Table Card */}
       <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 space-y-4 shadow-xl">

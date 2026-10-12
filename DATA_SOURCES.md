@@ -11,4 +11,21 @@
 | **Inventaire SECTEN**| CITEPA France | ESTIMÉ | `10.citepa/secten-2025` | Licence Ouverte Etalab v2.0 | Émissions nationales sectorielles |
 | **Global Carbon Budget**| Global Carbon Project | ESTIMÉ | `10.5194/essd-global-carbon-budget-2025` | CC-BY-4.0 | Puits océaniques, terrestres et bilan mondial |
 
-Toutes les données sont vérifiées et aucun jeu de données propriétaire non autorisé n'est utilisé.
+Toutes les données sont issues de programmes scientifiques ouverts et vérifiées. Aucun jeu de données propriétaire non autorisé n'est utilisé.
+
+---
+
+## Double Régime Opérationnel et Transparence Déontologique
+
+Afin de garantir la crédibilité académique de Carbonor et d'éviter qu'un utilisateur n'assimile des échantillons locaux à des requêtes satellitaires exécutées en direct à la volée :
+
+1. 🟡 **MODE DÉMONSTRATION (Défaut hors-ligne / pédagogique)**
+   - **Nature :** Données d'exemple / fixtures scientifiques embarquées.
+   - **Provenance :** Échantillons et sous-ensembles réels d'archives ouvertes préenregistrés (NOAA GML, NASA CMR, ICOS, HITRAN).
+   - **Garantie :** Aucune requête réseau externe n'est imposée ; visualisations instantanées et fiables même hors-ligne.
+
+2. 🟢 **MODE DONNÉES RÉELLES (Production métrologique)**
+   - **Nature :** Données récupérées auprès de la source officielle.
+   - **Provenance :** Téléchargement direct ou synchronisé avec les APIs distantes (NASA CMR/GES DISC, NOAA ERDDAP, ICOS Sparql/ATC, Copernicus ADS).
+   - **Garantie :** Certificat métrologique complet ISO/IEC 17025 avec horodatage effectif (`retrievedAt`), période de validité (`validFrom`/`validTo`), empreinte cryptographique SHA-256 et âge de cache certifié.
+

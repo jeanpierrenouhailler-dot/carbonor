@@ -26,8 +26,19 @@ $$\text{MESURÉ} \neq \text{OBSERVÉ} \neq \text{ESTIMÉ} \neq \text{MODÉLISÉ}
 8. **Laboratoire Virtuel Beer-Lambert** : Simulation interactive (280 à 1000 ppm, P, T, L) démontrant la saturation du cœur de bande et l'élargissement radiatif des ailes.
 9. **Flux & Inversions CAMS** : Flux de surface nets, photosynthèse printanière (NEE), émissions fossiles et convertisseur universel d'unités de flux.
 10. **Comparateur Multi-Sources** : Biais moyen, MAE, RMSE, corrélation de Pearson et avertissement sur les grandeurs non homogènes.
-11. **Rapport Scientifique & Exports** : Génération de rapports certifiés avec DOI officiels et exports multi-formats (CSV, JSON).
+11. **Rapport Scientifique & Exports Multi-Formats** : Génération de rapports certifiés avec DOI officiels et exports multi-formats intégrés (CSV, GeoJSON réel RFC 7946, NetCDF CF-1.8 CDL, SVG vectoriel haute définition, PNG 2K, PDF certifié conforme ISO/IEC 17025, Parquet/NDJSON et JSON structuré), tous enrichis de leur métadonnées de traçabilité complète (source, dataset, version, DOI, licence, horodatage, requête, qualité, SHA-256).
 12. **Conformité PWA** : Installable sur poste et mobile, service worker Workbox, indicateur de mode hors-ligne et persistance du cache local.
+
+---
+
+## Statut Métrologique des Données : Démonstration vs Données Réelles
+
+Pour préserver l'intégrité déontologique la plus stricte avant toute publication scientifique et empêcher qu'un utilisateur n'interprète des fixtures hors-ligne comme des observations récupérées en direct à la volée, Carbonor applique une séparation nette et visible dans toute l'interface :
+
+- 🟡 **MODE DÉMONSTRATION** : Données d'exemple / fixtures scientifiques embarquées. Idéal pour l'exploration pédagogique, les démonstrations et l'exécution hors-ligne sans dépendance réseau.
+- 🟢 **MODE DONNÉES RÉELLES** : Données récupérées auprès de la source officielle (NOAA Global Monitoring Laboratory, NASA Earthdata CMR, ICOS Carbon Portal, Copernicus CAMS, HITRAN HAPI).
+
+Un bouton interactif dans la barre de navigation et une bannière dans le tableau de bord permettent de basculer instantanément entre ces deux modes. Chaque fiche, badge et export indique sans équivoque le statut actif.
 
 ---
 

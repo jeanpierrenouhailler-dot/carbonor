@@ -1,17 +1,20 @@
 import React from 'react';
 import { PWAInstallButton } from '../pwa/PWAInstallButton';
+import { useDataMode } from '../../context/DataModeContext';
 import { 
   Sparkles, 
   GraduationCap, 
   FileText, 
   Menu,
-  Activity
+  Activity,
+  Cloud
 } from 'lucide-react';
 
 interface NavbarProps {
   expertMode: boolean;
   onToggleExpertMode: () => void;
   onOpenReport: () => void;
+  onOpenCloudflareModal?: () => void;
   onToggleSidebar?: () => void;
   activeViewTitle?: string;
 }
@@ -20,9 +23,11 @@ export const Navbar: React.FC<NavbarProps> = ({
   expertMode,
   onToggleExpertMode,
   onOpenReport,
+  onOpenCloudflareModal,
   onToggleSidebar,
   activeViewTitle = 'Tableau de bord'
 }) => {
+  const { dataMode, toggleDataMode, isRealData, modeLabel, modeDescription } = useDataMode();
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-800 bg-slate-950/85 backdrop-blur-md">
       <div className="flex h-16 items-center justify-between px-4 lg:px-6">
@@ -77,8 +82,27 @@ export const Navbar: React.FC<NavbarProps> = ({
           <span className="font-semibold text-rose-400">SIMULÉ</span>
         </div>
 
-        {/* Right: Actions, Expert Mode, Report & PWA */}
+        {/* Right: Actions, Data Mode, Expert Mode, Report & PWA */}
         <div className="flex items-center gap-2.5">
+          {/* Statut Métrologique : Mode Démonstration vs Mode Données Réelles */}
+          <button
+            onClick={toggleDataMode}
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-mono font-bold border transition-all cursor-pointer ${
+              isRealData
+                ? 'bg-emerald-950/90 border-emerald-500/60 text-emerald-300 shadow-sm shadow-emerald-900/30 hover:bg-emerald-900'
+                : 'bg-amber-950/90 border-amber-500/60 text-amber-300 shadow-sm shadow-amber-900/30 hover:bg-amber-900'
+            }`}
+            title={
+              isRealData
+                ? "🟢 MODE DONNÉES RÉELLES ACTIF — Données officielles téléchargées et vérifiées. Cliquez pour passer en Mode Démonstration."
+                : "🟡 MODE DÉMONSTRATION ACTIF — Données d'exemple et fixtures scientifiques embarquées. Cliquez pour basculer en Mode Données Réelles."
+            }
+          >
+            <span className="text-xs">{isRealData ? '🟢' : '🟡'}</span>
+            <span className="hidden sm:inline">{isRealData ? 'DONNÉES RÉELLES' : 'DÉMONSTRATION'}</span>
+            <span className="sm:hidden">{isRealData ? 'RÉEL' : 'DÉMO'}</span>
+          </button>
+
           {/* Expert / Pedagogic Mode Switch */}
           <button
             onClick={onToggleExpertMode}
@@ -101,6 +125,18 @@ export const Navbar: React.FC<NavbarProps> = ({
               </>
             )}
           </button>
+
+          {/* Cloudflare Deploy Guide Button */}
+          {onOpenCloudflareModal && (
+            <button
+              onClick={onOpenCloudflareModal}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-orange-500/30 bg-orange-950/40 hover:bg-orange-900/60 text-orange-300 text-xs font-medium transition-colors cursor-pointer"
+              title="Guide & Paramètres pour déployer sur Cloudflare Pages"
+            >
+              <Cloud className="w-3.5 h-3.5 text-orange-400" />
+              <span className="hidden lg:inline">Déploiement</span> Cloudflare
+            </button>
+          )}
 
           {/* Scientific Report Generator */}
           <button

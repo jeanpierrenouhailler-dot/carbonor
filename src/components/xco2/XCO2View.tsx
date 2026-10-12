@@ -4,6 +4,7 @@ import { OcoProvider, NasaCmrGranule, NasaPipelineStatus } from '../../providers
 import { ProvenanceBadge } from '../common/ProvenanceBadge';
 import { DataProvenanceModal } from '../common/DataProvenanceModal';
 import { ExportButton } from '../common/ExportButton';
+import { ScienceTooltip, PedagogicBanner } from '../common/ScienceTooltip';
 import { 
   Satellite, 
   Filter, 
@@ -140,7 +141,22 @@ export const XCO2View: React.FC = () => {
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold text-white flex items-center gap-2">
               <Satellite className="w-5 h-5 text-cyan-400" />
-              Observations Satellitaires XCO₂ (NASA OCO-2 &amp; OCO-3)
+              <span>Observations Satellitaires XCO₂ (NASA OCO-2 &amp; OCO-3)</span>
+              <ScienceTooltip
+                title="Sondage Satellitaire de la Colonne Totale XCO₂"
+                summary="Mesure de la fraction molaire moyenne de CO₂ dans la colonne d'air sec par spectrométrie à haute résolution dans le proche infrarouge."
+                details={[
+                  "Les satellites NASA OCO-2 (en orbite polaire héliosynchrone à 705 km) et OCO-3 (à bord de la Station Spatiale Internationale ISS) mesurent la lumière solaire réfléchie par la Terre dans 3 bandes spectrales étroites : bande O₂-A à 0.76 µm, bande CO₂ faible à 1.61 µm et bande CO₂ forte à 2.06 µm.",
+                  "En divisant la colonne de CO₂ par la colonne d'O₂, l'algorithme d'inversion ACOS (Atmospheric CO₂ Observations from Space) élimine l'influence des variations de pression atmosphérique de surface, du relief et de la vapeur d'eau.",
+                  "Les données sont regroupées en empreintes au sol (footprints) de 1.29 km × 2.25 km, permettant de détecter les panaches d'émissions des mégapoles et les gradients biosphériques régionaux."
+                ]}
+                formula="XCO2 = Total Column(CO2) / Total Column(Dry Air) = 0.2095 · Column(CO2) / Column(O2)"
+                instrument="Spectromètre à réseau 3 bandes SWIR OCO-2/OCO-3 (NASA JPL)"
+                unitMeaning="XCO₂ en ppm (micromoles de CO₂ par mole d'air sec intégrée sur toute l'atmosphère)"
+                whyItMatters="Indispensable pour cartographier le CO₂ au-dessus des océans, forêts tropicales et zones dépourvues de stations terrestres."
+                source="NASA Earthdata GES DISC / OCO Science Team"
+                badge="OBSERVÉ"
+              />
             </h1>
             <ProvenanceBadge category="OBSERVED" />
           </div>
@@ -312,10 +328,21 @@ export const XCO2View: React.FC = () => {
 
         {/* Quality Flag Filter */}
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-slate-400 font-bold uppercase tracking-wider flex items-center gap-1">
+          <div className="flex items-center gap-1 text-slate-400 font-bold uppercase tracking-wider">
             <Filter className="w-3.5 h-3.5 text-cyan-400" />
-            Quality Flag :
-          </span>
+            <span>Quality Flag :</span>
+            <ScienceTooltip
+              title="Indicateur de Qualité Scientifique (Quality Flag)"
+              summary="Filtre officiel de la NASA distinguant les sondages de qualité recherche (Flag 0) des sondages affectés par des nuages ou aérosols (Flag 1)."
+              details={[
+                "Flag 0 (Recommandé pour l'assimilation) : Le ciel est dégagé, la charge en aérosols est faible (AOD < 0.3) et la convergence spectrale de l'inversion ACOS est excellente. L'incertitude est minimale (< ±0.5 ppm).",
+                "Flag 1 (Données dégradées / Alerte) : La présence de cirrus optiquement minces, de poussières désertiques ou d'angles solaires très rasants induit de la diffusion multiple de photons (photon path lengthening/shortening), ce qui peut biaiser la colonne de ±1 à ±3 ppm.",
+                "Pour les comparaisons quantitatives et le calcul de bilans de flux, seuls les sondages Flag 0 doivent être retenus."
+              ]}
+              instrument="Algorithme ACOS B11.3 (NASA JPL)"
+              badge="MÉTROLOGIE"
+            />
+          </div>
           <button
             onClick={() => setQualityFilter('ALL')}
             className={`px-2.5 py-1 rounded-lg transition-colors cursor-pointer ${
@@ -350,7 +377,20 @@ export const XCO2View: React.FC = () => {
 
         {/* Footprint filter */}
         <div className="flex items-center gap-1.5">
-          <span className="text-slate-500">Empreinte FP :</span>
+          <div className="flex items-center gap-1 text-slate-500">
+            <span>Empreinte FP :</span>
+            <ScienceTooltip
+              title="Empreintes Spatiales 1 à 8 (Cross-Track Footprints)"
+              summary="Le spectromètre OCO dispose de 8 fentes parallèles qui balaient simultanément une bande au sol d'environ 10 km de large."
+              details={[
+                "Chaque acquisition produit 8 sondages côte à côte numérotés de 1 à 8 (footprints).",
+                "Chaque pixel individuel mesure environ 1.29 km le long de la trace et 2.25 km en travers de la trace (au nadir).",
+                "Les empreintes centrales (4 et 5) présentent généralement les propriétés optiques les plus stables, tandis que les empreintes extérieures peuvent nécessiter des corrections géométriques d'angle d'incidence."
+              ]}
+              instrument="Réseau de détecteurs FPA 1024x1024 HgCdTe"
+              badge="OPTIQUE"
+            />
+          </div>
           <button
             onClick={() => setSelectedFootprint('ALL')}
             className={`px-2 py-0.5 rounded text-[11px] ${selectedFootprint === 'ALL' ? 'bg-cyan-600 text-white font-bold' : 'bg-slate-950 text-slate-400 hover:text-white'}`}
@@ -372,6 +412,31 @@ export const XCO2View: React.FC = () => {
           ))}
         </div>
       </div>
+
+      {/* Pedagogic Banner for Satellite Remote Sensing */}
+      <PedagogicBanner
+        title="Guide Scientifique : Comment OCO-2 et OCO-3 mesurent-ils le CO₂ depuis l'orbite terrestre ?"
+        badge="Télédétection Spatiale"
+        description="Mesurer le CO₂ depuis l'espace avec une précision de 0.25% (±1 ppm sur 425 ppm) représente un des défis technologiques les plus complexes de l'histoire de la physique spatiale."
+        bullets={[
+          {
+            title: "Les 3 bandes spectrales haute résolution",
+            text: "OCO utilise 3 spectromètres couplés : 1) La bande O₂-A à 0.76 µm (pour mesurer la masse totale d'air et la pression de surface), 2) La bande CO₂ 'faible' à 1.61 µm (très sensible au CO₂ de la basse troposphère), 3) La bande CO₂ 'forte' à 2.06 µm (sensible à la vapeur d'eau et aux aérosols)."
+          },
+          {
+            title: "Modes d'observation Nadir, Glint et Target",
+            text: "Au-dessus des continents, le satellite vise verticalement vers le bas (mode Nadir). Au-dessus des océans sombres, il s'incline pour viser le reflet spéculaire du soleil sur l'eau (mode Glint), maximisant le signal lumineux réfléchi. Au-dessus des stations d'étalonnage au sol TCCON, il pivote pour fixer le même point pendant plusieurs minutes (mode Target)."
+          },
+          {
+            title: "OCO-3 sur la Station Spatiale ISS & Mode SAM",
+            text: "Lancé en 2019 sur l'ISS, OCO-3 dispose d'un miroir mobile biaxial permettant le mode Snapshot Area Map (SAM) : il balaie un carré de 80 km × 80 km au-dessus d'une grande métropole (comme Paris, Los Angeles ou Tokyo) pour cartographier en deux dimensions le dôme de pollution urbaine en moins de 2 minutes."
+          },
+          {
+            title: "Pourquoi diviser par la colonne d'oxygène O₂ ?",
+            text: "La quantité d'oxygène moléculaire O₂ dans l'atmosphère est constante et connue (20.95%). En divisant la colonne de CO₂ par la colonne d'O₂, on élimine automatiquement toutes les incertitudes liées à la topographie, aux variations barométriques et aux couches nuageuses minces."
+          }
+        ]}
+      />
 
       {/* Scientific Transect Graph: Latitude vs XCO2 along satellite track */}
       {stats && sortedTransect.length > 0 && (

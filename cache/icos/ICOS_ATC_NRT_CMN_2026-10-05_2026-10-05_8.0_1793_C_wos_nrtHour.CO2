@@ -1,0 +1,63 @@
+# TITLE: CO2 - NRT continuous time series for Continuous air
+# FILE NAME: CMN_2026-10-05T00:00:00_2026-10-05T23:59:00_8.0_1793_C_wos_nrtHour.CO2
+# DATA FORMAT: Version 1.0
+# TOTAL LINES: 63
+# HEADER LINES: 39
+# PROJECT DATA VERSION: Undefined
+# DATA PRODUCT TYPE: NRT
+# STATION CODE: CMN
+# STATION NAME: Monte Cimone
+# STATION CATEGORY: Contributing
+# OBSERVATION CATEGORY: Air sampling observation at a Stationary platform
+# COUNTRY/TERRITORY: Italy
+# CONTRIBUTOR: National Research Council of Italy, Institute of Atmospheric Sciences and Climate (CNR-ISAC)
+# LATITUDE: 44.1936 N
+# LONGITUDE: 10.6999 E
+# ALTITUDE: 2165 m asl
+# NUMBER OF SAMPLING HEIGHTS: 1
+# SAMPLING HEIGHTS: 8 m agl
+# CONTACT POINT: P.Cristofanelli@isac.cnr.it
+# PARAMETER: CO2
+# COVERING PERIOD: 2026-10-05T00:00 2026-10-05T23:59
+# TIME INTERVAL: hour
+# MEASUREMENT UNIT: umol.mol-¹
+# MEASUREMENT METHOD: Cavity RingDown Spectrometer (instrument Id 1793)
+# SAMPLING TYPE: continuous
+# TIME ZONE: UTC +1
+# MEASUREMENT SCALE: 1793: WMO CO2 X2019
+# DATA POLICY: ICOS DATA is licensed under a Creative Commons Attribution 4.0 international licence (http://creativecommons.org/licenses/by/4.0/.The ICOS data licence is described at https://data.icos-cp.eu/licence.
+# COMMENT:
+#   - Times are UTC
+#   - Time-averaged values are reported at the beginning of the averaging interval.
+#   - Flag 'U' = data correct before manual quality control
+#   - Flag 'N' = data incorrect before manual quality control
+#   - Flag 'O' = data correct after manual quality control
+#   - Flag 'K' = data incorrect after manual quality control
+#   - Data processing at ICOS ATC is described in [Hazan et al., 2016], doi:10.5194/amt-9-4719-2016
+#   - In case of gaps between instruments, the timeseries are filled with dummy -999.99 value,  -9.99 standard deviation associated with a dummy 82 instrument identifier.
+#
+#Site;SamplingHeight;Year;Month;Day;Hour;Minute;DecimalDate;co2;Stdev;NbPoints;Flag;InstrumentId;QualityId;InternalFlag;AutoDescriptiveFlag;ManualDescriptiveFlag;NbRemovedMinuteSpikes
+CMN;8;2026;10;05;00;00;2026.75890411;425.672;0.249;41;U;1793;370350;;;;0
+CMN;8;2026;10;05;01;00;2026.75901826;425.793;0.143;55;U;1793;370350;Stabilization,Cavity pressure,Unitary data;;;0
+CMN;8;2026;10;05;02;00;2026.75913242;425.851;0.101;60;U;1793;370350;;;;0
+CMN;8;2026;10;05;03;00;2026.75924658;425.854;0.094;60;U;1793;370350;;;;0
+CMN;8;2026;10;05;04;00;2026.75936073;425.699;0.207;60;U;1793;370350;;;;0
+CMN;8;2026;10;05;05;00;2026.75947489;425.314;0.109;60;U;1793;370350;;;;0
+CMN;8;2026;10;05;06;00;2026.75958904;425.196;0.124;60;U;1793;370350;;;;0
+CMN;8;2026;10;05;07;00;2026.75970320;424.485;0.395;60;U;1793;370350;;;;0
+CMN;8;2026;10;05;08;00;2026.75981735;423.616;0.581;60;U;1793;370350;;;;0
+CMN;8;2026;10;05;09;00;2026.75993151;423.167;0.703;60;U;1793;370350;;;;0
+CMN;8;2026;10;05;10;00;2026.76004566;421.875;1.451;32;U;1793;370350;Stabilization,Cavity pressure,Unitary data;;;4
+CMN;8;2026;10;05;11;00;2026.76015982;420.449;0.451;60;U;1793;370350;;;;0
+CMN;8;2026;10;05;12;00;2026.76027397;420.111;0.463;57;U;1793;370350;;;;3
+CMN;8;2026;10;05;13;00;2026.76038813;419.793;0.574;59;U;1793;370350;;;;1
+CMN;8;2026;10;05;14;00;2026.76050228;419.633;0.534;59;U;1793;370350;;;;1
+CMN;8;2026;10;05;15;00;2026.76061644;419.470;0.437;60;U;1793;370350;;;;0
+CMN;8;2026;10;05;16;00;2026.76073059;420.146;2.177;41;U;1793;370350;;;;19
+CMN;8;2026;10;05;17;00;2026.76084475;423.695;0.990;47;U;1793;370350;;;;13
+CMN;8;2026;10;05;18;00;2026.76095890;421.602;0.721;60;U;1793;370350;;;;0
+CMN;8;2026;10;05;19;00;2026.76107306;422.693;0.412;60;U;1793;370350;;;;0
+CMN;8;2026;10;05;20;00;2026.76118721;424.215;0.336;36;U;1793;370350;Stabilization,Cavity pressure,Unitary data;;;0
+CMN;8;2026;10;05;21;00;2026.76130137;424.909;0.162;60;U;1793;370350;;;;0
+CMN;8;2026;10;05;22;00;2026.76141553;425.330;0.223;60;U;1793;370350;;;;0
+CMN;8;2026;10;05;23;00;2026.76152968;425.540;0.116;60;U;1793;370350;;;;0

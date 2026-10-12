@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { compareSeries, StatisticalComparison } from '../../scientific/statistics';
 import { ProvenanceBadge } from '../common/ProvenanceBadge';
 import { ExportButton } from '../common/ExportButton';
+import { ScienceTooltip, PedagogicBanner } from '../common/ScienceTooltip';
 import { OcoProvider } from '../../providers/ocoProvider';
 import { IcosProvider } from '../../providers/icosProvider';
+import { CamsProvider } from '../../providers/camsProvider';
 import { Scale, CheckCircle2, AlertTriangle, TrendingUp } from 'lucide-react';
 
 export const MultiSourceCompareView: React.FC = () => {
@@ -25,11 +27,11 @@ export const MultiSourceCompareView: React.FC = () => {
     seriesB: []
   });
 
-  // Charger les données dynamiques depuis les vrais providers (NASA OCO-2 & ICOS)
+  // Charger les données dynamiques depuis les vrais providers (NASA OCO-2, ICOS & Copernicus CAMS)
   useEffect(() => {
     async function loadDynamicComparisons() {
       try {
-        // 1. Charger les vrais sondages OCO-2 de la trace France/Europe
+        // 1. Charger les vrais sondages OCO-2 de la trace France/Europe et collocaliser avec CAMS
         const ocoSoundings = await OcoProvider.getXCO2('Europe-France');
         if (ocoSoundings.length > 0) {
           // Échantillonner 7 sondages le long de la trace nord-sud
@@ -38,18 +40,26 @@ export const MultiSourceCompareView: React.FC = () => {
           
           const labels = samplePoints.map(p => `Trace ${p.latitude.toFixed(1)}°N (${p.longitude.toFixed(1)}°E)`);
           const seriesA = samplePoints.map(p => p.xco2);
-          // Modèle CAMS collocalisé (estimation réanalyse CAMS avec biais typique de -0.2 à +0.4 ppm)
-          const seriesB = samplePoints.map((p, idx) => Number((p.xco2 + (idx % 2 === 0 ? -0.35 : 0.25)).toFixed(2)));
+          
+          // Modèle CAMS collocalisé extrait dynamiquement de la grille 3D
+          const camsCalls = await Promise.all(
+            samplePoints.map(p => CamsProvider.getColumnMeanCO2(p.latitude, p.longitude))
+          );
+          const seriesB = camsCalls.map(c => c.value);
 
           setOcoData({ labels, seriesA, seriesB });
         }
 
-        // 2. Charger les vraies stations ICOS
+        // 2. Charger les vraies stations ICOS et collocaliser avec la surface CAMS
         const stations = await IcosProvider.getStations();
         if (stations.length > 0) {
           const labels = stations.map(s => `${s.code} (${s.name.split(' ')[0]})`);
           const seriesA = stations.map(s => s.currentCO2);
-          const seriesB = stations.map(s => Number((s.currentCO2 + (s.altitude > 1000 ? 0.35 : -0.45)).toFixed(2)));
+          
+          const camsSurfaceCalls = await Promise.all(
+            stations.map(s => CamsProvider.getSurfaceConcentration(s.latitude, s.longitude))
+          );
+          const seriesB = camsSurfaceCalls.map(c => c.value);
 
           setIcosData({ labels, seriesA, seriesB });
         }
@@ -89,8 +99,8 @@ export const MultiSourceCompareView: React.FC = () => {
       isHomogeneous: true,
       homogeneityNote: 'Grandeurs homogènes : concentrations de surface (ppm) au niveau de prélèvement.',
       labels: icosData.labels.length > 0 ? icosData.labels : ['PUY (Puy de Dôme)', 'OHP (Haute-Provence)', 'TRN (Traînou 180m)', 'BIR (Birkenes)', 'CMN (Monte Cimone)'],
-      seriesA: icosData.seriesA.length > 0 ? icosData.seriesA : [426.15, 427.30, 426.50, 424.90, 425.80],
-      seriesB: icosData.seriesB.length > 0 ? icosData.seriesB : [426.80, 427.70, 427.10, 425.40, 426.20]
+      seriesA: icosData.seriesA.length > 0 ? icosData.seriesA : [430.82, 428.10, 432.50, 427.80, 425.54],
+      seriesB: icosData.seriesB.length > 0 ? icosData.seriesB : [429.65, 427.80, 431.20, 427.40, 425.10]
     },
     ground_vs_satellite: {
       title: 'Sol In Situ (ICOS Puy de Dôme) vs Colonne XCO₂ (NASA OCO-2)',
@@ -117,7 +127,17 @@ export const MultiSourceCompareView: React.FC = () => {
           <div className="flex items-center gap-2">
             <h2 className="text-xl font-bold text-white flex items-center gap-2">
               <Scale className="w-5 h-5 text-cyan-400" />
-              Comparateur Multi-Sources &amp; Validation Observation vs Modèle
+              <span>Comparateur Multi-Sources &amp; Validation Observation vs Modèle</span>
+              <ScienceTooltip
+                title="Comparaison Multi-Sources &amp; Réconciliation Métrologique"
+                summary="Évaluation rigoureuse des écarts entre mesures in situ ponctuelles, intégrations satellitaires de colonne et réanalyses numériques 3D."
+                details={[
+                  "1. Représentativité spatiale : Une station au sol mesure un volume d'air de quelques litres au niveau de sa prise d'air. Un satellite intègre la colonne moyenne sur une empreinte de 1.29 × 2.25 km². Un modèle comme CAMS calcule la moyenne d'une maille de grille de 25 × 25 km.",
+                  "2. Biais de ciel clair : Les satellites OCO ne peuvent sonder que les pixels sans nuages ni aérosols épais (biais de beau temps). À l'inverse, les stations sol ICOS mesurent 24h/24 par tous les temps.",
+                  "3. Lissage vertical : La colonne XCO₂ intègre toute l'atmosphère jusqu'à 80 km d'altitude. Les variations diurnes intenses de surface y sont diluées dans la masse totale de la colonne."
+                ]}
+                badge="MÉTROLOGIE COMPARÉE"
+              />
             </h2>
             <ProvenanceBadge category="MEASURED" />
             <ProvenanceBadge category="OBSERVED" />
@@ -140,6 +160,27 @@ export const MultiSourceCompareView: React.FC = () => {
           />
         </div>
       </div>
+
+      {/* Pedagogic Banner for Multi-Source Intercomparison */}
+      <PedagogicBanner
+        title="Guide Scientifique : Comment interpréter les divergences entre Sol, Satellite et Modèle ?"
+        badge="Intercomparaison"
+        description="Constater un écart de 2 à 5 ppm entre un capteur au sol et une mesure satellitaire ne signifie pas qu'un des deux instruments est faux. Chacun observe une réalité physique différente."
+        bullets={[
+          {
+            title: "Pourquoi le sol est souvent plus élevé en hiver ?",
+            text: "En hiver, la faible convection et la respiration des sols confinent le CO₂ près du sol. Les stations de surface mesurent donc 430 à 445 ppm, tandis que la colonne totale satellitaire reste à 422 ppm car la moyenne troposphère et la stratosphère n'ont pas encore reçu ce CO₂."
+          },
+          {
+            title: "Les fonctions de pondération de colonne (Averaging Kernels)",
+            text: "Pour comparer rigoureusement un modèle 3D avec un satellite OCO-2, il ne faut pas faire une simple moyenne géométrique, mais appliquer le vecteur de sensibilité vertical du satellite A(p), qui donne plus de poids aux couches basses qu'à la haute stratosphère."
+          },
+          {
+            title: "Le rôle d'arbitre des stations TCCON et AirCore",
+            text: "Le réseau mondial TCCON (Total Carbon Column Observing Network) utilise des spectromètres à transformée de Fourier (FTS) au sol pointés vers le soleil. Ils mesurent la même grandeur XCO₂ que le satellite, permettant d'éliminer les biais instrumentaux spatiaux."
+          }
+        ]}
+      />
 
       {/* Scenario Switcher */}
       <div className="flex flex-wrap items-center gap-2 p-1.5 rounded-2xl bg-slate-900 border border-slate-800 text-xs font-mono">

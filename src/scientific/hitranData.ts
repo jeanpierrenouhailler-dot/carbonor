@@ -1,546 +1,373 @@
-import { SpectralLine } from '../types/spectroscopy';
+import { SpectralLine, VibrationalBranch } from '../types/spectroscopy';
 import { wavenumberToWavelengthMicrons, wavenumberToFrequencyTHz } from './unitConversions';
 
 /**
- * Données spectroscopiques HITRAN 2020 officielles pour le dioxyde de carbone (CO₂ - Molécule 2).
- * Inclut les paramètres raie-par-raie :
- * - ν₀ (nombre d'onde en cm⁻¹)
- * - S_ij (intensité intégrée à 296 K en cm⁻¹ / (molécule·cm⁻²))
- * - A_ij (coefficient d'Einstein)
- * - γ_air (demi-largeur élargie par l'air en cm⁻¹/atm)
- * - γ_self (demi-largeur propre en cm⁻¹/atm)
- * - E'' (énergie de l'état fondamental en cm⁻¹)
- * - n_air (coefficient de dépendance en température)
- * - Décalage en pression δ_air
- * - Nombres quantiques rotationnels J'' -> J' et vibrationnels
+ * Base Spectroscopique HITRAN 2020 pour le Dioxyde de Carbone (CO₂ - Molécule 2).
+ * 
+ * Cette base fournit deux modes opératoires :
+ * 1. Mode Embarqué : ~2 400 raies fondamentales et harmoniques précalculées
+ *    (offline, démonstration, vitesse instantanée, usage pédagogique).
+ * 2. Mode Scientifique HAPI : requête dynamique personnalisée avec filtres quantiques
+ *    (isotopologue, bande, [νmin, νmax], J'', J', intensité minimale, et recalcul thermique/pression).
  */
 
-export const HITRAN_CO2_LINES: SpectralLine[] = [
-  // ==========================================
-  // BANDE 15 µm (ν₂ bending mode, centre ~667.38 cm⁻¹)
-  // Isotopologue principal 12C16O2 (abondance 98.42%)
-  // ==========================================
-  
-  // Branche P (ΔJ = -1)
-  {
-    id: 'co2-15um-p16',
-    molecule: 'CO2',
-    isotopologue: '626',
-    isotopologueName: '¹²C¹⁶O₂',
-    abundanceFraction: 0.9842,
-    wavenumber: 654.814,
-    wavelengthMicrons: wavenumberToWavelengthMicrons(654.814),
-    frequencyTHz: wavenumberToFrequencyTHz(654.814),
-    intensity: 1.84e-19,
-    einsteinA: 1.12,
-    airWidth: 0.0768,
-    selfWidth: 0.103,
-    lowerEnergy: 104.91,
-    tempDependence: 0.72,
-    pressureShift: -0.0031,
-    upperVibrational: '01¹0',
-    lowerVibrational: '00⁰0',
-    upperJ: 15,
-    lowerJ: 16,
-    branch: 'P',
-    bandDescription: '15 µm (ν₂ vibration de pliage)'
-  },
-  {
-    id: 'co2-15um-p12',
-    molecule: 'CO2',
-    isotopologue: '626',
-    isotopologueName: '¹²C¹⁶O₂',
-    abundanceFraction: 0.9842,
-    wavenumber: 657.948,
-    wavelengthMicrons: wavenumberToWavelengthMicrons(657.948),
-    frequencyTHz: wavenumberToFrequencyTHz(657.948),
-    intensity: 2.45e-19,
-    einsteinA: 1.19,
-    airWidth: 0.0785,
-    selfWidth: 0.106,
-    lowerEnergy: 60.84,
-    tempDependence: 0.73,
-    pressureShift: -0.0030,
-    upperVibrational: '01¹0',
-    lowerVibrational: '00⁰0',
-    upperJ: 11,
-    lowerJ: 12,
-    branch: 'P',
-    bandDescription: '15 µm (ν₂ vibration de pliage)'
-  },
-  {
-    id: 'co2-15um-p8',
-    molecule: 'CO2',
-    isotopologue: '626',
-    isotopologueName: '¹²C¹⁶O₂',
-    abundanceFraction: 0.9842,
-    wavenumber: 661.082,
-    wavelengthMicrons: wavenumberToWavelengthMicrons(661.082),
-    frequencyTHz: wavenumberToFrequencyTHz(661.082),
-    intensity: 2.82e-19,
-    einsteinA: 1.25,
-    airWidth: 0.0812,
-    selfWidth: 0.111,
-    lowerEnergy: 28.09,
-    tempDependence: 0.75,
-    pressureShift: -0.0028,
-    upperVibrational: '01¹0',
-    lowerVibrational: '00⁰0',
-    upperJ: 7,
-    lowerJ: 8,
-    branch: 'P',
-    bandDescription: '15 µm (ν₂ vibration de pliage)'
-  },
-  {
-    id: 'co2-15um-p4',
-    molecule: 'CO2',
-    isotopologue: '626',
-    isotopologueName: '¹²C¹⁶O₂',
-    abundanceFraction: 0.9842,
-    wavenumber: 664.216,
-    wavelengthMicrons: wavenumberToWavelengthMicrons(664.216),
-    frequencyTHz: wavenumberToFrequencyTHz(664.216),
-    intensity: 2.38e-19,
-    einsteinA: 1.29,
-    airWidth: 0.0841,
-    selfWidth: 0.117,
-    lowerEnergy: 7.80,
-    tempDependence: 0.77,
-    pressureShift: -0.0025,
-    upperVibrational: '01¹0',
-    lowerVibrational: '00⁰0',
-    upperJ: 3,
-    lowerJ: 4,
-    branch: 'P',
-    bandDescription: '15 µm (ν₂ vibration de pliage)'
-  },
-  {
-    id: 'co2-15um-p2',
-    molecule: 'CO2',
-    isotopologue: '626',
-    isotopologueName: '¹²C¹⁶O₂',
-    abundanceFraction: 0.9842,
-    wavenumber: 665.783,
-    wavelengthMicrons: wavenumberToWavelengthMicrons(665.783),
-    frequencyTHz: wavenumberToFrequencyTHz(665.783),
-    intensity: 1.52e-19,
-    einsteinA: 1.31,
-    airWidth: 0.0856,
-    selfWidth: 0.120,
-    lowerEnergy: 2.34,
-    tempDependence: 0.78,
-    pressureShift: -0.0023,
-    upperVibrational: '01¹0',
-    lowerVibrational: '00⁰0',
-    upperJ: 1,
-    lowerJ: 2,
-    branch: 'P',
-    bandDescription: '15 µm (ν₂ vibration de pliage)'
-  },
+// Constantes spectroscopiques fondamentales
+const C2 = 1.438776877; // c₂ = h·c / k_B en cm·K
+const T_REF = 296.0;    // Température de référence HITRAN (K)
+const SPEED_C = 299792458; // m/s
+const BOLTZMANN_K = 1.380649e-23;
+const AMU_KG = 1.66053906660e-27;
 
-  // Branche Q (ΔJ = 0) - très dense et responsable du pic central d'opacité
-  {
-    id: 'co2-15um-q2',
-    molecule: 'CO2',
-    isotopologue: '626',
-    isotopologueName: '¹²C¹⁶O₂',
-    abundanceFraction: 0.9842,
-    wavenumber: 667.348,
-    wavelengthMicrons: wavenumberToWavelengthMicrons(667.348),
-    frequencyTHz: wavenumberToFrequencyTHz(667.348),
-    intensity: 3.12e-19,
-    einsteinA: 1.33,
-    airWidth: 0.0862,
-    selfWidth: 0.121,
-    lowerEnergy: 2.34,
-    tempDependence: 0.78,
-    pressureShift: -0.0022,
-    upperVibrational: '01¹0',
-    lowerVibrational: '00⁰0',
-    upperJ: 2,
-    lowerJ: 2,
-    branch: 'Q',
-    bandDescription: '15 µm (ν₂ vibration de pliage)'
-  },
-  {
-    id: 'co2-15um-q4',
-    molecule: 'CO2',
-    isotopologue: '626',
-    isotopologueName: '¹²C¹⁶O₂',
-    abundanceFraction: 0.9842,
-    wavenumber: 667.382,
-    wavelengthMicrons: wavenumberToWavelengthMicrons(667.382),
-    frequencyTHz: wavenumberToFrequencyTHz(667.382),
-    intensity: 4.88e-19,
-    einsteinA: 1.33,
-    airWidth: 0.0844,
-    selfWidth: 0.118,
-    lowerEnergy: 7.80,
-    tempDependence: 0.77,
-    pressureShift: -0.0022,
-    upperVibrational: '01¹0',
-    lowerVibrational: '00⁰0',
-    upperJ: 4,
-    lowerJ: 4,
-    branch: 'Q',
-    bandDescription: '15 µm (ν₂ vibration de pliage)'
-  },
-  {
-    id: 'co2-15um-q6',
-    molecule: 'CO2',
-    isotopologue: '626',
-    isotopologueName: '¹²C¹⁶O₂',
-    abundanceFraction: 0.9842,
-    wavenumber: 667.424,
-    wavelengthMicrons: wavenumberToWavelengthMicrons(667.424),
-    frequencyTHz: wavenumberToFrequencyTHz(667.424),
-    intensity: 6.20e-19,
-    einsteinA: 1.33,
-    airWidth: 0.0827,
-    selfWidth: 0.114,
-    lowerEnergy: 16.38,
-    tempDependence: 0.76,
-    pressureShift: -0.0021,
-    upperVibrational: '01¹0',
-    lowerVibrational: '00⁰0',
-    upperJ: 6,
-    lowerJ: 6,
-    branch: 'Q',
-    bandDescription: '15 µm (ν₂ vibration de pliage)'
-  },
-  {
-    id: 'co2-15um-q8',
-    molecule: 'CO2',
-    isotopologue: '626',
-    isotopologueName: '¹²C¹⁶O₂',
-    abundanceFraction: 0.9842,
-    wavenumber: 667.476,
-    wavelengthMicrons: wavenumberToWavelengthMicrons(667.476),
-    frequencyTHz: wavenumberToFrequencyTHz(667.476),
-    intensity: 6.95e-19,
-    einsteinA: 1.33,
-    airWidth: 0.0812,
-    selfWidth: 0.111,
-    lowerEnergy: 28.09,
-    tempDependence: 0.75,
-    pressureShift: -0.0021,
-    upperVibrational: '01¹0',
-    lowerVibrational: '00⁰0',
-    upperJ: 8,
-    lowerJ: 8,
-    branch: 'Q',
-    bandDescription: '15 µm (ν₂ vibration de pliage)'
-  },
-  {
-    id: 'co2-15um-q10',
-    molecule: 'CO2',
-    isotopologue: '626',
-    isotopologueName: '¹²C¹⁶O₂',
-    abundanceFraction: 0.9842,
-    wavenumber: 667.538,
-    wavelengthMicrons: wavenumberToWavelengthMicrons(667.538),
-    frequencyTHz: wavenumberToFrequencyTHz(667.538),
-    intensity: 6.82e-19,
-    einsteinA: 1.33,
-    airWidth: 0.0798,
-    selfWidth: 0.108,
-    lowerEnergy: 42.92,
-    tempDependence: 0.74,
-    pressureShift: -0.0021,
-    upperVibrational: '01¹0',
-    lowerVibrational: '00⁰0',
-    upperJ: 10,
-    lowerJ: 10,
-    branch: 'Q',
-    bandDescription: '15 µm (ν₂ vibration de pliage)'
-  },
+export interface HitranBandMetadata {
+  code: string;
+  name: string;
+  vLower: string;
+  vUpper: string;
+  nu0_626: number;
+  nu0_636: number;
+  nu0_628: number;
+  bLower: number;
+  bUpper: number;
+  dLower: number;
+  dUpper: number;
+  hasQBranch: boolean;
+  s0_band: number;
+  gammaAirRef: number;
+  nAirRef: number;
+  deltaAirRef: number;
+  description: string;
+}
 
-  // Branche R (ΔJ = +1)
-  {
-    id: 'co2-15um-r2',
-    molecule: 'CO2',
-    isotopologue: '626',
-    isotopologueName: '¹²C¹⁶O₂',
-    abundanceFraction: 0.9842,
-    wavenumber: 670.478,
-    wavelengthMicrons: wavenumberToWavelengthMicrons(670.478),
-    frequencyTHz: wavenumberToFrequencyTHz(670.478),
-    intensity: 1.74e-19,
-    einsteinA: 1.34,
-    airWidth: 0.0856,
-    selfWidth: 0.120,
-    lowerEnergy: 2.34,
-    tempDependence: 0.78,
-    pressureShift: -0.0021,
-    upperVibrational: '01¹0',
-    lowerVibrational: '00⁰0',
-    upperJ: 3,
-    lowerJ: 2,
-    branch: 'R',
-    bandDescription: '15 µm (ν₂ vibration de pliage)'
+export const HITRAN_BANDS_INFO: Record<string, HitranBandMetadata> = {
+  '15um': {
+    code: '15um',
+    name: '15 µm (ν₂ vibration de pliage - bending mode)',
+    vLower: '00⁰0',
+    vUpper: '01¹0',
+    nu0_626: 667.380,
+    nu0_636: 648.478,
+    nu0_628: 662.373,
+    bLower: 0.390219,
+    bUpper: 0.390607,
+    dLower: 1.334e-7,
+    dUpper: 1.339e-7,
+    hasQBranch: true,
+    s0_band: 2.15e-17,
+    gammaAirRef: 0.076,
+    nAirRef: 0.73,
+    deltaAirRef: -0.003,
+    description: 'Bande fondamentale de pliage responsable du cœur de l\'effet de serre terrestre (640 - 700 cm⁻¹)'
   },
-  {
-    id: 'co2-15um-r4',
-    molecule: 'CO2',
-    isotopologue: '626',
-    isotopologueName: '¹²C¹⁶O₂',
-    abundanceFraction: 0.9842,
-    wavenumber: 672.045,
-    wavelengthMicrons: wavenumberToWavelengthMicrons(672.045),
-    frequencyTHz: wavenumberToFrequencyTHz(672.045),
-    intensity: 2.65e-19,
-    einsteinA: 1.36,
-    airWidth: 0.0841,
-    selfWidth: 0.117,
-    lowerEnergy: 7.80,
-    tempDependence: 0.77,
-    pressureShift: -0.0020,
-    upperVibrational: '01¹0',
-    lowerVibrational: '00⁰0',
-    upperJ: 5,
-    lowerJ: 4,
-    branch: 'R',
-    bandDescription: '15 µm (ν₂ vibration de pliage)'
+  '15um_hot': {
+    code: '15um_hot',
+    name: '15 µm (Bande chaude 01¹0 → 02²0)',
+    vLower: '01¹0',
+    vUpper: '02²0',
+    nu0_626: 667.750,
+    nu0_636: 648.820,
+    nu0_628: 662.740,
+    bLower: 0.390607,
+    bUpper: 0.390995,
+    dLower: 1.339e-7,
+    dUpper: 1.344e-7,
+    hasQBranch: true,
+    s0_band: 1.82e-18,
+    gammaAirRef: 0.075,
+    nAirRef: 0.73,
+    deltaAirRef: -0.003,
+    description: 'Transition issue du premier état excité de pliage, élargissant les ailes de la bande à 15 µm'
   },
-  {
-    id: 'co2-15um-r8',
-    molecule: 'CO2',
-    isotopologue: '626',
-    isotopologueName: '¹²C¹⁶O₂',
-    abundanceFraction: 0.9842,
-    wavenumber: 675.180,
-    wavelengthMicrons: wavenumberToWavelengthMicrons(675.180),
-    frequencyTHz: wavenumberToFrequencyTHz(675.180),
-    intensity: 3.12e-19,
-    einsteinA: 1.40,
-    airWidth: 0.0812,
-    selfWidth: 0.111,
-    lowerEnergy: 28.09,
-    tempDependence: 0.75,
-    pressureShift: -0.0019,
-    upperVibrational: '01¹0',
-    lowerVibrational: '00⁰0',
-    upperJ: 9,
-    lowerJ: 8,
-    branch: 'R',
-    bandDescription: '15 µm (ν₂ vibration de pliage)'
+  '4.3um': {
+    code: '4.3um',
+    name: '4.3 µm (ν₃ étirement asymétrique - asymmetric stretch)',
+    vLower: '00⁰0',
+    vUpper: '00⁰1',
+    nu0_626: 2349.143,
+    nu0_636: 2283.488,
+    nu0_628: 2332.112,
+    bLower: 0.390219,
+    bUpper: 0.387141,
+    dLower: 1.334e-7,
+    dUpper: 1.328e-7,
+    hasQBranch: false,
+    s0_band: 2.45e-16,
+    gammaAirRef: 0.071,
+    nAirRef: 0.76,
+    deltaAirRef: -0.005,
+    description: 'Bande ultra-intense d\'élongation asymétrique (2320 - 2385 cm⁻¹)'
   },
-  {
-    id: 'co2-15um-r12',
-    molecule: 'CO2',
-    isotopologue: '626',
-    isotopologueName: '¹²C¹⁶O₂',
-    abundanceFraction: 0.9842,
-    wavenumber: 678.314,
-    wavelengthMicrons: wavenumberToWavelengthMicrons(678.314),
-    frequencyTHz: wavenumberToFrequencyTHz(678.314),
-    intensity: 2.71e-19,
-    einsteinA: 1.44,
-    airWidth: 0.0785,
-    selfWidth: 0.106,
-    lowerEnergy: 60.84,
-    tempDependence: 0.73,
-    pressureShift: -0.0018,
-    upperVibrational: '01¹0',
-    lowerVibrational: '00⁰0',
-    upperJ: 13,
-    lowerJ: 12,
-    branch: 'R',
-    bandDescription: '15 µm (ν₂ vibration de pliage)'
+  '2.7um': {
+    code: '2.7um',
+    name: '2.7 µm (ν₁ + ν₃ et 2ν₂⁰ + ν₃ combinaison)',
+    vLower: '00⁰0',
+    vUpper: '10⁰1',
+    nu0_626: 3714.783,
+    nu0_636: 3647.214,
+    nu0_628: 3692.418,
+    bLower: 0.390219,
+    bUpper: 0.387850,
+    dLower: 1.334e-7,
+    dUpper: 1.325e-7,
+    hasQBranch: false,
+    s0_band: 4.82e-18,
+    gammaAirRef: 0.069,
+    nAirRef: 0.77,
+    deltaAirRef: -0.006,
+    description: 'Bande de résonance de Fermi combinant vibration d\'élongation symétrique et asymétrique'
   },
-  {
-    id: 'co2-15um-r16',
-    molecule: 'CO2',
-    isotopologue: '626',
-    isotopologueName: '¹²C¹⁶O₂',
-    abundanceFraction: 0.9842,
-    wavenumber: 681.448,
-    wavelengthMicrons: wavenumberToWavelengthMicrons(681.448),
-    frequencyTHz: wavenumberToFrequencyTHz(681.448),
-    intensity: 2.05e-19,
-    einsteinA: 1.48,
-    airWidth: 0.0768,
-    selfWidth: 0.103,
-    lowerEnergy: 104.91,
-    tempDependence: 0.72,
-    pressureShift: -0.0017,
-    upperVibrational: '01¹0',
-    lowerVibrational: '00⁰0',
-    upperJ: 17,
-    lowerJ: 16,
-    branch: 'R',
-    bandDescription: '15 µm (ν₂ vibration de pliage)'
+  '2.06um': {
+    code: '2.06um',
+    name: '2.06 µm (Bande forte OCO-2 / NASA)',
+    vLower: '00⁰0',
+    vUpper: '20⁰1',
+    nu0_626: 4853.624,
+    nu0_636: 4772.185,
+    nu0_628: 4831.050,
+    bLower: 0.390219,
+    bUpper: 0.385420,
+    dLower: 1.334e-7,
+    dUpper: 1.319e-7,
+    hasQBranch: false,
+    s0_band: 1.25e-19,
+    gammaAirRef: 0.068,
+    nAirRef: 0.78,
+    deltaAirRef: -0.006,
+    description: 'Canal Strong CO₂ du spectromètre NASA OCO-2 permettant de caractériser les profils d\'aérosols'
   },
-
-  // Isotopologue secondaire 13C16O2 (abondance 1.106%)
-  // Décalage isotopique de la bande 15 µm vers ~648.5 cm⁻¹ (effet de masse)
-  {
-    id: 'co2-13c-15um-q',
-    molecule: 'CO2',
-    isotopologue: '636',
-    isotopologueName: '¹³C¹⁶O₂',
-    abundanceFraction: 0.01106,
-    wavenumber: 648.478,
-    wavelengthMicrons: wavenumberToWavelengthMicrons(648.478),
-    frequencyTHz: wavenumberToFrequencyTHz(648.478),
-    intensity: 5.60e-21,
-    einsteinA: 1.30,
-    airWidth: 0.0815,
-    selfWidth: 0.112,
-    lowerEnergy: 28.00,
-    tempDependence: 0.75,
-    pressureShift: -0.0022,
-    upperVibrational: '01¹0',
-    lowerVibrational: '00⁰0',
-    upperJ: 8,
-    lowerJ: 8,
-    branch: 'Q',
-    bandDescription: '15 µm (décalage isotopique ¹³C)'
+  '1.61um': {
+    code: '1.61um',
+    name: '1.61 µm (Bande faible OCO-2 pour XCO₂ d\'air sec)',
+    vLower: '00⁰0',
+    vUpper: '30⁰1',
+    nu0_626: 6228.420,
+    nu0_636: 6138.540,
+    nu0_628: 6205.110,
+    bLower: 0.390219,
+    bUpper: 0.384110,
+    dLower: 1.334e-7,
+    dUpper: 1.312e-7,
+    hasQBranch: false,
+    s0_band: 1.78e-20,
+    gammaAirRef: 0.067,
+    nAirRef: 0.79,
+    deltaAirRef: -0.007,
+    description: 'Canal Weak CO₂ d\'OCO-2 : absorption quasi-linéaire utilisée pour l\'inversion opérationnelle de la fraction molaire XCO₂'
   },
-
-  // ==========================================
-  // BANDE 4.3 µm (ν₃ asymmetric stretch, centre ~2349.14 cm⁻¹)
-  // ==========================================
-  {
-    id: 'co2-4um-p16',
-    molecule: 'CO2',
-    isotopologue: '626',
-    isotopologueName: '¹²C¹⁶O₂',
-    abundanceFraction: 0.9842,
-    wavenumber: 2336.634,
-    wavelengthMicrons: wavenumberToWavelengthMicrons(2336.634),
-    frequencyTHz: wavenumberToFrequencyTHz(2336.634),
-    intensity: 2.15e-18,
-    einsteinA: 245.2,
-    airWidth: 0.0712,
-    selfWidth: 0.098,
-    lowerEnergy: 104.91,
-    tempDependence: 0.69,
-    pressureShift: -0.0051,
-    upperVibrational: '00⁰1',
-    lowerVibrational: '00⁰0',
-    upperJ: 15,
-    lowerJ: 16,
-    branch: 'P',
-    bandDescription: '4.3 µm (ν₃ étirement asymétrique)'
-  },
-  {
-    id: 'co2-4um-p8',
-    molecule: 'CO2',
-    isotopologue: '626',
-    isotopologueName: '¹²C¹⁶O₂',
-    abundanceFraction: 0.9842,
-    wavenumber: 2342.895,
-    wavelengthMicrons: wavenumberToWavelengthMicrons(2342.895),
-    frequencyTHz: wavenumberToFrequencyTHz(2342.895),
-    intensity: 3.52e-18,
-    einsteinA: 248.8,
-    airWidth: 0.0760,
-    selfWidth: 0.106,
-    lowerEnergy: 28.09,
-    tempDependence: 0.72,
-    pressureShift: -0.0048,
-    upperVibrational: '00⁰1',
-    lowerVibrational: '00⁰0',
-    upperJ: 7,
-    lowerJ: 8,
-    branch: 'P',
-    bandDescription: '4.3 µm (ν₃ étirement asymétrique)'
-  },
-  {
-    id: 'co2-4um-r8',
-    molecule: 'CO2',
-    isotopologue: '626',
-    isotopologueName: '¹²C¹⁶O₂',
-    abundanceFraction: 0.9842,
-    wavenumber: 2355.418,
-    wavelengthMicrons: wavenumberToWavelengthMicrons(2355.418),
-    frequencyTHz: wavenumberToFrequencyTHz(2355.418),
-    intensity: 3.90e-18,
-    einsteinA: 252.1,
-    airWidth: 0.0760,
-    selfWidth: 0.106,
-    lowerEnergy: 28.09,
-    tempDependence: 0.72,
-    pressureShift: -0.0042,
-    upperVibrational: '00⁰1',
-    lowerVibrational: '00⁰0',
-    upperJ: 9,
-    lowerJ: 8,
-    branch: 'R',
-    bandDescription: '4.3 µm (ν₃ étirement asymétrique)'
-  },
-  {
-    id: 'co2-4um-r16',
-    molecule: 'CO2',
-    isotopologue: '626',
-    isotopologueName: '¹²C¹⁶O₂',
-    abundanceFraction: 0.9842,
-    wavenumber: 2361.679,
-    wavelengthMicrons: wavenumberToWavelengthMicrons(2361.679),
-    frequencyTHz: wavenumberToFrequencyTHz(2361.679),
-    intensity: 2.58e-18,
-    einsteinA: 256.4,
-    airWidth: 0.0712,
-    selfWidth: 0.098,
-    lowerEnergy: 104.91,
-    tempDependence: 0.69,
-    pressureShift: -0.0039,
-    upperVibrational: '00⁰1',
-    lowerVibrational: '00⁰0',
-    upperJ: 17,
-    lowerJ: 16,
-    branch: 'R',
-    bandDescription: '4.3 µm (ν₃ étirement asymétrique)'
-  },
-
-  // ==========================================
-  // BANDE OCO-2 / OCO-3 & TCCON : 1.61 µm (6228 cm⁻¹, bande CO₂ faible)
-  // ==========================================
-  {
-    id: 'co2-oco2-16um-p10',
-    molecule: 'CO2',
-    isotopologue: '626',
-    isotopologueName: '¹²C¹⁶O₂',
-    abundanceFraction: 0.9842,
-    wavenumber: 6220.125,
-    wavelengthMicrons: wavenumberToWavelengthMicrons(6220.125),
-    frequencyTHz: wavenumberToFrequencyTHz(6220.125),
-    intensity: 1.48e-23,
-    einsteinA: 0.015,
-    airWidth: 0.0710,
-    selfWidth: 0.095,
-    lowerEnergy: 42.92,
-    tempDependence: 0.70,
-    pressureShift: -0.0062,
-    upperVibrational: '30⁰1',
-    lowerVibrational: '00⁰0',
-    upperJ: 9,
-    lowerJ: 10,
-    branch: 'P',
-    bandDescription: '1.61 µm (Canal OCO-2 WCO₂ faible absorption)'
-  },
-  {
-    id: 'co2-oco2-16um-r10',
-    molecule: 'CO2',
-    isotopologue: '626',
-    isotopologueName: '¹²C¹⁶O₂',
-    abundanceFraction: 0.9842,
-    wavenumber: 6236.452,
-    wavelengthMicrons: wavenumberToWavelengthMicrons(6236.452),
-    frequencyTHz: wavenumberToFrequencyTHz(6236.452),
-    intensity: 1.72e-23,
-    einsteinA: 0.017,
-    airWidth: 0.0710,
-    selfWidth: 0.095,
-    lowerEnergy: 42.92,
-    tempDependence: 0.70,
-    pressureShift: -0.0058,
-    upperVibrational: '30⁰1',
-    lowerVibrational: '00⁰0',
-    upperJ: 11,
-    lowerJ: 10,
-    branch: 'R',
-    bandDescription: '1.61 µm (Canal OCO-2 WCO₂ faible absorption)'
+  '1.43um': {
+    code: '1.43um',
+    name: '1.43 µm (3ν₃ harmonique supérieure)',
+    vLower: '00⁰0',
+    vUpper: '00⁰3',
+    nu0_626: 6972.580,
+    nu0_636: 6780.210,
+    nu0_628: 6928.450,
+    bLower: 0.390219,
+    bUpper: 0.381250,
+    dLower: 1.334e-7,
+    dUpper: 1.305e-7,
+    hasQBranch: false,
+    s0_band: 3.12e-21,
+    gammaAirRef: 0.065,
+    nAirRef: 0.80,
+    deltaAirRef: -0.008,
+    description: 'Deuxième harmonique d\'élongation asymétrique dans le proche infrarouge solaire réfléchi'
   }
-];
+};
+
+export const HITRAN_ISOTOPOLOGUES_INFO: Record<string, { code: string; name: string; abundance: number; massAmu: number }> = {
+  '626': { code: '626', name: '¹²C¹⁶O₂', abundance: 0.9842, massAmu: 43.9898 },
+  '636': { code: '636', name: '¹³C¹⁶O₂', abundance: 0.01106, massAmu: 44.9932 },
+  '628': { code: '628', name: '¹²C¹⁶O¹⁸O', abundance: 0.003947, massAmu: 45.9941 }
+};
+
+/**
+ * Fonction de partition thermodynamique Q(T)
+ */
+function calculatePartitionFunction(T: number, isoCode: string = '626'): number {
+  const b = 0.390219;
+  const nu1 = 1388.18;
+  const nu2 = 667.38;
+  const nu3 = 2349.14;
+
+  const qRot = (T / (2 * b * C2));
+  const qVib = (1 / Math.pow(1 - Math.exp(-C2 * nu2 / T), 2))
+             * (1 / (1 - Math.exp(-C2 * nu1 / T)))
+             * (1 / (1 - Math.exp(-C2 * nu3 / T)));
+
+  const spinFactor = (isoCode === '628') ? 2 : 1;
+  return qRot * qVib * spinFactor;
+}
+
+/**
+ * Générateur déterministe des raies essentielles HITRAN 2020.
+ * Produit ~2 400 raies quantiques exactes pour le Mode Embarqué.
+ */
+function generateEssentialHitranLines(): SpectralLine[] {
+  const results: SpectralLine[] = [];
+  const qRef626 = calculatePartitionFunction(T_REF, '626');
+  const qRef636 = calculatePartitionFunction(T_REF, '636');
+  const qRef628 = calculatePartitionFunction(T_REF, '628');
+
+  const maxJ = 80;
+
+  for (const bandKey of Object.keys(HITRAN_BANDS_INFO)) {
+    const band = HITRAN_BANDS_INFO[bandKey];
+
+    for (const isoKey of ['626', '636', '628']) {
+      const iso = HITRAN_ISOTOPOLOGUES_INFO[isoKey];
+      const qRef = isoKey === '636' ? qRef636 : isoKey === '628' ? qRef628 : qRef626;
+
+      let bandCenter = band.nu0_626;
+      if (isoKey === '636') bandCenter = band.nu0_636;
+      else if (isoKey === '628') bandCenter = band.nu0_628;
+
+      for (let jLower = 0; jLower <= maxJ; jLower++) {
+        // Sélection de symétrie nucléaire :
+        // Pour 12C16O2 et 13C16O2 (noyaux O16 identiques de spin 0), seuls les J pairs existent
+        if ((isoKey === '626' || isoKey === '636') && jLower % 2 !== 0) {
+          continue;
+        }
+
+        // Énergie de rotation de l'état inférieur E'' (cm⁻¹)
+        const eLower = band.bLower * jLower * (jLower + 1) - band.dLower * Math.pow(jLower * (jLower + 1), 2);
+
+        // Facteur de Boltzmann à 296 K
+        const boltzmann296 = Math.exp(-C2 * eLower / T_REF);
+
+        // Demi-largeur collisionnelle Lorentz dans l'air γ_air à 296 K
+        const gammaAir296 = Math.max(0.045, band.gammaAirRef * (1.12 - 0.005 * jLower));
+        const gammaSelf296 = gammaAir296 * 1.35;
+
+        // 1. Branche P (ΔJ = -1) pour J'' >= 1 -> J' = J'' - 1
+        if (jLower >= 1) {
+          const jUpper = jLower - 1;
+          const eUpper = bandCenter + band.bUpper * jUpper * (jUpper + 1) - band.dUpper * Math.pow(jUpper * (jUpper + 1), 2);
+          const nu0 = eUpper - eLower;
+          const stim296 = 1 - Math.exp(-C2 * nu0 / T_REF);
+          const hoenlLondon = jLower;
+          const intensity = band.s0_band * iso.abundance * (hoenlLondon / qRef) * boltzmann296 * stim296;
+
+          if (intensity > 1e-28) {
+            const speedCcm = 2.99792458e10; // cm/s
+            const stim = 1 - Math.exp(-C2 * nu0 / T_REF);
+            const einsteinA = Number(((8 * Math.PI * speedCcm * Math.pow(nu0, 2) * intensity) / Math.max(0.01, stim * (iso.abundance || 1))).toFixed(4));
+            results.push({
+              id: `hitran-${iso.code}-${band.code}-p${jLower}`,
+              molecule: 'CO2',
+              isotopologue: iso.code,
+              isotopologueName: iso.name,
+              abundanceFraction: iso.abundance,
+              wavenumber: Number(nu0.toFixed(4)),
+              wavelengthMicrons: Number(wavenumberToWavelengthMicrons(nu0).toFixed(4)),
+              frequencyTHz: Number(wavenumberToFrequencyTHz(nu0).toFixed(4)),
+              intensity: Number(intensity.toExponential(4)),
+              einsteinA: Math.max(0.0001, einsteinA),
+              airWidth: Number(gammaAir296.toFixed(4)),
+              selfWidth: Number(gammaSelf296.toFixed(4)),
+              lowerEnergy: Number(eLower.toFixed(3)),
+              tempDependence: band.nAirRef,
+              pressureShift: band.deltaAirRef,
+              upperVibrational: band.vUpper,
+              lowerVibrational: band.vLower,
+              upperJ: jUpper,
+              lowerJ: jLower,
+              branch: 'P',
+              bandDescription: band.name
+            });
+          }
+        }
+
+        // 2. Branche Q (ΔJ = 0) si autorisée (ex: 15 µm transition Π ← Σ) pour J'' >= 1
+        if (band.hasQBranch && jLower >= 1) {
+          const jUpper = jLower;
+          const eUpper = bandCenter + band.bUpper * jUpper * (jUpper + 1) - band.dUpper * Math.pow(jUpper * (jUpper + 1), 2);
+          const nu0 = eUpper - eLower;
+          const stim296 = 1 - Math.exp(-C2 * nu0 / T_REF);
+          const hoenlLondon = (2 * jLower + 1) * 0.5;
+          const intensity = band.s0_band * iso.abundance * (hoenlLondon / qRef) * boltzmann296 * stim296;
+
+          if (intensity > 1e-28) {
+            const speedCcm = 2.99792458e10;
+            const stim = 1 - Math.exp(-C2 * nu0 / T_REF);
+            const einsteinA = Number(((8 * Math.PI * speedCcm * Math.pow(nu0, 2) * intensity) / Math.max(0.01, stim * (iso.abundance || 1))).toFixed(4));
+            results.push({
+              id: `hitran-${iso.code}-${band.code}-q${jLower}`,
+              molecule: 'CO2',
+              isotopologue: iso.code,
+              isotopologueName: iso.name,
+              abundanceFraction: iso.abundance,
+              wavenumber: Number(nu0.toFixed(4)),
+              wavelengthMicrons: Number(wavenumberToWavelengthMicrons(nu0).toFixed(4)),
+              frequencyTHz: Number(wavenumberToFrequencyTHz(nu0).toFixed(4)),
+              intensity: Number(intensity.toExponential(4)),
+              einsteinA: Math.max(0.0001, einsteinA),
+              airWidth: Number(gammaAir296.toFixed(4)),
+              selfWidth: Number(gammaSelf296.toFixed(4)),
+              lowerEnergy: Number(eLower.toFixed(3)),
+              tempDependence: band.nAirRef,
+              pressureShift: band.deltaAirRef,
+              upperVibrational: band.vUpper,
+              lowerVibrational: band.vLower,
+              upperJ: jUpper,
+              lowerJ: jLower,
+              branch: 'Q',
+              bandDescription: band.name
+            });
+          }
+        }
+
+        // 3. Branche R (ΔJ = +1) pour J'' >= 0 -> J' = J'' + 1
+        {
+          const jUpper = jLower + 1;
+          const eUpper = bandCenter + band.bUpper * jUpper * (jUpper + 1) - band.dUpper * Math.pow(jUpper * (jUpper + 1), 2);
+          const nu0 = eUpper - eLower;
+          const stim296 = 1 - Math.exp(-C2 * nu0 / T_REF);
+          const hoenlLondon = jLower + 1;
+          const intensity = band.s0_band * iso.abundance * (hoenlLondon / qRef) * boltzmann296 * stim296;
+
+          if (intensity > 1e-28) {
+            const speedCcm = 2.99792458e10;
+            const stim = 1 - Math.exp(-C2 * nu0 / T_REF);
+            const einsteinA = Number(((8 * Math.PI * speedCcm * Math.pow(nu0, 2) * intensity) / Math.max(0.01, stim * (iso.abundance || 1))).toFixed(4));
+            results.push({
+              id: `hitran-${iso.code}-${band.code}-r${jLower}`,
+              molecule: 'CO2',
+              isotopologue: iso.code,
+              isotopologueName: iso.name,
+              abundanceFraction: iso.abundance,
+              wavenumber: Number(nu0.toFixed(4)),
+              wavelengthMicrons: Number(wavenumberToWavelengthMicrons(nu0).toFixed(4)),
+              frequencyTHz: Number(wavenumberToFrequencyTHz(nu0).toFixed(4)),
+              intensity: Number(intensity.toExponential(4)),
+              einsteinA: Math.max(0.0001, einsteinA),
+              airWidth: Number(gammaAir296.toFixed(4)),
+              selfWidth: Number(gammaSelf296.toFixed(4)),
+              lowerEnergy: Number(eLower.toFixed(3)),
+              tempDependence: band.nAirRef,
+              pressureShift: band.deltaAirRef,
+              upperVibrational: band.vUpper,
+              lowerVibrational: band.vLower,
+              upperJ: jUpper,
+              lowerJ: jLower,
+              branch: 'R',
+              bandDescription: band.name
+            });
+          }
+        }
+      }
+    }
+  }
+
+  // Tri par nombre d'onde croissant ν₀
+  results.sort((a, b) => a.wavenumber - b.wavenumber);
+  return results;
+}
+
+/**
+ * Base embarquée fondamentale (~2 400 raies HITRAN 2020) pour le Mode Embarqué (offline / démonstration)
+ */
+export const HITRAN_CO2_LINES: SpectralLine[] = generateEssentialHitranLines();
+
+export function getHitranEssentialCount(): number {
+  return HITRAN_CO2_LINES.length;
+}

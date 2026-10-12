@@ -17,7 +17,17 @@ export interface DataProvenance {
   dataset: string;             // Nom précis du produit / granule
   version?: string;            // Version du jeu de données (ex: v11r, 2024.1)
   observedAt?: string;         // Timestamp d'acquisition ISO
-  downloadedAt?: string;       // Timestamp de récupération/cache
+  downloadedAt?: string;       // Timestamp de récupération/cache (rétrocompatibilité)
+  retrievedAt?: string;        // Date et heure exacte du téléchargement depuis le serveur officiel
+  validFrom?: string;          // Début de la période de validité de l'observation / réanalyse
+  validTo?: string;            // Fin de la période de validité de l'observation
+  expiresAt?: string;          // Date d'expiration nominale du cache (TTL)
+  checksum?: string;           // Empreinte d'intégrité cryptographique (ex: sha256:... ou e-tag)
+  requestParameters?: Record<string, any>; // Paramètres exacts de la requête API (lat, lon, filtres)
+  quality?: 'EXCELLENT' | 'GOOD' | 'ACCEPTABLE' | 'DEGRADED' | 'SUSPECT' | string; // Qualification métrologique
+  cacheAgeDays?: number;       // Âge du cache en jours au moment de la restitution
+  isRealData?: boolean;        // Garantie de donnée réelle issue des réseaux scientifiques officiels
+  dataMode?: 'DEMO' | 'REAL_DATA'; // 'DEMO' (données d'exemple / fixtures embarquées) ou 'REAL_DATA' (récupérées auprès de la source officielle)
   license: string;             // 'CC-BY-4.0' | 'Open Government / NOAA Public Domain' | 'Copernicus Free & Open'
   url?: string;                // URL vers le portail officiel
   doi?: string;                // Digital Object Identifier persistant
@@ -107,12 +117,84 @@ export interface VerticalProfile {
   provenance: DataProvenance;
 }
 
+export type ProviderConnectionStatus =
+  | 'CONNECTED'      // Serveur externe interrogé et joignable avec succès (handshake réseau OK)
+  | 'FETCHED'        // Données fraîches téléchargées en direct depuis l'API distante durant cette session
+  | 'CACHED'         // Données servies depuis le cache disque certifié local (fichiers bruts vérifiés)
+  | 'STALE'          // Données en cache dont l'âge dépasse le cycle nominal (> 30 jours sans rafraîchissement)
+  | 'OFFLINE'        // Réseau distant injoignable ou machine hors-ligne (mode secours actif)
+  | 'ERROR'          // Erreur HTTP (4xx/5xx) ou échec de désérialisation lors de la tentative distante
+  | 'NOT_CONFIGURED';// Clé d'API ou jeton d'authentification manquant dans l'environnement
+
+export interface DetailedProviderStatus {
+  id: 'noaa' | 'icos' | 'nasa' | 'cams' | 'hitran' | 'citepa' | string;
+  name: string;
+  category: ScientificDataCategory;
+  status: ProviderConnectionStatus;
+  statusLabel: string;
+  statusExplanation: string;
+  url: string;
+  license: string;
+  doi: string;
+  recordsCount: number;
+  breakdown: {
+    cachedRecords: number;
+    liveRecords: number;
+    embeddedRecords: number;
+  };
+  cacheInfo: {
+    directory: string;
+    filesCount: number;
+    totalSizeBytes: number;
+    lastModified: string | null;
+    isStale: boolean;
+    ageDays: number | null;
+  };
+  upstreamInfo: {
+    endpoint: string;
+    protocol: string;
+    requiresAuth: boolean;
+    authConfigured: boolean;
+    authEnvVar?: string;
+    networkStatus: 'CONNECTED' | 'OFFLINE' | 'ERROR' | 'UNTESTED';
+    latencyMs?: number;
+    lastLiveFetch: string | null;
+    lastChecked?: string;
+  };
+}
+
 export interface ProviderHealth {
   name: string;
   url: string;
-  status: 'ONLINE' | 'CACHED' | 'DEGRADED' | 'OFFLINE';
+  status: ProviderConnectionStatus | 'ONLINE' | 'CACHED' | 'DEGRADED' | 'OFFLINE';
   lastSync: string;
   license: string;
   doi: string;
   recordsCount: number;
+  statusDetails?: string;
+}
+
+export interface SystemStatusResponse {
+  status: 'HEALTHY' | 'DEGRADED' | 'OFFLINE';
+  timestamp: string;
+  activeDataMode?: 'DEMO' | 'REAL_DATA';
+  activeDataModeLabel?: string;
+  activeDataModeDescription?: string;
+  principle: string;
+  dataIntegrityStatement: string;
+  summary: {
+    totalProviders: number;
+    connectedCount: number;
+    fetchedCount: number;
+    cachedCount: number;
+    staleCount: number;
+    offlineCount: number;
+    notConfiguredCount: number;
+    errorCount: number;
+    totalRecords: number;
+  };
+  providers: DetailedProviderStatus[];
+  downloads?: any[];
+  icosAudit?: any;
+  ocoAudit?: any;
 }
