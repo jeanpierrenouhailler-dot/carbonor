@@ -3,19 +3,101 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CO₂ Atmosphère &amp; Cycle du Carbone</title>
-    <meta name="description" content="PWA scientifique pour l'exploration du CO₂ atmosphérique, de la spectroscopie moléculaire aux observations sol, satellites, profils et flux." />
-    <meta property="og:title" content="CO₂ Atmosphère &amp; Cycle du Carbone" />
-    <meta property="og:description" content="PWA scientifique pour l'exploration du CO₂ atmosphérique, de la spectroscopie moléculaire aux observations sol, satellites, profils et flux." />
+    <title>Carbonor — Explorer le CO₂ atmosphérique et le cycle du carbone</title>
+    <meta name="description" content="Plateforme scientifique ouverte pour explorer le dioxyde de carbone (CO₂) atmosphérique, de la spectroscopie moléculaire HITRAN aux observations sol NOAA/ICOS, satellites OCO-2/3 et modèles CAMS." />
+    <meta name="keywords" content="CO2 atmosphérique, Cycle du carbone, Spectroscopie infrarouge, XCO2, Observation satellitaire, HITRAN, Beer-Lambert, Flux de carbone, Données climatiques, Copernicus CAMS, NOAA GML, ICOS, OCO-2" />
+    <meta name="author" content="Carbonor Research Team" />
+    <link rel="canonical" href="https://carbonor.org/" />
+
+    <!-- Open Graph / Facebook / LinkedIn -->
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://carbonor.org/" />
+    <meta property="og:site_name" content="Carbonor" />
+    <meta property="og:title" content="Carbonor — Explorer le CO₂ atmosphérique et le cycle du carbone" />
+    <meta property="og:description" content="Plateforme scientifique ouverte pour explorer le CO₂ atmosphérique, de la spectroscopie quantique HITRAN aux observations satellitaires et réseaux au sol." />
+    <meta property="og:image" content="/screenshots/dashboard_overview.jpg" />
+    <meta property="og:locale" content="fr_FR" />
+
+    <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content="#091E3A" />
+    <meta name="twitter:title" content="Carbonor — Explorer le CO₂ atmosphérique et le cycle du carbone" />
+    <meta name="twitter:description" content="Plateforme scientifique ouverte pour explorer le CO₂ atmosphérique, de la molécule aux bilans planétaires." />
+    <meta name="twitter:image" content="/screenshots/dashboard_overview.jpg" />
+
+    <!-- PWA & Mobile Icons -->
+    <meta name="theme-color" content="#020617" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="CO₂ Atmos" />
+    <meta name="apple-mobile-web-app-title" content="Carbonor" />
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Schema.org Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "https://carbonor.org/#webapp",
+          "name": "Carbonor",
+          "alternateName": "CO₂ Atmosphère & Cycle du Carbone",
+          "url": "https://carbonor.org/",
+          "description": "Plateforme scientifique pour l'exploration du CO₂ atmosphérique, de la spectroscopie moléculaire HITRAN aux observations sol NOAA/ICOS, satellites OCO-2/3 et modèles CAMS.",
+          "applicationCategory": "EducationalApplication, ScientificApplication",
+          "operatingSystem": "All modern browsers (PWA)",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR"
+          },
+          "screenshot": "https://carbonor.org/screenshots/dashboard_overview.jpg",
+          "featureList": [
+            "Courbe de Keeling historique continue (1958-2026)",
+            "Cartographie interactive multi-réseaux OpenStreetMap",
+            "Mesures au sol in situ (NOAA GML & ICOS ATC)",
+            "Télédétection satellitaire XCO₂ (NASA OCO-2 et OCO-3)",
+            "Profils verticaux troposphériques et stratosphériques AirCore (0-30 km)",
+            "Laboratoire virtuel de transfert radiatif raie-par-raie HITRAN 2020",
+            "Modélisation et réanalyse 3D Copernicus CAMS IFS",
+            "Inventaires nationaux sectoriels CITEPA SECTEN",
+            "Exports scientifiques normalisés (CSV, GeoJSON, NetCDF, Parquet, PDF certifié)"
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://carbonor.org/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Qu'est-ce que Carbonor ?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Carbonor est une plateforme scientifique et pédagogique ouverte permettant d'explorer le comportement du dioxyde de carbone (CO₂) atmosphérique depuis les niveaux quantiques moléculaires jusqu'aux flux globaux d'échanges planétaires."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Quelle est la différence entre CO₂ au sol et XCO₂ ?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "La concentration au sol mesure la fraction molaire au niveau du capteur in situ (CRDS ou NDIR), tandis que XCO₂ est la fraction molaire moyenne de la colonne verticale totale d'air sec observée depuis l'espace par spectrométrie satellite."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Pourquoi Carbonor distingue-t-il Mesuré, Observé, Estimé, Modélisé et Simulé ?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Par rigueur déontologique : une mesure physico-chimique directe au sol (Mesuré) ne doit jamais être confondue avec une inversion satellitaire indirecte (Observé), un bilan comptable d'émissions (Estimé), une réanalyse numérique 3D (Modélisé) ou un calcul théorique quantique (Simulé)."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
   </head>
   <body class="bg-slate-950 text-slate-100 antialiased min-h-screen selection:bg-cyan-500 selection:text-white">
     <div id="root"></div>

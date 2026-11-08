@@ -1,0 +1,5 @@
+# robots.txt for Carbonor
+User-agent: *
+Allow: /
+
+Sitemap: https://carbonor.org/sitemap.xml
