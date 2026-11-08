@@ -20,7 +20,10 @@ import {
   CheckCircle2,
   Sliders,
   Sparkles,
-  BookOpen
+  BookOpen,
+  Eye,
+  Maximize2,
+  X
 } from 'lucide-react';
 
 interface LandingPageViewProps {
@@ -33,6 +36,69 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
   onOpenReport
 }) => {
   const { dataMode, isRealData, toggleDataMode, modeLabel } = useDataMode();
+
+  // Galerie de captures réelles
+  const [activeScreenshotIdx, setActiveScreenshotIdx] = useState<number>(0);
+  const [zoomedScreenshot, setZoomedScreenshot] = useState<any | null>(null);
+
+  const appScreenshots = [
+    {
+      id: 'dashboard',
+      title: 'Tableau de Bord & Keeling (1958-2026)',
+      subtitle: 'Synthèse Métrologique Planétaire',
+      category: 'Tableau de Bord',
+      image: '/screenshots/dashboard_overview.jpg',
+      description: 'Visualisation séculaire de la courbe de Keeling (NOAA Mauna Loa) de 315 à 426 ppm, indicateurs en temps réel (Sol 425.30 ppm, Satellite XCO₂ 422.31 ppm, Modèle CAMS 423.24 ppm, 2 551 raies HITRAN) et cartouche spectroscopique à 15 µm.',
+      targetView: 'dashboard' as ViewKey,
+      highlights: [
+        'Courbe de Keeling continue 1958–2026 avec oscillation saisonnière',
+        '4 indicateurs temps réel avec certificats métrologiques officiels',
+        'Spectre de la bande fondamentale à 15 µm et audit NOAA/ICOS'
+      ]
+    },
+    {
+      id: 'map',
+      title: 'Cartographie Multi-Réseaux OpenStreetMap',
+      subtitle: 'Réseaux In Situ & Trace Orbitale OCO-2',
+      category: 'Carte Interactive',
+      image: '/screenshots/interactive_map_osm.jpg',
+      description: 'Cartographie Leaflet sur fond réel OpenStreetMap (styles Standard, Sombre, Topo, Satellite) croisant 50+ stations mondiales NOAA/ICOS, trace satellitaire avec sondages discrets OCO-2 et panneau d\'inspection station (Puy de Dôme 1465 m, 428.72 ppm).',
+      targetView: 'map' as ViewKey,
+      highlights: [
+        'Fond cartographique réel OpenStreetMap (EPSG:3857)',
+        'Marqueurs de stations au sol interactifs avec infobulles',
+        'Trace orbitale NASA OCO-2 avec points de sondage individuels'
+      ]
+    },
+    {
+      id: 'spectroscopy',
+      title: 'Laboratoire Virtuel de Transfert Radiatif',
+      subtitle: 'Spectroscopie HITRAN 2020 & Beer-Lambert',
+      category: 'Physique Moléculaire',
+      image: '/screenshots/spectroscopy_lab.jpg',
+      description: 'Résolution quantique raie-par-raie de la molécule de CO₂ : branches P, Q centrale (667.4 cm⁻¹) et R de la bande à 15 µm, curseur de concentration 280 à 1000 ppm, calcul du forçage radiatif instantané et comparaison des profils de raie de Voigt.',
+      targetView: 'spectroscopy-lab' as ViewKey,
+      highlights: [
+        'Bande de pliage ν₂ à 15 µm résolue raie-par-raie',
+        'Curseur de concentration avec calcul de forçage ΔF = 5.35 ln(C/C₀)',
+        'Décomposition des élargissements Doppler et Lorentz (Voigt)'
+      ]
+    },
+    {
+      id: 'xco2',
+      title: 'Télédétection Satellitaire XCO₂',
+      subtitle: 'NASA OCO-2 & OCO-3 Lite Diagnostic',
+      category: 'Télédétection',
+      image: '/screenshots/satellite_xco2_orbit.jpg',
+      description: 'Couverture orbitale mondiale, profil transversal de latitude XCO₂, discrimination des 3 bandes spectrométriques (0.76 µm O₂-A, 1.61 µm WCO₂, 2.06 µm SCO₂), filtrage par Quality Flag (Flag 0 valide vs Flag 1 suspect) et analyse des 8 empreintes spatiales.',
+      targetView: 'xco2' as ViewKey,
+      highlights: [
+        'Données de colonne moyenne d\'air sec XCO₂ par satellite',
+        'Profil transversal de latitude avec gradients hémisphériques',
+        'Filtrage par Quality Flag 0 (Assimilation Grade)'
+      ]
+    }
+  ];
 
   // Mini-calculateur interactif de forçage radiatif sur la landing
   const [co2Slider, setCo2Slider] = useState<number>(426);
@@ -199,7 +265,146 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
         </div>
       </section>
 
-      {/* 2. The Core Scientific Principle Section */}
+      {/* 2. Captures d'Écran Réelles de l'Application */}
+      <section className="space-y-6 pt-4">
+        <div className="text-center max-w-3xl mx-auto space-y-2">
+          <div className="inline-flex items-center gap-2 text-xs font-mono text-cyan-400">
+            <Eye className="w-3.5 h-3.5" />
+            <span>Visuels Réels de l'Application</span>
+          </div>
+          <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight">
+            L'Interface Scientifique en Images Réelles
+          </h2>
+          <p className="text-xs md:text-sm text-slate-400 leading-relaxed">
+            Aperçus fidèles et actualisés des modules majeurs de l'application : Tableau de bord, Cartographie OpenStreetMap, Laboratoire Beer-Lambert et Télédétection OCO-2.
+          </p>
+        </div>
+
+        {/* Tab switcher */}
+        <div className="flex flex-wrap items-center justify-center gap-2 p-1.5 bg-slate-900/80 border border-slate-800 rounded-xl max-w-3xl mx-auto">
+          {appScreenshots.map((shot, idx) => {
+            const isActive = activeScreenshotIdx === idx;
+            return (
+              <button
+                key={shot.id}
+                onClick={() => setActiveScreenshotIdx(idx)}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  isActive
+                    ? 'bg-cyan-600 text-white shadow-md shadow-cyan-950/60'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                }`}
+              >
+                {shot.title.split('(')[0]}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Active Screenshot Display Showcase */}
+        {(() => {
+          const current = appScreenshots[activeScreenshotIdx];
+          return (
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 md:p-6 space-y-6 max-w-5xl mx-auto shadow-2xl">
+              <div className="relative group overflow-hidden rounded-xl border border-slate-800/80 bg-slate-950 shadow-inner">
+                <img
+                  src={current.image}
+                  alt={current.title}
+                  className="w-full h-auto object-cover object-top transition-transform duration-300 group-hover:scale-[1.01]"
+                />
+                
+                {/* Floating zoom button overlay */}
+                <div className="absolute top-3 right-3 opacity-90 group-hover:opacity-100 transition-opacity">
+                  <button
+                    onClick={() => setZoomedScreenshot(current)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-950/85 hover:bg-slate-900 text-xs font-mono font-semibold text-slate-200 border border-slate-700 backdrop-blur-sm shadow-lg cursor-pointer"
+                    title="Agrandir la capture en haute définition"
+                  >
+                    <Maximize2 className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>Agrandir</span>
+                  </button>
+                </div>
+
+                <div className="absolute bottom-3 left-3 pointer-events-none">
+                  <span className="px-2.5 py-1 rounded bg-slate-950/85 backdrop-blur-sm text-[11px] font-mono text-slate-300 border border-slate-800">
+                    Capture d'écran authentique · Carbonor PWA
+                  </span>
+                </div>
+              </div>
+
+              {/* Screenshot Details and Direct Action */}
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pt-2">
+                <div className="space-y-2 max-w-2xl">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-cyan-950 text-cyan-400 border border-cyan-500/30">
+                      {current.category}
+                    </span>
+                    <h3 className="text-base font-bold text-white">
+                      {current.title}
+                    </h3>
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+                    {current.description}
+                  </p>
+
+                  <ul className="space-y-1 pt-1">
+                    {current.highlights.map((h, i) => (
+                      <li key={i} className="flex items-center gap-2 text-xs text-slate-400 font-mono">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                        <span>{h}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="flex flex-col gap-2 shrink-0">
+                  <button
+                    onClick={() => onSelectView(current.targetView)}
+                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 text-slate-950 text-xs font-bold shadow-md shadow-cyan-950/50 transition-all cursor-pointer"
+                  >
+                    <span>Lancer ce module</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+
+                  <button
+                    onClick={() => setZoomedScreenshot(current)}
+                    className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 transition-colors cursor-pointer"
+                  >
+                    <Eye className="w-3.5 h-3.5 text-slate-400" />
+                    <span>Voir en plein écran</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Small preview strip for the other 3 screenshots */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-slate-800/80">
+                {appScreenshots.map((shot, idx) => (
+                  <div
+                    key={shot.id}
+                    onClick={() => setActiveScreenshotIdx(idx)}
+                    className={`p-2 rounded-xl border transition-all cursor-pointer space-y-1.5 ${
+                      activeScreenshotIdx === idx
+                        ? 'border-cyan-500/60 bg-cyan-950/20'
+                        : 'border-slate-800/80 bg-slate-950/60 hover:border-slate-700'
+                    }`}
+                  >
+                    <img
+                      src={shot.image}
+                      alt={shot.title}
+                      className="w-full h-16 object-cover rounded-lg border border-slate-800/60"
+                    />
+                    <div className="text-[11px] font-mono font-medium truncate text-slate-300">
+                      {shot.title.split('(')[0]}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
+      </section>
+
+      {/* 3. The Core Scientific Principle Section */}
       <section className="space-y-6">
         <div className="text-center max-w-3xl mx-auto space-y-2">
           <h2 className="text-xs font-mono font-bold tracking-widest text-cyan-400 uppercase">
@@ -653,6 +858,64 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
           Données issues des programmes scientifiques officiels : NOAA Global Monitoring Laboratory, ICOS Carbon Portal, NASA Earthdata (OCO-2/3 Science Team), Copernicus Atmosphere Monitoring Service (ECMWF), HITRAN Database (Harvard-Smithsonian CfA) et CITEPA (SECTEN).
         </p>
       </footer>
+
+      {/* Fullscreen Zoom Modal for Screenshot Inspection */}
+      {zoomedScreenshot && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-black/90 backdrop-blur-md animate-in fade-in duration-200"
+          onClick={() => setZoomedScreenshot(null)}
+        >
+          <div 
+            className="relative w-full max-w-6xl rounded-2xl bg-slate-950 border border-slate-800 shadow-2xl p-4 md:p-6 overflow-hidden space-y-4"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div>
+                <span className="text-[10px] font-mono font-bold text-cyan-400 uppercase tracking-wider block">
+                  {zoomedScreenshot.category} · Capture Haute Définition
+                </span>
+                <h3 className="text-base font-bold text-white">
+                  {zoomedScreenshot.title}
+                </h3>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    const target = zoomedScreenshot.targetView;
+                    setZoomedScreenshot(null);
+                    onSelectView(target);
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-xs font-bold text-white transition-colors cursor-pointer"
+                >
+                  <span>Ouvrir dans l'App</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+
+                <button
+                  onClick={() => setZoomedScreenshot(null)}
+                  className="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white transition-colors cursor-pointer"
+                  aria-label="Fermer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            <div className="max-h-[75vh] overflow-auto rounded-xl border border-slate-800 bg-black/40">
+              <img
+                src={zoomedScreenshot.image}
+                alt={zoomedScreenshot.title}
+                className="w-full h-auto object-contain"
+              />
+            </div>
+
+            <p className="text-xs text-slate-300 font-sans leading-relaxed">
+              {zoomedScreenshot.description}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
