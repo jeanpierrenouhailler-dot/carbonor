@@ -14,10 +14,12 @@ import {
   BookOpen, 
   ChevronRight,
   Flame,
-  ShieldCheck
+  ShieldCheck,
+  Compass
 } from 'lucide-react';
 
 export type ViewKey = 
+  | 'landing'
   | 'dashboard'
   | 'map'
   | 'surface'
@@ -52,7 +54,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
     {
       title: 'Principal',
       items: [
-        { id: 'dashboard' as ViewKey, label: 'Accueil / Synthèse', icon: Home },
+        { id: 'landing' as ViewKey, label: 'Présentation / Landing', icon: Compass },
+        { id: 'dashboard' as ViewKey, label: 'Tableau de bord / Synthèse', icon: Home },
         { id: 'map' as ViewKey, label: 'Carte Interactive Multi-couches', icon: Map, badge: 'Sol + OCO' }
       ]
     },

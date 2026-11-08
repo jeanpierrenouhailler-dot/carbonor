@@ -1,13 +1,16 @@
 import React from 'react';
 import { PWAInstallButton } from '../pwa/PWAInstallButton';
 import { useDataMode } from '../../context/DataModeContext';
+import { ViewKey } from './Sidebar';
 import { 
   Sparkles, 
   GraduationCap, 
   FileText, 
   Menu,
   Activity,
-  Cloud
+  Cloud,
+  Compass,
+  LayoutDashboard
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -17,6 +20,8 @@ interface NavbarProps {
   onOpenCloudflareModal?: () => void;
   onToggleSidebar?: () => void;
   activeViewTitle?: string;
+  currentView?: ViewKey;
+  onSelectView?: (view: ViewKey) => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -25,7 +30,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenReport,
   onOpenCloudflareModal,
   onToggleSidebar,
-  activeViewTitle = 'Tableau de bord'
+  activeViewTitle = 'Tableau de bord',
+  currentView = 'landing',
+  onSelectView
 }) => {
   const { dataMode, toggleDataMode, isRealData, modeLabel, modeDescription } = useDataMode();
   return (
@@ -43,8 +50,12 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           )}
 
-          <div className="flex items-center gap-3">
-            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-900 via-slate-900 to-slate-950 border border-cyan-500/30 shadow-lg shadow-cyan-950/50">
+          <div 
+            onClick={() => onSelectView && onSelectView('landing')}
+            className={`flex items-center gap-3 ${onSelectView ? 'cursor-pointer group' : ''}`}
+            title="Revenir à la page de présentation"
+          >
+            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-900 via-slate-900 to-slate-950 border border-cyan-500/30 shadow-lg shadow-cyan-950/50 group-hover:border-cyan-400/50 transition-colors">
               <span className="font-mono font-black text-sm text-cyan-400 tracking-tighter">CO₂</span>
               <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -54,7 +65,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-sm font-bold tracking-tight text-white sm:text-base">
+                <h1 className="text-sm font-bold tracking-tight text-white sm:text-base group-hover:text-cyan-300 transition-colors">
                   CO₂ Atmosphère &amp; Cycle du Carbone
                 </h1>
                 <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-cyan-950/80 text-cyan-400 border border-cyan-500/30">
@@ -84,6 +95,28 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Right: Actions, Data Mode, Expert Mode, Report & PWA */}
         <div className="flex items-center gap-2.5">
+          {/* Toggle Landing / App view */}
+          {onSelectView && (
+            <button
+              onClick={() => onSelectView(currentView === 'landing' ? 'dashboard' : 'landing')}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border border-cyan-500/30 bg-cyan-950/40 hover:bg-cyan-900/60 text-cyan-300 transition-colors cursor-pointer"
+              title={currentView === 'landing' ? "Ouvrir le tableau de bord de l'application" : "Consulter la page de présentation (Landing page)"}
+            >
+              {currentView === 'landing' ? (
+                <>
+                  <LayoutDashboard className="w-3.5 h-3.5 text-cyan-400" />
+                  <span className="hidden sm:inline">Tableau de bord</span>
+                  <span className="sm:hidden">App</span>
+                </>
+              ) : (
+                <>
+                  <Compass className="w-3.5 h-3.5 text-cyan-400" />
+                  <span className="hidden sm:inline">Présentation</span>
+                  <span className="sm:hidden">Info</span>
+                </>
+              )}
+            </button>
+          )}
           {/* Statut Métrologique : Mode Démonstration vs Mode Données Réelles */}
           <button
             onClick={toggleDataMode}

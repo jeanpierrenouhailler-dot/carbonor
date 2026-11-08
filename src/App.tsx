@@ -13,6 +13,7 @@ import { DataModeProvider } from './context/DataModeContext';
 
 // Views
 import { DashboardView } from './components/dashboard/DashboardView';
+import { LandingPageView } from './components/landing/LandingPageView';
 import { InteractiveMapView } from './components/map/InteractiveMapView';
 import { SurfaceCO2View } from './components/surface/SurfaceCO2View';
 import { XCO2View } from './components/xco2/XCO2View';
@@ -28,7 +29,7 @@ import { DocumentationView } from './components/docs/DocumentationView';
 import { RealDataAuditView } from './components/audit/RealDataAuditView';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<ViewKey>('dashboard');
+  const [currentView, setCurrentView] = useState<ViewKey>('landing');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [expertMode, setExpertMode] = useState(false);
   const [isReportOpen, setIsReportOpen] = useState(false);
@@ -36,6 +37,8 @@ export default function App() {
 
   const renderActiveView = () => {
     switch (currentView) {
+      case 'landing':
+        return <LandingPageView onSelectView={setCurrentView} onOpenReport={() => setIsReportOpen(true)} />;
       case 'dashboard':
         return <DashboardView onSelectView={setCurrentView} expertMode={expertMode} />;
       case 'map':
@@ -81,6 +84,8 @@ export default function App() {
           onOpenReport={() => setIsReportOpen(true)}
           onOpenCloudflareModal={() => setIsCloudflareOpen(true)}
           onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+          currentView={currentView}
+          onSelectView={setCurrentView}
         />
 
         {/* Main Body */}
