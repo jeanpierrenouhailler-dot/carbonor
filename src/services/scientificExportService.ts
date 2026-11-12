@@ -579,8 +579,8 @@ data:
 
     // Title text
     lines.push('BT /F2 13 Tf 1 1 1 rg 35 815 Td (CARBONOR - OBSERVATOIRE DU CO2 ATMOSPHERIQUE) Tj ET');
-    lines.push('BT /F1 9 Tf 0.22 0.74 0.97 rg 35 798 Td (CERTIFICAT OFFICIEL DE TRACABILITE METROLOGIQUE ET AUDIT DES DONNEES) Tj ET');
-    lines.push('BT /F1 8 Tf 0.7 0.75 0.8 rg 35 778 Td (Conforme aux directives WMO Global Atmosphere Watch et norme ISO/IEC 17025) Tj ET');
+    lines.push('BT /F1 9 Tf 0.22 0.74 0.97 rg 35 798 Td (CERTIFICAT & RAPPORT SCIENTIFIQUE DE TRACABILITE DES DONNEES) Tj ET');
+    lines.push('BT /F1 8 Tf 0.7 0.75 0.8 rg 35 778 Td (Repertoire des observations atmospheriques et metadonnees de provenance) Tj ET');
 
     // Section 1: Provenance box
     lines.push('0.96 0.97 0.98 rg 35 590 525 155 re f');
@@ -660,8 +660,7 @@ data:
 
     // Footer signature
     lines.push('0.8 0.85 0.9 RG 1 w 35 80 525 0.5 re S');
-    lines.push(`BT /F2 8 Tf 0.1 0.2 0.35 rg 35 65 Td (Plateforme Carbonor - Moteur de Transfert Radiatif & Donnees Reelles Climat) Tj ET`);
-    lines.push(`BT /F1 7 Tf 0.4 0.45 0.5 rg 35 52 Td (Document scientifique certifie sans formules synthetiques. Signature numerique integree.) Tj ET`);
+    lines.push(`BT /F1 7 Tf 0.4 0.45 0.5 rg 35 52 Td (Rapport technique Carbonor. Empreinte cryptographique SHA-256 verifiable.) Tj ET`);
     lines.push(`BT /F1 7 Tf 0.4 0.45 0.5 rg 395 52 Td (Export genere le ${this.escapePdf(prov.timestamp.slice(0, 19))}) Tj ET`);
 
     const streamContent = lines.join('\n');
@@ -714,15 +713,16 @@ data:
   }
 
   /**
-   * 6. EXPORT PARQUET / NDJSON
+   * 6. EXPORT NDJSON (Newline Delimited JSON conforme pour ingestion DuckDB / Polars / Pandas)
    */
-  public static exportToParquetOrNdjson(options: ExportOptions): string {
+  public static exportToNdjson(options: ExportOptions): string {
     const prov = this.resolveProvenance(options);
     const { data } = options;
 
     const metadataHeader = {
       _meta: {
-        format: 'NDJSON_PARQUET_COMPLIANT',
+        format: 'NDJSON',
+        description: 'Flux tabulaire JSON délimité par saut de ligne (New-line Delimited JSON)',
         exportedAt: prov.timestamp,
         provenance: prov,
         recordCount: Array.isArray(data) ? data.length : 0
@@ -737,6 +737,25 @@ data:
     }
 
     return lines.join('\n');
+  }
+
+  /**
+   * Alias de compatibilité pour les interfaces existantes
+   */
+  public static exportToParquetOrNdjson(options: ExportOptions): string {
+    return this.exportToNdjson(options);
+  }
+
+  /**
+   * EXPORT PARQUET (Information d'absence de module WASM natif lourd côté client)
+   */
+  public static exportToParquet(options: ExportOptions): { status: string; message: string; format: string; ndjsonFallback: string } {
+    return {
+      status: 'PARQUET_NOT_INSTALLED',
+      format: 'PARQUET',
+      message: 'La sérialisation binaire Apache Parquet requiert une bibliothèque compilée native (Apache Arrow / DuckDB-wasm). Veuillez utiliser le format NDJSON (Newline Delimited JSON) directement compatible avec DuckDB read_ndjson(), Pandas read_json(lines=True) et Polars.',
+      ndjsonFallback: this.exportToNdjson(options)
+    };
   }
 
   /**

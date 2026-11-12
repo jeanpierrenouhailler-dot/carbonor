@@ -70,7 +70,10 @@ describe('Service de Cache & Persistance PWA (CacheService)', () => {
     expect(entry?.data).toEqual([410, 412]);
   });
 
-  it('génère et vérifie une empreinte d’intégrité (checksum) cryptographique déterministe', () => {
+  it('génère et vérifie une empreinte d’intégrité (checksum) cryptographique SHA-256 conforme', () => {
+    // Vecteur de référence officiel FIPS 180-4 : chaîne vide
+    expect(CacheService.sha256Hex('')).toBe('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855');
+
     const dataA = { station: 'MLO', co2: 421.3 };
     const dataB = { station: 'MLO', co2: 421.3 };
     const dataC = { station: 'MLO', co2: 422.0 };
@@ -79,7 +82,7 @@ describe('Service de Cache & Persistance PWA (CacheService)', () => {
     const hashB = CacheService.computeChecksum(dataB);
     const hashC = CacheService.computeChecksum(dataC);
 
-    expect(hashA).toMatch(/^sha256:[0-9a-f]{16}$/);
+    expect(hashA).toMatch(/^sha256:[0-9a-f]{64}$/);
     expect(hashA).toBe(hashB);
     expect(hashA).not.toBe(hashC);
   });

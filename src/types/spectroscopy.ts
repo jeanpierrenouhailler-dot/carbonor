@@ -26,6 +26,8 @@ export interface SpectralLine {
   lowerJ: number;              // J''
   branch: VibrationalBranch;   // P (ΔJ = -1), Q (ΔJ = 0), R (ΔJ = +1)
   bandDescription: string;     // ex: '15 µm (ν2 bending mode)' ou '4.3 µm (ν3 asymmetric stretch)'
+  origin?: 'SIMULATED' | 'HITRAN_ONLINE' | 'DEMO';
+  method?: string;
 }
 
 export type LineProfileType = 'Lorentz' | 'Doppler' | 'Voigt' | 'Pseudo-Voigt';

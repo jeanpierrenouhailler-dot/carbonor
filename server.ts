@@ -29,26 +29,29 @@ async function startServer() {
 
   app.use(express.json());
 
-  // Initialisation du pipeline de données réelles au démarrage
-  console.log('[Scientific Pipeline] Initialisation et synchronisation des données réelles NOAA & ICOS...');
-  try {
-    await NoaaDataPipeline.getMonthlyKeeling();
-    await NoaaDataPipeline.getDailyKeeling();
-    await NoaaDataPipeline.getErddapHourly('BRW');
-    await NoaaDataPipeline.getErddapHourly('SMO');
-    await NoaaDataPipeline.getErddapHourly('SPO');
-    await NoaaDataPipeline.getErddapHourly('MKO');
-    await NoaaDataPipeline.getErddapMonthly('BRW');
-    await NoaaDataPipeline.getErddapMonthly('SMO');
-    await NoaaDataPipeline.getErddapMonthly('SPO');
-    await NoaaDataPipeline.getErddapFlask('MHD');
-    await NoaaDataPipeline.getErddapFlask('CGO');
-    await NoaaDataPipeline.getErddapAircraftProfile();
-    await NasaOcoPipeline.getCmrGranules();
-    console.log('[Scientific Pipeline] Synchronisation NOAA, ICOS & NASA réussie avec succès !');
-  } catch (e) {
-    console.warn('[Scientific Pipeline] Initialisation avec données en cache disque:', e);
-  }
+  // Initialisation asynchrone non-bloquante du pipeline de données en arrière-plan
+  // Cela permet à app.listen() de démarrer immédiatement et de répondre sur le port 3000
+  setImmediate(async () => {
+    console.log('[Scientific Pipeline] Initialisation et synchronisation des données réelles NOAA & ICOS en arrière-plan...');
+    try {
+      await NoaaDataPipeline.getMonthlyKeeling();
+      await NoaaDataPipeline.getDailyKeeling();
+      await NoaaDataPipeline.getErddapHourly('BRW');
+      await NoaaDataPipeline.getErddapHourly('SMO');
+      await NoaaDataPipeline.getErddapHourly('SPO');
+      await NoaaDataPipeline.getErddapHourly('MKO');
+      await NoaaDataPipeline.getErddapMonthly('BRW');
+      await NoaaDataPipeline.getErddapMonthly('SMO');
+      await NoaaDataPipeline.getErddapMonthly('SPO');
+      await NoaaDataPipeline.getErddapFlask('MHD');
+      await NoaaDataPipeline.getErddapFlask('CGO');
+      await NoaaDataPipeline.getErddapAircraftProfile();
+      await NasaOcoPipeline.getCmrGranules();
+      console.log('[Scientific Pipeline] Synchronisation NOAA, ICOS & NASA réussie avec succès !');
+    } catch (e) {
+      console.warn('[Scientific Pipeline] Initialisation avec données en cache disque:', e);
+    }
+  });
 
   // ==========================================
   // ROUTES API SCIENTIFIQUES (/api/*)

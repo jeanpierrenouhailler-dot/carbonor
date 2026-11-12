@@ -38,9 +38,9 @@ export const DataProvenanceModal: React.FC<DataProvenanceModalProps> = ({
 
   if (!provenance) return null;
 
-  const isRealData = provenance.dataMode 
-    ? provenance.dataMode === 'REAL_DATA' 
-    : (provenance.isRealData !== false && globalMode === 'REAL_DATA');
+  const isRealData = provenance.origin 
+    ? (provenance.origin === 'LIVE_REMOTE' || provenance.origin === 'REMOTE_CACHED' || provenance.origin === 'LOCAL_ARCHIVE')
+    : (provenance.dataMode === 'REAL_DATA' || (provenance.isRealData === true && globalMode === 'REAL_DATA'));
 
   const provEffective: DataProvenance = {
     ...provenance,
@@ -67,6 +67,22 @@ export const DataProvenanceModal: React.FC<DataProvenanceModalProps> = ({
   const ageDays = provenance.cacheAgeDays !== undefined 
     ? provenance.cacheAgeDays 
     : CacheService.calculateAgeDays(provenance.retrievedAt || provenance.downloadedAt);
+
+  const getOriginBadge = (origin?: string) => {
+    switch (origin) {
+      case 'LIVE_REMOTE':
+        return <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-950 text-emerald-300 border border-emerald-500/40">📡 LIVE REMOTE (API)</span>;
+      case 'REMOTE_CACHED':
+        return <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-cyan-950 text-cyan-300 border border-cyan-500/40">💾 REMOTE CACHED</span>;
+      case 'LOCAL_ARCHIVE':
+        return <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-950 text-blue-300 border border-blue-500/40">🗄️ LOCAL ARCHIVE</span>;
+      case 'SIMULATED':
+        return <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-purple-950 text-purple-300 border border-purple-500/40">⚙️ PHYSIQUE SIMULÉE</span>;
+      case 'DEMO':
+      default:
+        return <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-950 text-amber-300 border border-amber-500/40">🟡 FIXTURE DEMO</span>;
+    }
+  };
 
   const getQualityBadge = (q: string) => {
     switch (q.toUpperCase()) {
@@ -143,33 +159,35 @@ export const DataProvenanceModal: React.FC<DataProvenanceModalProps> = ({
         </div>
 
         {/* Statut Métrologique Strict : Mode Démonstration vs Mode Données Réelles */}
-        {isRealData ? (
-          <div className="p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-200 flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2.5">
-              <span className="text-xl">🟢</span>
-              <div>
-                <div className="text-xs font-bold font-mono text-emerald-400">MODE DONNÉES RÉELLES</div>
-                <div className="text-[11px] text-emerald-300/80">Données récupérées auprès de la source officielle.</div>
+        <div className="space-y-2">
+          {isRealData ? (
+            <div className="p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-200 flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <span className="text-xl">🟢</span>
+                <div>
+                  <div className="text-xs font-bold font-mono text-emerald-400">MODE DONNÉES RÉELLES</div>
+                  <div className="text-[11px] text-emerald-300/80">Données issues d'observations certifiées auprès de la source officielle.</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                {getOriginBadge(provenance.origin)}
               </div>
             </div>
-            <span className="px-2.5 py-1 rounded text-[10px] font-mono font-bold bg-emerald-900/60 border border-emerald-600/50 text-emerald-300">
-              SOURCE OFFICIELLE
-            </span>
-          </div>
-        ) : (
-          <div className="p-3.5 rounded-xl bg-amber-950/40 border border-amber-500/40 text-amber-200 flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2.5">
-              <span className="text-xl">🟡</span>
-              <div>
-                <div className="text-xs font-bold font-mono text-amber-400">MODE DÉMONSTRATION</div>
-                <div className="text-[11px] text-amber-300/80">Données d'exemple / fixtures scientifiques embarquées.</div>
+          ) : (
+            <div className="p-3.5 rounded-xl bg-amber-950/40 border border-amber-500/40 text-amber-200 flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <span className="text-xl">🟡</span>
+                <div>
+                  <div className="text-xs font-bold font-mono text-amber-400">MODE DÉMONSTRATION</div>
+                  <div className="text-[11px] text-amber-300/80">Données d'exemple / fixtures scientifiques embarquées ou calcul physique simulé.</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                {getOriginBadge(provenance.origin)}
               </div>
             </div>
-            <span className="px-2.5 py-1 rounded text-[10px] font-mono font-bold bg-amber-900/60 border border-amber-600/50 text-amber-300">
-              FIXTURE EMBARQUÉE
-            </span>
-          </div>
-        )}
+          )}
+        </div>
 
         {/* Highlighted Traceability Certificate */}
         <div className="p-4 rounded-xl bg-gradient-to-br from-cyan-950/40 via-slate-900/60 to-blue-950/40 border border-cyan-500/30 text-cyan-100 space-y-2">
@@ -179,7 +197,7 @@ export const DataProvenanceModal: React.FC<DataProvenanceModalProps> = ({
               Constat d'intégrité métrologique
             </span>
             <span className="text-[10px] font-mono text-cyan-300/80 bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-500/30">
-              ISO/IEC 17025 Conformité
+              Traçabilité Métrologique WMO
             </span>
           </div>
           <p className="text-sm font-mono font-semibold text-white leading-relaxed bg-slate-950/80 p-3 rounded-lg border border-slate-800">
@@ -277,7 +295,7 @@ export const DataProvenanceModal: React.FC<DataProvenanceModalProps> = ({
               )}
             </div>
             <div className="p-2.5 rounded-lg bg-slate-900 border border-slate-800 text-cyan-300 font-mono text-xs break-all flex items-center justify-between">
-              <span>{provenance.checksum || 'sha256:8b4f1c90a2e7d36b (Vérification automatique)'}</span>
+              <span>{provenance.checksum || 'Empreinte non calculée'}</span>
             </div>
           </div>
 

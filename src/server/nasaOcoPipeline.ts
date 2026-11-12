@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import https from 'https';
 import { XCO2Observation } from '../types/observation.ts';
+import { CacheService } from '../providers/cacheService.ts';
 
 export interface CmrGranuleItem {
   id: string;
@@ -25,6 +26,7 @@ export interface OcoSoundingsFilter {
   minLon?: number;
   maxLon?: number;
   footprint?: number;
+  dataMode?: 'DEMO' | 'REAL_DATA';
 }
 
 export interface PipelineStageStatus {
@@ -219,24 +221,33 @@ export class NasaOcoPipeline {
     });
 
     // Étape 7 : Enrichissement métrologique de traçabilité complète
-    let retrievedAt = '2026-10-04T21:37:00.000Z';
+    let retrievedAt = new Date().toISOString();
+    let fileFound = false;
     try {
       const primaryFile = path.join(this.CACHE_DIR, 'oco2_l2_lite_europe_france.json');
       if (fs.existsSync(primaryFile)) {
         retrievedAt = fs.statSync(primaryFile).mtime.toISOString();
+        fileFound = true;
       }
     } catch {}
 
     const cacheAgeDays = Math.max(0, Math.floor((Date.now() - new Date(retrievedAt).getTime()) / (1000 * 60 * 60 * 24)));
+    const freshness: 'FRESH' | 'STALE' | 'EXPIRED' = cacheAgeDays <= 7 ? 'FRESH' : (cacheAgeDays <= 30 ? 'STALE' : 'EXPIRED');
+    const isDemo = filter.dataMode === 'DEMO';
+    const origin = isDemo ? 'DEMO' : (fileFound ? 'REMOTE_CACHED' : 'LOCAL_ARCHIVE');
 
     return soundings.map(s => {
-      const idSeed = `${s.observationId || s.soundingId || ''}-${s.latitude}-${s.longitude}`;
-      let hash = 0x811c9dc5;
-      for (let i = 0; i < idSeed.length; i++) {
-        hash ^= idSeed.charCodeAt(i);
-        hash = Math.imul(hash, 0x01000193);
-      }
-      const hex = (hash >>> 0).toString(16).padStart(8, '0');
+      // Calcul d'un véritable SHA-256 FIPS 180-4 sur le tuple de mesure
+      const soundingPayload = {
+        id: s.observationId || s.soundingId,
+        sat: s.satellite,
+        lat: s.latitude,
+        lon: s.longitude,
+        time: s.timestamp,
+        xco2: s.xco2,
+        qf: s.qualityFlag
+      };
+      const realSha256 = CacheService.computeChecksum(soundingPayload);
 
       return {
         ...s,
@@ -244,6 +255,8 @@ export class NasaOcoPipeline {
           ...s.provenance,
           source: 'NASA Earthdata / OCO-2 Science Team',
           dataset: s.granuleTitle || s.provenance?.dataset || 'OCO-2 Level 2 Daily Lite Diagnostic XCO2 (B11.3r)',
+          origin,
+          freshness,
           version: s.productVersion || s.provenance?.version || 'v11.3r Lite',
           observedAt: s.timestamp,
           downloadedAt: retrievedAt,
@@ -251,21 +264,28 @@ export class NasaOcoPipeline {
           validFrom: s.timestamp,
           validTo: s.timestamp,
           expiresAt: new Date(new Date(retrievedAt).getTime() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-          checksum: `sha256:${hex}fa3b7c29`,
+          checksum: realSha256,
+          fileChecksum: realSha256.replace('sha256:', ''),
+          checksumAlgorithm: 'SHA-256' as const,
           requestParameters: {
             track: filter.track || 'Europe-France',
             qualityFlag: filter.qualityFlag || 'ALL',
             satellite: filter.satellite || 'ALL',
-            footprint: filter.footprint
+            footprint: filter.footprint,
+            dataMode: filter.dataMode || 'REAL_DATA'
           },
           quality: s.qualityFlag === '0' ? 'GOOD' : 'CAUTION',
+          qualityStatus: s.qualityFlag === '0' ? 'Assimilation Grade (Flag 0)' : 'Caution / Filtered (Flag 1)',
           cacheAgeDays,
-          isRealData: true,
+          isRealData: !isDemo,
+          dataMode: isDemo ? 'DEMO' : 'REAL_DATA',
           license: 'NASA Open Data Policy (Free & Open Access)',
           url: s.provenance?.url || 'https://disc.gsfc.nasa.gov/datacollection/OCO2_L2_Lite_FP_11.3r.html',
           doi: '10.5067/EWSGQD2MI070',
           method: s.provenance?.method || 'ACOS Optimal Estimation retrieval on 0.76 µm (O2-A), 1.61 µm (WCO2), and 2.06 µm (SCO2) grating spectrometers',
-          citation: s.provenance?.citation || 'Crisp, D., et al. (2025). The Orbiting Carbon Observatory (OCO-2) and OCO-3 XCO2 retrieval algorithm and validation.'
+          citation: s.provenance?.citation || 'Crisp, D., et al. (2025). The Orbiting Carbon Observatory (OCO-2) and OCO-3 XCO2 retrieval algorithm and validation.',
+          isValidated: s.qualityFlag === '0',
+          validationMessages: s.qualityFlag === '0' ? ['Validé ACOS v11.3r Quality Flag 0'] : ['Attention : signal filtré ou forte couverture aérosols/nuages']
         }
       };
     });

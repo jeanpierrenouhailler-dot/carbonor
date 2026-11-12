@@ -272,7 +272,9 @@ function generateEssentialHitranLines(): SpectralLine[] {
               upperJ: jUpper,
               lowerJ: jLower,
               branch: 'P',
-              bandDescription: band.name
+              bandDescription: band.name,
+              origin: 'SIMULATED',
+              method: 'Dunham-Hamiltonian semi-empirical model (HITRAN 2020 constants)'
             });
           }
         }
@@ -311,7 +313,9 @@ function generateEssentialHitranLines(): SpectralLine[] {
               upperJ: jUpper,
               lowerJ: jLower,
               branch: 'Q',
-              bandDescription: band.name
+              bandDescription: band.name,
+              origin: 'SIMULATED',
+              method: 'Dunham-Hamiltonian semi-empirical model (HITRAN 2020 constants)'
             });
           }
         }
@@ -350,7 +354,9 @@ function generateEssentialHitranLines(): SpectralLine[] {
               upperJ: jUpper,
               lowerJ: jLower,
               branch: 'R',
-              bandDescription: band.name
+              bandDescription: band.name,
+              origin: 'SIMULATED',
+              method: 'Dunham-Hamiltonian semi-empirical model (HITRAN 2020 constants)'
             });
           }
         }

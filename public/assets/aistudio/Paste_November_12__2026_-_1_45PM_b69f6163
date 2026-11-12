@@ -1,0 +1,1196 @@
+# PROMPT CODEX — CARBONOR
+## Fiabilisation scientifique, intégrité des données, fournisseurs atmosphériques et validation technique
+
+**Dépôt GitHub :** https://github.com/jeanpierrenouhailler-dot/carbonor  
+**Branche de référence :** `main`  
+**Nature du projet :** PWA scientifique consacrée au CO₂ atmosphérique, à la spectroscopie infrarouge et au cycle du carbone.
+
+---
+
+# 1. MISSION GÉNÉRALE
+
+Tu interviens sur le dépôt existant Carbonor.
+
+Ta mission consiste à réaliser un audit technique et scientifique approfondi, puis à corriger les problèmes identifiés concernant :
+
+1. La fiabilité des données atmosphériques.
+2. La synchronisation réelle des fournisseurs NOAA, NASA OCO-2/OCO-3, ICOS et CAMS.
+3. La distinction entre données réelles, données mises en cache, simulations et données de démonstration.
+4. La traçabilité et l'intégrité cryptographique des données.
+5. La fiabilité des calculs spectroscopiques et physiques.
+6. La conformité réelle des formats d'export.
+7. La cohérence du fonctionnement hors ligne de la PWA.
+8. Les tests automatisés, les tests d'intégration et la validation scientifique.
+
+**Objectif final :** Carbonor doit pouvoir présenter des données et des résultats scientifiques avec un niveau de transparence et de traçabilité suffisant pour qu'un utilisateur puisse comprendre leur origine, leur méthode de production, leur fraîcheur et leurs limites.
+
+Il ne faut pas se contenter de modifier les textes ou les indicateurs de l'interface pour donner l'impression que les problèmes sont résolus. Les corrections doivent porter sur le fonctionnement réel de l'application.
+
+# 2. RÈGLES IMPÉRATIVES
+
+Avant toute modification :
+
+- Examiner le dépôt dans son état actuel, notamment les éventuelles corrections déjà apportées.
+- Lire les fichiers concernés et comprendre leur fonctionnement.
+- Identifier les dépendances, les routes API, les fournisseurs, les services, les modèles de données et les tests existants.
+- Vérifier les documentations officielles des API utilisées et leurs modalités d'accès.
+- Ne pas supposer que les anomalies relevées dans un audit précédent sont toujours présentes.
+- Ne pas réécrire inutilement des modules qui fonctionnent déjà correctement.
+- Préserver l'architecture, les fonctionnalités et l'identité visuelle existantes.
+
+Pendant les modifications :
+
+- Ne jamais remplacer une donnée indisponible par une valeur inventée.
+- Ne jamais présenter une donnée simulée comme une mesure réelle.
+- Ne jamais déclarer une synchronisation réussie si seules des métadonnées ont été récupérées.
+- Ne jamais déclarer un export conforme à un format si le fichier produit ne respecte pas ce format.
+- Ne jamais fabriquer un checksum SHA-256.
+- Ne jamais afficher une certification, une signature numérique ou une conformité normative non démontrée.
+- Conserver les fonctionnalités existantes lorsqu'elles sont fiables.
+- Prévoir des erreurs explicites et compréhensibles en cas d'indisponibilité d'une source.
+
+En cas d'impossibilité technique ou d'accès à une API, documenter précisément la limitation. Ne pas inventer une solution de remplacement.
+
+# 3. PHASE 1 — AUDIT INITIAL DU DÉPÔT
+
+Avant de coder, réaliser un audit de l'état actuel du projet.
+
+Examiner en priorité les fichiers suivants, s'ils existent toujours :
+
+| Domaine | Fichiers à examiner |
+|---|---|
+| NASA OCO | `src/server/nasaOcoPipeline.ts` |
+| Fournisseur OCO | `src/providers/ocoProvider.ts` |
+| ICOS | `src/server/icosPipeline.ts` |
+| CAMS | `src/server/camsPipeline.ts` |
+| NOAA | `src/server/noaaPipeline.ts` |
+| HITRAN | `src/scientific/hitranData.ts` |
+| Cache | `src/providers/cacheService.ts` |
+| Mode de données | `src/context/DataModeContext.tsx` |
+| Export | `src/services/scientificExportService.ts` |
+| Provenance | `DataProvenanceModal.tsx` et composants associés |
+| PWA | Configuration Workbox, service worker, manifest et stratégies de cache |
+
+Rechercher également :
+
+- Toutes les routes API associées aux fournisseurs.
+- Les fichiers JSON contenant des données d'exemple ou des observations préchargées.
+- Les valeurs numériques codées en dur dans les pipelines.
+- Les fonctions de synchronisation.
+- Les fonctions de calcul et d'interpolation.
+- Les composants qui affichent la provenance.
+- Les mécanismes de gestion des erreurs.
+- Les tests existants et les éventuelles lacunes de couverture.
+
+Produire un tableau d'audit :
+
+| Exigence | État constaté | Fichiers concernés | Correction nécessaire |
+|---|---|---|---|
+| Synchronisation NASA | À vérifier | ... | ... |
+| Synchronisation ICOS | À vérifier | ... | ... |
+| Synchronisation CAMS | À vérifier | ... | ... |
+| SHA-256 réel | À vérifier | ... | ... |
+| Mode DEMO / REAL_DATA | À vérifier | ... | ... |
+| HITRAN authentique | À vérifier | ... | ... |
+| Export Parquet | À vérifier | ... | ... |
+| Export NetCDF | À vérifier | ... | ... |
+| Signature numérique | À vérifier | ... | ... |
+
+Ne pas passer directement aux corrections sans avoir établi cet état des lieux.
+
+# 4. PHASE 2 — FIABILISATION DES FOURNISSEURS DE DONNÉES
+
+## 4.1 NOAA — Conserver et renforcer l'implémentation existante
+
+Le pipeline NOAA constitue une base de référence pour les autres fournisseurs.
+
+Examiner `src/server/noaaPipeline.ts`.
+
+Vérifier :
+
+- L'accès réel aux données NOAA GML.
+- Le téléchargement du fichier source.
+- Le parsing des observations.
+- La gestion des valeurs manquantes.
+- La validation des unités.
+- La gestion des dates.
+- La conservation de l'URL source.
+- La date effective de récupération.
+- Le comportement en cas d'indisponibilité du serveur.
+- La mise en cache et l'expiration du cache.
+
+Améliorer si nécessaire :
+
+- Validation des données entrantes.
+- Détection des fichiers incomplets ou corrompus.
+- Gestion des erreurs réseau.
+- Conservation des métadonnées de provenance.
+- Tests automatisés sur les fichiers NOAA.
+
+Ne pas dégrader le fonctionnement actuel si les tests démontrent qu'il est correct.
+
+## 4.2 NASA OCO-2 / OCO-3 — Récupération réelle des observations
+
+Fichier principal à examiner :
+
+`src/server/nasaOcoPipeline.ts`
+
+Fournisseur associé :
+
+`src/providers/ocoProvider.ts`
+
+### Problème à résoudre
+
+La récupération des métadonnées du catalogue NASA CMR ne suffit pas à démontrer que les observations scientifiques ont été téléchargées.
+
+L'application doit distinguer clairement :
+
+- La recherche de granules dans le catalogue.
+- La récupération des métadonnées.
+- Le téléchargement des fichiers scientifiques.
+- L'extraction des observations.
+- La validation des observations.
+- Leur intégration dans Carbonor.
+
+### Travail demandé
+
+Mettre en place un véritable pipeline de récupération des données OCO-2 et OCO-3.
+
+Étapes :
+
+1. Interroger le catalogue NASA CMR.
+2. Identifier les granules correspondant aux collections et produits pertinents.
+3. Récupérer leurs métadonnées.
+4. Obtenir les URL de téléchargement autorisées.
+5. Télécharger effectivement les fichiers scientifiques L2 Lite compatibles.
+6. Vérifier leur intégrité.
+7. Extraire les variables scientifiques nécessaires.
+8. Convertir les données dans le modèle interne Carbonor.
+9. Valider les valeurs et les unités.
+10. Enregistrer la provenance complète.
+11. Mettre les observations en cache.
+12. Exposer les observations via les routes API existantes.
+
+Examiner la documentation officielle NASA OCO pour identifier les produits, versions, formats, variables et modalités d'accès appropriés.
+
+Ne pas présumer que toutes les collections ont les mêmes formats ou les mêmes variables.
+
+### Données à conserver lorsque disponibles
+
+- Identifiant du granule.
+- Satellite : OCO-2 ou OCO-3.
+- Version du produit.
+- Date et heure de l'observation.
+- Latitude et longitude.
+- XCO₂.
+- Indicateurs de qualité.
+- Variables complémentaires utiles.
+- Unités.
+- URL de la source.
+- Date de téléchargement.
+- Empreinte SHA-256 du fichier original.
+
+Les observations invalides ou rejetées par les indicateurs qualité ne doivent pas être présentées comme des observations valides.
+
+### Gestion des accès
+
+Si certains produits nécessitent une authentification :
+
+- Utiliser le mécanisme officiel prévu par la NASA.
+- Prévoir les variables d'environnement nécessaires.
+- Ne jamais intégrer de secret dans le code frontend.
+- Documenter les procédures de configuration.
+- Ne pas contourner les restrictions d'accès.
+
+### Suppression des fausses garanties
+
+Supprimer toute attribution automatique `isRealData: true` lorsque la donnée ne provient pas d'un fichier scientifique authentiquement récupéré et validé.
+
+Supprimer les dates de récupération figées, notamment les valeurs par défaut historiques telles que `2026-10-04T21:37:00.000Z`.
+
+La date doit correspondre à la récupération effective.
+
+Un fichier local historique peut rester exploitable, mais doit être identifié comme donnée locale archivée ou préchargée, avec sa date d'origine et sa provenance.
+
+## 4.3 ICOS — Synchronisation effective des observations
+
+Fichier principal :
+
+`src/server/icosPipeline.ts`
+
+### Problème à résoudre
+
+Une vérification de disponibilité du serveur SPARQL ne constitue pas une synchronisation des observations scientifiques.
+
+### Travail demandé
+
+Mettre en œuvre une véritable récupération des données depuis les services ICOS disponibles et documentés.
+
+Étapes :
+
+1. Identifier les stations et produits accessibles.
+2. Interroger les services officiels.
+3. Récupérer les métadonnées des observations.
+4. Télécharger les fichiers ou données scientifiques lorsque disponibles.
+5. Parser les formats réellement utilisés.
+6. Valider les observations.
+7. Normaliser les unités.
+8. Conserver les informations de station.
+9. Mettre à jour le cache.
+10. Enregistrer la provenance.
+
+Pour chaque observation, conserver autant que possible :
+
+- Identifiant de station.
+- Nom de station.
+- Coordonnées.
+- Type de mesure.
+- Valeur.
+- Unité.
+- Date de mesure.
+- Instrument ou méthode si disponible.
+- Version ou identifiant du produit.
+- URL source.
+- Date de récupération.
+- Qualité ou statut de validation.
+
+### Valeurs de remplacement
+
+Supprimer les valeurs numériques hardcodées utilisées pour simuler une station opérationnelle.
+
+Une station indisponible doit afficher un état explicite :
+
+- SOURCE_INDISPONIBLE
+- DONNEES_EN_CACHE
+- DONNEES_PERIMEES
+- DONNEES_ARCHIVEES
+
+Ne jamais afficher une valeur fictive avec un état `ONLINE`.
+
+## 4.4 CAMS — Récupération effective des données atmosphériques
+
+Fichier principal :
+
+`src/server/camsPipeline.ts`
+
+### Problème à résoudre
+
+La récupération du catalogue Copernicus ADS ne signifie pas que les données atmosphériques utilisées par Carbonor ont été téléchargées.
+
+### Travail demandé
+
+Mettre en place une véritable récupération des produits CAMS nécessaires aux fonctionnalités existantes.
+
+Identifier précisément :
+
+- Les jeux de données utilisés.
+- Les collections disponibles.
+- Les variables atmosphériques.
+- Les niveaux verticaux.
+- Les unités.
+- Les résolutions spatiales et temporelles.
+- Les modalités d'accès.
+- Les formats de fichiers.
+
+Lorsque les produits sont accessibles, récupérer effectivement les fichiers scientifiques NetCDF, GRIB ou autres formats documentés.
+
+Extraire et valider les variables nécessaires aux fonctionnalités Carbonor :
+
+- Concentration de CO₂ lorsque le produit la fournit.
+- Profils verticaux.
+- Champs atmosphériques.
+- Variables nécessaires aux calculs de flux ou aux comparaisons.
+- Informations temporelles et spatiales.
+
+Attention : ne pas attribuer à CAMS une variable qui n'existe pas dans le produit récupéré.
+
+Pour chaque variable :
+
+- Vérifier son nom dans le fichier source.
+- Vérifier son unité.
+- Vérifier ses dimensions.
+- Vérifier ses coordonnées.
+- Vérifier ses niveaux verticaux.
+- Vérifier ses valeurs manquantes.
+
+### Flux et inversions
+
+Ne pas assimiler automatiquement :
+
+- Concentration atmosphérique.
+- Émission.
+- Flux.
+- Inversion de flux.
+
+Ces grandeurs sont différentes et doivent être identifiées correctement.
+
+Si une grandeur est calculée par Carbonor à partir de plusieurs sources, la présenter comme un résultat dérivé, avec la méthode et les hypothèses utilisées.
+
+### Accès Copernicus
+
+Utiliser les procédures officielles d'accès à Copernicus Climate Data Store / Atmosphere Data Store selon le produit.
+
+Prévoir :
+
+- Configuration des identifiants.
+- Variables d'environnement.
+- Gestion des téléchargements.
+- Gestion des tâches asynchrones.
+- Reprise après erreur.
+- Limitation des téléchargements.
+- Cache local.
+- Documentation d'installation.
+
+Ne jamais prétendre qu'un téléchargement est effectué lorsque seul le catalogue a été consulté.
+
+# 5. PHASE 3 — MODÈLE CENTRAL DE PROVENANCE ET DE QUALITÉ
+
+Mettre en place un modèle homogène de provenance pour toutes les sources.
+
+L'objectif est que toutes les données de Carbonor utilisent le même système de qualification.
+
+Créer ou adapter un modèle typé équivalent à :
+
+```ts
+type DataOrigin =
+  | "LIVE_REMOTE"
+  | "REMOTE_CACHED"
+  | "LOCAL_ARCHIVE"
+  | "SIMULATED"
+  | "DEMO";
+
+type DataFreshness =
+  | "FRESH"
+  | "STALE"
+  | "EXPIRED"
+  | "UNKNOWN";
+
+interface DataProvenance {
+  source: string;
+  origin: DataOrigin;
+  freshness: DataFreshness;
+
+  sourceUrl?: string;
+  productId?: string;
+  datasetVersion?: string;
+  granuleId?: string;
+
+  observationDate?: string;
+  retrievedAt?: string;
+
+  fileChecksum?: string;
+  checksumAlgorithm?: "SHA-256";
+
+  processingMethod?: string;
+  processingVersion?: string;
+
+  unit?: string;
+  qualityStatus?: string;
+
+  isValidated: boolean;
+  validationMessages: string[];
+}
+```
+
+Adapter ce modèle aux besoins réels du projet.
+
+Ne pas multiplier les structures concurrentes.
+
+### Règles de qualification
+
+| Situation réelle | Origine |
+|---|---|
+| Observation récupérée auprès du fournisseur | LIVE_REMOTE |
+| Observation réelle précédemment téléchargée et servie depuis le cache | REMOTE_CACHED |
+| Observation historique fournie localement | LOCAL_ARCHIVE |
+| Résultat issu d'un calcul ou d'une simulation | SIMULATED |
+| Jeu de données de démonstration | DEMO |
+
+La qualification `LIVE_REMOTE` ne doit être attribuée qu'après récupération effective et validation de la donnée.
+
+La présence d'une donnée dans un fichier JSON local ne suffit pas à la qualifier de donnée temps réel.
+
+### Fraîcheur
+
+Mettre en place une politique de fraîcheur adaptée à chaque source.
+
+Ne pas appliquer arbitrairement le même délai d'expiration à NOAA, ICOS, NASA et CAMS.
+
+Chaque fournisseur doit définir :
+
+- La fréquence habituelle de mise à jour.
+- Le délai de fraîcheur acceptable.
+- Le délai après lequel les données deviennent périmées.
+- Le comportement en cas d'indisponibilité.
+
+La fraîcheur d'une donnée doit être calculée à partir de dates réelles et de règles documentées.
+
+# 6. PHASE 4 — MODE REAL_DATA / DEMO
+
+Examiner :
+
+`src/context/DataModeContext.tsx`
+
+### Objectif
+
+Le mode choisi par l'utilisateur doit réellement contrôler toutes les sources de données.
+
+Le stockage d'une préférence dans LocalStorage et l'envoi d'un POST `/api/mode` ne suffisent pas.
+
+### Mode REAL_DATA
+
+- Utiliser exclusivement les données réelles disponibles.
+- Autoriser les données réelles en cache avec un statut explicite.
+- Autoriser les archives réelles avec une date historique clairement indiquée.
+- Ne jamais injecter de valeurs de démonstration.
+- Ne jamais remplacer silencieusement une source indisponible par une simulation.
+- Afficher les erreurs et les limites de disponibilité.
+
+Si une source est indisponible, afficher un état explicite plutôt qu'une valeur inventée.
+
+### Mode DEMO
+
+- Utiliser les jeux de démonstration.
+- Identifier toutes les données comme DEMO.
+- Afficher clairement un indicateur de mode démonstration.
+- Ne jamais mélanger silencieusement données réelles et données fictives.
+- Conserver une séparation nette entre les deux modes.
+
+### Sécurité et cohérence
+
+Le mode doit être transmis et vérifié côté serveur.
+
+Ne pas faire confiance uniquement à une valeur fournie par le frontend.
+
+Éviter qu'une route API contourne le mode sélectionné.
+
+Créer des tests vérifiant qu'aucune donnée DEMO ne peut être présentée comme réelle en mode REAL_DATA.
+
+# 7. PHASE 5 — INTÉGRITÉ CRYPTOGRAPHIQUE SHA-256
+
+Examiner :
+
+- `src/providers/cacheService.ts`
+- `src/server/nasaOcoPipeline.ts`
+- Les composants de provenance.
+- Les services d'export.
+
+### Problème à résoudre
+
+Les fonctions de hash fondées sur un entier 32 bits ou sur une concaténation artificielle ne constituent pas des SHA-256.
+
+### Implémentation demandée
+
+Utiliser une véritable implémentation cryptographique.
+
+Côté Node.js :
+
+```ts
+import { createHash } from "node:crypto";
+
+const checksum = createHash("sha256")
+  .update(fileBytes)
+  .digest("hex");
+```
+
+Côté navigateur, si nécessaire, utiliser Web Crypto API :
+
+```ts
+const digest = await crypto.subtle.digest(
+  "SHA-256",
+  fileBytes
+);
+```
+
+Les octets doivent être ceux du fichier ou du contenu exact dont on annonce l'empreinte.
+
+### Exigences
+
+- Calculer le checksum sur les octets réels.
+- Enregistrer l'algorithme.
+- Conserver l'empreinte originale du fichier source.
+- Distinguer checksum du fichier source et checksum d'un fichier transformé.
+- Ne jamais utiliser un hash simplifié comme substitut.
+- Ne jamais fabriquer un suffixe pour obtenir une chaîne de 64 caractères.
+- Gérer les erreurs de calcul.
+- Ajouter des tests avec des vecteurs SHA-256 connus.
+
+Exemple de test :
+
+- Entrée : chaîne vide.
+- SHA-256 attendu : `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+
+La modal de provenance ne doit afficher un hash que lorsqu'il a réellement été calculé.
+
+Supprimer toute empreinte fictive par défaut.
+
+# 8. PHASE 6 — HITRAN ET VALIDATION DES CALCULS SPECTROSCOPIQUES
+
+Fichier principal :
+
+`src/scientific/hitranData.ts`
+
+### Problème à résoudre
+
+Les raies générées à partir de paramètres théoriques, de constantes rotationnelles et de coefficients approximatifs ne doivent pas être présentées comme des raies HITRAN authentiques.
+
+### Travail demandé
+
+Séparer clairement deux catégories :
+
+**A. Données HITRAN authentiques**
+
+- Raies issues d'une version identifiable de HITRAN.
+- Identifiants moléculaires.
+- Nombres d'onde.
+- Intensités.
+- Énergies des niveaux inférieurs.
+- Coefficients d'élargissement.
+- Dépendances thermiques.
+- Provenance et version de la base.
+
+**B. Raies simulées ou approximatives**
+
+- Générées par les algorithmes embarqués.
+- Paramètres utilisés.
+- Hypothèses physiques.
+- Limites de validité.
+- Mention explicite SIMULATED ou APPROXIMATED.
+
+### Accès HITRAN
+
+Étudier l'utilisation de HAPI (HITRAN Application Programming Interface) ou d'un mécanisme officiel de récupération des données HITRAN.
+
+Respecter :
+
+- Les modalités d'accès.
+- Les conditions d'utilisation.
+- Les licences.
+- Les limites de téléchargement.
+- La provenance des données.
+- Les versions utilisées.
+
+Ne pas intégrer une copie massive de données HITRAN sans vérifier les conditions applicables.
+
+### Calculs spectroscopiques
+
+Examiner et valider les implémentations existantes :
+
+- Loi de Beer-Lambert.
+- Élargissement Doppler.
+- Élargissement Lorentzien.
+- Profil de Voigt.
+- Intensité des raies.
+- Dépendance en température.
+- Sommes de partition.
+- Transitions P, Q et R.
+
+Ne pas supposer que les implémentations existantes sont erronées : les confronter à des références scientifiques et à des jeux de tests.
+
+### Validation
+
+Créer des tests numériques indépendants à partir de références documentées.
+
+Vérifier notamment :
+
+- Les unités.
+- Les ordres de grandeur.
+- Les conversions.
+- Les limites physiques.
+- La cohérence des profils.
+- Les cas limites.
+- La stabilité numérique.
+
+Pour les sommes de partition, utiliser les données et méthodes TIPS appropriées lorsque disponibles.
+
+Si une approximation est conservée, la documenter précisément et la signaler dans l'interface.
+
+### Interface
+
+Afficher clairement :
+
+- Source des raies.
+- Version de HITRAN.
+- Mode authentique ou simulé.
+- Méthode de calcul.
+- Hypothèses.
+- Limites scientifiques.
+
+Ne jamais employer les termes « raies HITRAN exactes » pour des raies générées approximativement.
+
+# 9. PHASE 7 — EXPORTS SCIENTIFIQUES CONFORMES
+
+Examiner :
+
+`src/services/scientificExportService.ts`
+
+### 9.1 NDJSON et Parquet
+
+La fonction `exportToParquetOrNdjson()` ne doit pas annoncer un export Parquet lorsqu'elle produit uniquement du NDJSON.
+
+Mettre en place deux fonctions distinctes :
+
+- `exportToNdjson()`
+- `exportToParquet()`
+
+Pour Parquet :
+
+- Utiliser une bibliothèque adaptée et maintenue.
+- Produire un véritable fichier Parquet.
+- Respecter le schéma des colonnes.
+- Conserver les types numériques et temporels.
+- Vérifier la compatibilité avec un lecteur Parquet indépendant.
+- Tester la lecture du fichier produit.
+
+Si une bibliothèque fiable n'est pas compatible avec l'architecture existante, conserver uniquement le NDJSON et documenter l'absence de Parquet.
+
+Ne pas produire un faux fichier Parquet.
+
+### 9.2 NetCDF
+
+Vérifier si l'export NetCDF génère actuellement un fichier binaire valide ou du texte CDL.
+
+Distinguer :
+
+- NetCDF binaire.
+- CDL (description textuelle d'un fichier NetCDF).
+
+Si le fichier produit est du CDL, le nommer et le présenter comme tel.
+
+Pour produire un vrai NetCDF :
+
+- Utiliser une bibliothèque adaptée.
+- Respecter le format NetCDF choisi.
+- Définir les dimensions.
+- Définir les variables.
+- Définir les unités.
+- Définir les coordonnées.
+- Définir les attributs de provenance.
+- Vérifier la lecture avec un outil indépendant compatible.
+
+### 9.3 GeoJSON
+
+Vérifier :
+
+- La validité du JSON.
+- La conformité GeoJSON.
+- Les coordonnées.
+- Le système de référence.
+- Les propriétés.
+- Les unités.
+- La provenance.
+
+Ne jamais substituer des coordonnées fictives à des coordonnées manquantes sans l'indiquer.
+
+### 9.4 PDF
+
+Conserver la génération PDF si elle fonctionne, mais supprimer les affirmations non démontrées telles que :
+
+- « Document scientifique certifié ».
+- « Signature numérique intégrée ».
+- « Conforme ISO 17025 ».
+
+Une signature numérique ne peut être annoncée que si une véritable signature cryptographique est réalisée et vérifiable.
+
+Si une signature est ajoutée ultérieurement :
+
+- Utiliser une véritable infrastructure cryptographique.
+- Identifier le signataire ou l'entité émettrice.
+- Documenter le mécanisme.
+- Permettre la vérification.
+- Ne pas confondre signature et checksum.
+
+Ne pas prétendre qu'un document est certifié ISO 17025 sans démarche de certification appropriée.
+
+### 9.5 Métadonnées communes
+
+Tous les exports doivent contenir autant que possible :
+
+- Nom de la source.
+- Identifiant du jeu de données.
+- Version.
+- Date d'observation.
+- Date de récupération.
+- Unité.
+- Méthode de traitement.
+- Origine de la donnée.
+- État de validation.
+- Empreinte cryptographique lorsqu'elle existe.
+
+# 10. PHASE 8 — CACHE ET FONCTIONNEMENT HORS LIGNE
+
+Examiner les services de cache, les routes API et la configuration Workbox.
+
+### Objectif
+
+Distinguer le fonctionnement hors ligne de l'interface et la disponibilité hors ligne des données scientifiques.
+
+L'application ne doit pas laisser croire que toutes les API externes fonctionnent sans réseau.
+
+### Comportement attendu
+
+**En ligne :**
+
+- Récupération des nouvelles données.
+- Mise à jour du cache.
+- Enregistrement de la provenance.
+- Contrôle de la fraîcheur.
+- Gestion des erreurs.
+
+**Hors ligne :**
+
+- Affichage des ressources statiques disponibles.
+- Accès aux données déjà mises en cache.
+- Identification explicite des données anciennes.
+- Blocage ou désactivation des opérations nécessitant une connexion.
+- Conservation des données locales lorsque cela est possible.
+
+### Gestion du cache
+
+Mettre en place :
+
+- TTL configurable par source.
+- Horodatage de récupération.
+- Horodatage de dernière observation.
+- Version du jeu de données.
+- Gestion des erreurs.
+- Limitation de la taille du cache.
+- Suppression des données obsolètes selon des règles documentées.
+- Protection contre les réponses incomplètes.
+
+Ne jamais remplacer silencieusement une erreur réseau par une donnée fictive.
+
+### Interface
+
+Afficher clairement :
+
+- En ligne / hors ligne.
+- Dernière synchronisation.
+- Dernière observation disponible.
+- Données actuelles ou périmées.
+- Données disponibles hors ligne.
+- Sources momentanément indisponibles.
+
+# 11. PHASE 9 — ARCHITECTURE ET QUALITÉ DU CODE
+
+Profiter des corrections pour renforcer la cohérence de l'architecture.
+
+Créer si nécessaire une couche commune de gestion des fournisseurs.
+
+Chaque fournisseur doit idéalement exposer des opérations cohérentes :
+
+- `fetchMetadata()`
+- `fetchData()`
+- `parseData()`
+- `validateData()`
+- `normalizeData()`
+- `getProvenance()`
+- `getStatus()`
+
+Adapter ces noms à l'architecture existante plutôt que d'imposer une refonte inutile.
+
+Prévoir :
+
+- Des interfaces TypeScript communes.
+- Une gestion homogène des erreurs.
+- Des timeouts.
+- Des tentatives de reprise limitées.
+- Une limitation des requêtes.
+- Une journalisation exploitable.
+- Des validations de données.
+- Des messages d'erreur explicites.
+
+Les secrets et identifiants des fournisseurs doivent rester côté serveur.
+
+Ne jamais exposer les clés API dans le frontend, les logs publics ou les fichiers versionnés.
+
+# 12. PHASE 10 — TESTS ET VALIDATION
+
+Les tests doivent démontrer le fonctionnement réel des corrections.
+
+Créer ou compléter les catégories suivantes.
+
+## 12.1 Tests unitaires
+
+- Parsing NOAA.
+- Parsing NASA OCO.
+- Parsing ICOS.
+- Parsing CAMS.
+- Validation des unités.
+- Validation des coordonnées.
+- Validation des dates.
+- Calcul SHA-256.
+- Gestion des valeurs manquantes.
+- Gestion des données périmées.
+- Calculs spectraux.
+- Génération des exports.
+
+## 12.2 Tests d'intégration fournisseurs
+
+Pour chaque fournisseur :
+
+1. Tester la récupération des métadonnées.
+2. Tester le téléchargement des données lorsque l'accès le permet.
+3. Tester le parsing d'un fichier représentatif.
+4. Tester la validation.
+5. Tester la provenance.
+6. Tester les erreurs réseau.
+7. Tester les fichiers corrompus.
+8. Tester le cache.
+9. Tester les données historiques.
+
+Utiliser des fixtures authentiques et documentées pour les tests automatisés.
+
+Les tests simulant les réponses HTTP doivent être identifiés comme tests simulés. Ils ne prouvent pas à eux seuls qu'un fournisseur est actuellement accessible.
+
+Prévoir des tests réseau réels séparés, exécutables explicitement, sans rendre la suite de tests ordinaire dépendante de la disponibilité des fournisseurs externes.
+
+## 12.3 Tests des modes de données
+
+Vérifier :
+
+- REAL_DATA ne retourne jamais de données DEMO.
+- DEMO identifie explicitement les données fictives.
+- Une donnée en cache est correctement identifiée.
+- Une archive conserve sa date historique.
+- Une donnée périmée ne devient pas automatiquement une donnée actuelle.
+- Une source indisponible ne retourne pas une valeur inventée.
+
+## 12.4 Tests d'exports
+
+- Ouvrir les fichiers produits.
+- Vérifier leur format réel.
+- Vérifier leur schéma.
+- Vérifier les unités.
+- Vérifier les métadonnées.
+- Vérifier les checksums.
+- Tester la lecture avec des outils ou bibliothèques indépendants.
+
+## 12.5 Tests PWA
+
+- Installation.
+- Chargement initial.
+- Navigation.
+- Cache des ressources.
+- Fonctionnement hors ligne.
+- Restauration après reconnexion.
+- Données périmées.
+- Gestion des erreurs API.
+
+## 12.6 Validation des calculs scientifiques
+
+Créer des jeux de référence avec des valeurs attendues, des unités et une tolérance numérique justifiée.
+
+Chaque test doit documenter :
+
+- La source de référence.
+- La formule utilisée.
+- Les paramètres.
+- La valeur attendue.
+- La tolérance admise.
+
+Ne pas inventer des seuils de précision sans justification.
+
+# 13. PHASE 11 — DOCUMENTATION SCIENTIFIQUE ET TECHNIQUE
+
+Mettre à jour la documentation du dépôt.
+
+Créer ou compléter notamment :
+
+- `docs/DATA_PROVENANCE.md`
+- `docs/DATA_SOURCES.md`
+- `docs/NASA_OCO.md`
+- `docs/ICOS.md`
+- `docs/CAMS.md`
+- `docs/SPECTROSCOPY_VALIDATION.md`
+- `docs/EXPORT_FORMATS.md`
+- `docs/OFFLINE_MODE.md`
+- `docs/ENVIRONMENT_CONFIGURATION.md`
+
+Adapter les noms si le projet possède déjà une organisation documentaire cohérente.
+
+Pour chaque source scientifique, documenter :
+
+- Organisme fournisseur.
+- URL officielle.
+- Nom du produit.
+- Version.
+- Variables disponibles.
+- Unités.
+- Fréquence de mise à jour.
+- Résolution temporelle.
+- Résolution spatiale.
+- Méthode de téléchargement.
+- Restrictions d'accès.
+- Licence ou conditions d'utilisation.
+- Limites scientifiques.
+- Date de dernière vérification de la documentation.
+
+Ne pas annoncer une couverture scientifique supérieure à ce qui est effectivement disponible.
+
+# 14. PHASE 12 — INTERFACE ET TRANSPARENCE SCIENTIFIQUE
+
+Ne pas entreprendre une refonte graphique générale.
+
+Conserver l'identité visuelle existante de Carbonor.
+
+Modifier uniquement les composants nécessaires pour afficher correctement la provenance et les états des données.
+
+### Informations à rendre visibles
+
+Pour chaque visualisation scientifique, permettre à l'utilisateur de consulter :
+
+- Source.
+- Type de donnée.
+- Date de l'observation.
+- Date de récupération.
+- Version du produit.
+- Unité.
+- Méthode de calcul.
+- Qualité.
+- État du cache.
+- Statut de validation.
+
+Utiliser des libellés cohérents :
+
+- MESURÉ
+- OBSERVÉ
+- ESTIMÉ
+- MODÉLISÉ
+- SIMULÉ
+- ARCHIVÉ
+- EN CACHE
+- PÉRIMÉ
+
+Ne pas utiliser ces termes comme de simples badges décoratifs : ils doivent correspondre à la réalité du traitement.
+
+### Gestion des indisponibilités
+
+Prévoir des états d'interface clairs :
+
+- Source inaccessible.
+- Téléchargement en cours.
+- Téléchargement échoué.
+- Données disponibles en cache.
+- Données historiques.
+- Données non validées.
+- Aucune observation disponible.
+
+Ne jamais afficher un indicateur vert « ONLINE » si le service ne fait que répondre à une requête de catalogue ou de disponibilité sans fournir les données attendues.
+
+# 15. PHASE 13 — SÉCURITÉ ET PROTECTION DES DONNÉES
+
+Vérifier :
+
+- Les secrets dans les variables d'environnement.
+- L'absence de clés API dans les bundles frontend.
+- La validation des paramètres des routes API.
+- Les limites de taille des téléchargements.
+- Les types de fichiers acceptés.
+- La protection contre les fichiers malformés.
+- Les délais maximums de requêtes.
+- La gestion des erreurs sans divulgation de secrets.
+- Les protections contre les abus de synchronisation.
+- Les dépendances utilisées pour les fichiers scientifiques.
+
+Éviter de télécharger ou de parser sans limite des fichiers externes volumineux.
+
+Prévoir des limites configurables et des contrôles de sécurité.
+
+# 16. PHASE 14 — PRIORISATION DES TRAVAUX
+
+Respecter l'ordre suivant.
+
+## P0 — Fiabilité et honnêteté scientifique
+
+1. Corriger la qualification des données réelles.
+2. Fiabiliser le mode REAL_DATA / DEMO.
+3. Mettre en place une vraie récupération des observations NASA lorsque les accès le permettent.
+4. Mettre en place une vraie synchronisation ICOS.
+5. Mettre en place une vraie récupération des produits CAMS.
+6. Supprimer les valeurs de remplacement fictives présentées comme réelles.
+7. Implémenter les véritables SHA-256.
+8. Retirer les fausses mentions de certification et de signature.
+9. Corriger les déclarations trompeuses concernant les formats d'export.
+
+## P1 — Validité scientifique
+
+10. Séparer les raies HITRAN authentiques des raies approximatives.
+11. Valider les calculs Beer-Lambert, Doppler, Lorentz et Voigt.
+12. Vérifier les sommes de partition et les données TIPS.
+13. Vérifier les calculs CAMS, profils verticaux et flux.
+14. Harmoniser la provenance et la fraîcheur des données.
+15. Mettre en place les tests d'intégration des fournisseurs.
+
+## P2 — Robustesse et finition
+
+16. Améliorer le cache et le fonctionnement hors ligne.
+17. Corriger et compléter les exports scientifiques.
+18. Renforcer la documentation.
+19. Améliorer les messages d'erreur et les états d'interface.
+20. Effectuer un contrôle d'accessibilité WCAG 2.2 AA sur les composants modifiés.
+21. Effectuer un audit de sécurité et des dépendances.
+
+# 17. CRITÈRES D'ACCEPTATION
+
+Le travail ne sera considéré comme terminé que lorsque les conditions suivantes seront vérifiées.
+
+| ID | Critère | Résultat attendu |
+|---|---|---|
+| AC-01 | Mode REAL_DATA | Aucune donnée DEMO présentée comme réelle |
+| AC-02 | Mode DEMO | Toutes les données fictives clairement identifiées |
+| AC-03 | NASA OCO | Récupération effective ou indisponibilité explicitement documentée |
+| AC-04 | ICOS | Synchronisation effective ou indisponibilité explicitement documentée |
+| AC-05 | CAMS | Données scientifiques réellement récupérées ou indisponibilité documentée |
+| AC-06 | NOAA | Pipeline réel conservé et testé |
+| AC-07 | Provenance | Toutes les données possèdent une provenance cohérente |
+| AC-08 | SHA-256 | Empreintes cryptographiques authentiques |
+| AC-09 | HITRAN | Séparation entre données authentiques et simulations |
+| AC-10 | Calculs spectraux | Tests de référence documentés |
+| AC-11 | Parquet | Véritable fichier Parquet ou fonctionnalité explicitement absente |
+| AC-12 | NetCDF | Véritable fichier NetCDF ou export CDL correctement nommé |
+| AC-13 | PDF | Aucune certification ou signature fictive |
+| AC-14 | Cache | Les données périmées sont identifiées |
+| AC-15 | Offline | Les limites du fonctionnement hors ligne sont explicites |
+| AC-16 | Tests | Tous les tests applicables passent |
+| AC-17 | Build | Build de production sans erreur |
+| AC-18 | TypeScript | Aucun nouvel échec de typage |
+| AC-19 | Linter | Aucun nouvel échec du lint |
+| AC-20 | Documentation | Documentation cohérente avec le comportement réel |
+
+Une fonctionnalité impossible à valider ne doit pas être déclarée conforme.
+
+# 18. MÉTHODE DE TRAVAIL ATTENDUE
+
+Procéder par étapes, en conservant une application fonctionnelle à chaque étape.
+
+### Étape A — Audit
+
+- Examiner le code.
+- Établir l'état réel.
+- Identifier les corrections nécessaires.
+- Identifier les dépendances et les risques.
+- Produire un plan d'intervention.
+
+### Étape B — Architecture de provenance
+
+- Définir les types communs.
+- Harmoniser les états.
+- Corriger le mode REAL_DATA / DEMO.
+- Corriger les fonctions de hash.
+
+### Étape C — Fournisseurs
+
+Traiter successivement :
+
+1. NOAA.
+2. NASA OCO-2/OCO-3.
+3. ICOS.
+4. CAMS.
+
+Tester chaque pipeline avant de passer au suivant.
+
+### Étape D — Calculs scientifiques
+
+- HITRAN.
+- Spectroscopie.
+- Beer-Lambert.
+- Profils spectraux.
+- Validation numérique.
+
+### Étape E — Exports et cache
+
+- NDJSON.
+- Parquet.
+- NetCDF/CDL.
+- GeoJSON.
+- PDF.
+- Fonctionnement hors ligne.
+
+### Étape F — Validation finale
+
+- Tests unitaires.
+- Tests d'intégration.
+- Tests PWA.
+- Build.
+- TypeScript.
+- Linter.
+- Documentation.
+
+Ne pas supprimer ou désactiver un test pour faire artificiellement passer la suite.
+
+# 19. LIVRABLES OBLIGATOIRES
+
+À la fin de l'intervention, fournir :
+
+**1. Rapport d'audit initial**
+
+- Anomalies confirmées.
+- Anomalies déjà corrigées.
+- Anomalies non reproduites.
+- Nouveaux problèmes découverts.
+
+**2. Rapport des modifications**
+
+Pour chaque correction :
+
+- Fichier modifié.
+- Problème initial.
+- Correction réalisée.
+- Justification technique.
+- Impact sur les fonctionnalités.
+
+**3. Rapport scientifique**
+
+- Sources utilisées.
+- Produits réellement téléchargés.
+- Variables exploitées.
+- Unités.
+- Méthodes de calcul.
+- Limites et hypothèses.
+- Validations effectuées.
+
+**4. Rapport des tests**
+
+Indiquer les résultats réels :
+
+- Tests unitaires.
+- Tests d'intégration.
+- Tests fournisseurs.
+- Tests d'exports.
+- Tests hors ligne.
+- Build.
+- TypeScript.
+- Linter.
+
+Préciser les tests qui n'ont pas pu être exécutés.
+
+**5. Documentation**
+
+Mettre à jour les fichiers de documentation concernés.
+
+**6. Liste des limites restantes**
+
+Ne pas masquer les fonctionnalités qui restent partielles ou dépendantes d'identifiants externes.
+
+# 20. INSTRUCTIONS FINALES À CODEX
+
+Tu dois travailler sur le code réel du dépôt, pas seulement produire des recommandations.
+
+Commence par l'audit de l'état actuel, puis réalise les corrections dans l'ordre des priorités.
+
+Tu peux créer de nouveaux fichiers, modifier les fichiers existants, ajouter les dépendances nécessaires et compléter les tests, à condition de justifier les changements et de préserver l'architecture générale.
+
+Ne réalise pas de refonte graphique non nécessaire.
+
+Ne considère jamais une simple simulation d'API comme une preuve de synchronisation réelle.
+
+Ne considère jamais une réponse HTTP 200 comme une preuve que les observations scientifiques ont été téléchargées et validées.
+
+Ne transforme pas une limitation d'accès à une source en fausse réussite.
+
+Si une source nécessite des identifiants que tu ne possèdes pas, prépare l'intégration, documente les variables d'environnement et teste le comportement avec des fixtures authentiques. Indique clairement que la validation en production reste à effectuer.
+
+**Règle fondamentale : Carbonor doit préférer afficher « donnée indisponible » plutôt que d'afficher une valeur fictive présentée comme une mesure scientifique.**
+
+Le résultat recherché est une application scientifique fiable, transparente, reproductible et techniquement cohérente, et non une démonstration visuellement convaincante mais scientifiquement trompeuse.

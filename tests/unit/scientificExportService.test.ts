@@ -141,28 +141,31 @@ describe('Service d’Exportation Scientifique Multi-Formats (ScientificExportSe
     expect(pdfString).toContain('/Type /Catalog');
     expect(pdfString).toContain('/Type /Pages');
     expect(pdfString).toContain('/Type /Page');
-    expect(pdfString).toContain('CARBONOR - OBSERVATOIRE DU CO2 ATMOSPHERIQUE');
-    expect(pdfString).toContain('CERTIFICAT OFFICIEL DE TRACABILITE METROLOGIQUE');
+    expect(pdfString).toContain('RAPPORT SCIENTIFIQUE DE TRACABILITE ET AUDIT DES DONNEES');
     expect(pdfString).toContain('NOAA Global Monitoring Laboratory');
     expect(pdfString).toContain('10.15138/9N0H-ZH07');
     expect(pdfString).toContain('xref');
     expect(pdfString).toContain('%%EOF');
   });
 
-  it('6. Parquet / NDJSON : génère un flux avec en-tête de métadonnées _meta et lignes JSON', () => {
-    const ndjson = ScientificExportService.exportToParquetOrNdjson(exportOpts);
+  it('6. NDJSON & Parquet : génère un flux NDJSON conforme et documente le statut Parquet', () => {
+    const ndjson = ScientificExportService.exportToNdjson(exportOpts);
 
     const lines = ndjson.split('\n');
     expect(lines.length).toBe(3); // 1 meta + 2 records
 
     const meta = JSON.parse(lines[0]);
-    expect(meta._meta.format).toBe('NDJSON_PARQUET_COMPLIANT');
+    expect(meta._meta.format).toBe('NDJSON');
     expect(meta._meta.provenance.source).toBe('NOAA Global Monitoring Laboratory');
     expect(meta._meta.provenance.doi).toBe('10.15138/9N0H-ZH07');
     expect(meta._meta.provenance.checksum).toBe('sha256:9f2c4e1a8b3d7c50');
 
     const row1 = JSON.parse(lines[1]);
     expect(row1.value).toBe(425.32);
+
+    const parquetInfo = ScientificExportService.exportToParquet(exportOpts);
+    expect(parquetInfo.status).toBe('PARQUET_NOT_INSTALLED');
+    expect(parquetInfo.ndjsonFallback).toBeDefined();
   });
 
   it('7. JSON : embarque l’objet racine provenance avec tous les 8 champs requis', () => {

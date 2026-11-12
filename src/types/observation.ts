@@ -12,27 +12,54 @@ export type ScientificDataCategory =
   | 'MODELED'    // Réanalyse et assimilation numérique 3D (Copernicus CAMS, ECMWF IFS)
   | 'SIMULATED'; // Transfert radiatif théorique raie-par-raie (HITRAN, Beer-Lambert)
 
+export type DataOrigin =
+  | 'LIVE_REMOTE'     // Observation récupérée en direct auprès du fournisseur
+  | 'REMOTE_CACHED'   // Observation réelle précédemment téléchargée et servie depuis le cache
+  | 'LOCAL_ARCHIVE'   // Observation historique fournie localement
+  | 'SIMULATED'       // Résultat issu d'un calcul ou d'une simulation
+  | 'DEMO';           // Jeu de données de démonstration
+
+export type DataFreshness =
+  | 'FRESH'
+  | 'STALE'
+  | 'EXPIRED'
+  | 'UNKNOWN';
+
 export interface DataProvenance {
   source: string;              // 'NOAA GML' | 'ICOS Carbon Portal' | 'Copernicus CAMS' | 'NASA Earthdata / OCO-2' | 'HITRAN 2020'
   dataset: string;             // Nom précis du produit / granule
+  origin?: DataOrigin;         // Origine vérifiée : LIVE_REMOTE, REMOTE_CACHED, LOCAL_ARCHIVE, SIMULATED, DEMO
+  freshness?: DataFreshness;   // Fraîcheur : FRESH, STALE, EXPIRED, UNKNOWN
   version?: string;            // Version du jeu de données (ex: v11r, 2024.1)
+  sourceUrl?: string;          // URL source officielle
+  productId?: string;          // Identifiant officiel du produit
+  datasetVersion?: string;     // Version normalisée du jeu de données
+  granuleId?: string;          // Identifiant unique du granule (NASA / Copernicus)
   observedAt?: string;         // Timestamp d'acquisition ISO
   downloadedAt?: string;       // Timestamp de récupération/cache (rétrocompatibilité)
   retrievedAt?: string;        // Date et heure exacte du téléchargement depuis le serveur officiel
   validFrom?: string;          // Début de la période de validité de l'observation / réanalyse
   validTo?: string;            // Fin de la période de validité de l'observation
   expiresAt?: string;          // Date d'expiration nominale du cache (TTL)
-  checksum?: string;           // Empreinte d'intégrité cryptographique (ex: sha256:... ou e-tag)
+  checksum?: string;           // Empreinte d'intégrité cryptographique SHA-256 (64 caractères hex)
+  fileChecksum?: string;       // Checksum spécifique du fichier source d'origine
+  checksumAlgorithm?: 'SHA-256'; // Algorithme d'intégrité
   requestParameters?: Record<string, any>; // Paramètres exacts de la requête API (lat, lon, filtres)
   quality?: 'EXCELLENT' | 'GOOD' | 'ACCEPTABLE' | 'DEGRADED' | 'SUSPECT' | string; // Qualification métrologique
+  qualityStatus?: string;      // Statut textuel détaillé de la qualité
   cacheAgeDays?: number;       // Âge du cache en jours au moment de la restitution
-  isRealData?: boolean;        // Garantie de donnée réelle issue des réseaux scientifiques officiels
+  isRealData?: boolean;        // Garantie stricte de donnée réelle issue des réseaux scientifiques officiels
   dataMode?: 'DEMO' | 'REAL_DATA'; // 'DEMO' (données d'exemple / fixtures embarquées) ou 'REAL_DATA' (récupérées auprès de la source officielle)
   license: string;             // 'CC-BY-4.0' | 'Open Government / NOAA Public Domain' | 'Copernicus Free & Open'
   url?: string;                // URL vers le portail officiel
   doi?: string;                // Digital Object Identifier persistant
   method: string;              // Méthode métrologique (ex: CRDS, NDIR, Spectrométrie O2-A + WCO2 + SCO2)
+  processingMethod?: string;   // Méthode de traitement spécifique
+  processingVersion?: string;  // Version de l'algorithme de traitement
   citation?: string;           // Référence bibliographique officielle
+  unit?: string;               // Unité physique métrologique
+  isValidated?: boolean;       // Indique si le contrôle qualité est passé avec succès
+  validationMessages?: string[]; // Messages d'audit et de validation
 }
 
 export interface ScientificObservation {
@@ -62,14 +89,14 @@ export interface Station {
   longitude: number;
   altitude: number;            // m
   samplingInletHeights?: number[]; // [5, 50, 100, 180] pour Traînou tall tower
-  currentCO2: number;          // ppm
-  currentCO2Date: string;
-  monthlyAverage: number;      // ppm
-  yearlyAverage: number;       // ppm
-  trendYearlyPpm: number;      // +2.4 ppm/an
-  seasonalAmplitudePpm: number;// Amplitude crête-à-crête cycle biologique
+  currentCO2?: number;         // ppm (absent si source indisponible)
+  currentCO2Date?: string;
+  monthlyAverage?: number;     // ppm
+  yearlyAverage?: number;      // ppm
+  trendYearlyPpm?: number;     // +2.4 ppm/an
+  seasonalAmplitudePpm?: number;// Amplitude crête-à-crête cycle biologique
   instrument: string;          // ex: 'Picarro G2401 CRDS', 'Siemens Ultramat-3 NDIR'
-  status: 'ONLINE' | 'DEGRADED' | 'MAINTENANCE';
+  status: 'ONLINE' | 'CACHED' | 'DEGRADED' | 'MAINTENANCE' | 'OFFLINE' | 'SOURCE_INDISPONIBLE';
   provenance: DataProvenance;
 }
 
