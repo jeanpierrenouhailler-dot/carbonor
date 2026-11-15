@@ -69,6 +69,7 @@ export const CloudflareDeployModal: React.FC<CloudflareDeployModalProps> = ({ is
             Configuration Cloudflare intégrée avec succès
           </div>
           <ul className="text-xs text-slate-300 space-y-1 list-disc list-inside">
+            <li><strong className="text-white">Configuration Wrangler</strong> définie dans <code className="bg-slate-950 px-1 py-0.5 rounded text-cyan-300">wrangler.toml</code> (<code className="text-amber-300">pages_build_output_dir = &quot;dist&quot;</code>).</li>
             <li><strong className="text-white">Règles de redirection SPA</strong> générées dans <code className="bg-slate-950 px-1 py-0.5 rounded text-cyan-300">public/_redirects</code> (<code className="text-amber-300">/* /index.html 200</code>).</li>
             <li><strong className="text-white">En-têtes de sécurité &amp; Service Worker</strong> configurés dans <code className="bg-slate-950 px-1 py-0.5 rounded text-cyan-300">public/_headers</code>.</li>
             <li><strong className="text-white">PWA &amp; Cache offline</strong> prévus avec Workbox pour fonctionner même sans connexion.</li>
@@ -143,7 +144,7 @@ export const CloudflareDeployModal: React.FC<CloudflareDeployModalProps> = ({ is
                 </div>
                 <div className="p-2.5 rounded bg-slate-900 border border-slate-800">
                   <span className="text-[10px] text-slate-500 block uppercase font-sans">Variable d'environnement :</span>
-                  <span className="text-purple-300">NODE_VERSION = 20</span>
+                  <span className="text-purple-300">NODE_VERSION = 22</span>
                 </div>
               </div>
             </div>

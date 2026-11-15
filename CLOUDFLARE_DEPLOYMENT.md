@@ -14,7 +14,7 @@ Ce projet est prêt pour un déploiement clé-en-main sur **Cloudflare Pages**.
    - **Build command** : `npm run build`
    - **Build output directory** : `dist`
    - **Variables d'environnement** :
-     - `NODE_VERSION` = `20`
+     - `NODE_VERSION` = `22` (également épinglé via `.node-version`)
 5. Cliquez sur **Save and Deploy**.
 
 ---
@@ -27,7 +27,7 @@ Si vous souhaitez déployer directement depuis votre terminal :
 # 1. Compiler l'application cliente
 npm run build
 
-# 2. Déployer sur Cloudflare Pages
+# 2. Déployer sur Cloudflare Pages (lit automatiquement wrangler.toml)
 npx wrangler pages deploy dist --project-name carbonor
 ```
 
@@ -35,7 +35,9 @@ npx wrangler pages deploy dist --project-name carbonor
 
 ## 🛡️ Ce qui a été préconfiguré dans le projet
 
-1. **Règles de routage SPA (`public/_redirects`)** :
+1. **Configuration Wrangler (`wrangler.toml`) & Node (`/.node-version`)** :
+   - Définit `pages_build_output_dir = "dist"` et la version Node `22`.
+2. **Règles de routage SPA (`public/_redirects`)** :
    ```
    /*    /index.html   200
    ```

@@ -55,7 +55,11 @@ export const DataModeProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   // Synchronisation avec l'API serveur au démarrage
   useEffect(() => {
     fetch('/api/mode')
-      .then(res => res.json())
+      .then(res => {
+        const contentType = res.headers.get('content-type') || '';
+        if (!res.ok || !contentType.includes('application/json')) return null;
+        return res.json();
+      })
       .then(data => {
         if (data && (data.mode === 'DEMO' || data.mode === 'REAL_DATA')) {
           // Si rien n'était forcé en local, adopter le mode du serveur
