@@ -51,11 +51,13 @@ export const MultiSourceCompareView: React.FC = () => {
         }
 
         // 2. Charger les vraies stations ICOS et collocaliser avec la surface CAMS
-        const stations = await IcosProvider.getStations();
+        const stations = (await IcosProvider.getStations()).filter(
+          (s): s is typeof s & { currentCO2: number } => typeof s.currentCO2 === 'number'
+        );
         if (stations.length > 0) {
           const labels = stations.map(s => `${s.code} (${s.name.split(' ')[0]})`);
-          const seriesA = stations.map(s => s.currentCO2);
-          
+          const seriesA: number[] = stations.map(s => s.currentCO2);
+
           const camsSurfaceCalls = await Promise.all(
             stations.map(s => CamsProvider.getSurfaceConcentration(s.latitude, s.longitude))
           );

@@ -25,7 +25,9 @@ Afin de garantir la crédibilité académique de Carbonor et d'éviter qu'un uti
    - **Garantie :** Aucune requête réseau externe n'est imposée ; visualisations instantanées et fiables même hors-ligne.
 
 2. 🟢 **MODE DONNÉES RÉELLES (Production métrologique)**
-   - **Nature :** Données récupérées auprès de la source officielle.
-   - **Provenance :** Téléchargement direct ou synchronisé avec les APIs distantes (NASA CMR/GES DISC, NOAA ERDDAP, ICOS Sparql/ATC, Copernicus ADS).
-   - **Garantie :** Certificat métrologique complet ISO/IEC 17025 avec horodatage effectif (`retrievedAt`), période de validité (`validFrom`/`validTo`), empreinte cryptographique SHA-256 et âge de cache certifié.
+   - **Nature :** Données récupérées auprès de la source officielle ou validées sur archives officielles en cache disque.
+   - **Provenance :** Interrogation ou lecture sur cache disque authentifié (`/cache/noaa`, `/cache/icos`, `/cache/oco`, `/cache/cams`), avec séparation stricte des origines (`LIVE_REMOTE`, `REMOTE_CACHED`, `LOCAL_ARCHIVE`, `SIMULATED`, `DEMO`). En cas d'indisponibilité d'une source en mode Données Réelles, l'API retourne explicitement `SOURCE_INDISPONIBLE` sans jamais injecter de valeur fictive.
+   - **Garantie :** Rapport de traçabilité métrologique complet avec horodatage effectif (`retrievedAt`), statut de fraîcheur (`FRESH` / `STALE` / `EXPIRED`), et empreinte cryptographique FIPS 180-4 **SHA-256** (64 caractères hexadécimaux).
+
+Pour le détail complet de l'architecture de provenance et des règles de validation, voir [docs/DATA_PROVENANCE.md](docs/DATA_PROVENANCE.md).
 

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { ViewKey } from '../layout/Sidebar';
-import { useDataMode } from '../../context/DataModeContext';
 import { 
   ArrowRight, 
   Atom, 
@@ -44,7 +43,6 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
   onSelectView,
   onOpenReport
 }) => {
-  const { isRealData, toggleDataMode } = useDataMode();
 
   // Galerie de captures réelles
   const [activeScreenshotIdx, setActiveScreenshotIdx] = useState<number>(0);
@@ -489,70 +487,60 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
 
   return (
     <div className="space-y-20 pb-20 selection:bg-cyan-500 selection:text-slate-950">
-      {/* Mini-Navigation Sticky Quick Access Bar */}
-      <nav 
-        aria-label="Navigation de la présentation" 
-        className="sticky top-2 z-30 p-2 rounded-2xl bg-slate-950/85 backdrop-blur-md border border-slate-800 shadow-xl max-w-5xl mx-auto flex items-center justify-between gap-2 overflow-x-auto text-[11px] font-mono text-slate-300 scrollbar-none"
+      {/* Sommaire rapide de présentation (non-collant pour éviter la double barre) */}
+      <nav
+        aria-label="Navigation de la présentation"
+        className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pb-4 border-b border-slate-800/60 max-w-4xl mx-auto text-xs text-slate-400"
       >
-        <div className="flex items-center gap-1 shrink-0 px-2 text-cyan-400 font-bold tracking-wider">
-          <Globe2 className="w-3.5 h-3.5" />
-          <span>CARBONOR</span>
-        </div>
-
-        <div className="flex items-center gap-1 shrink-0">
-          <button 
-            onClick={() => scrollToSection('pourquoi')} 
-            className="px-2.5 py-1 rounded-lg hover:bg-slate-800 hover:text-white transition-colors cursor-pointer"
-          >
-            Pourquoi ?
-          </button>
-          <button 
-            onClick={() => scrollToSection('fonctionnement')} 
-            className="px-2.5 py-1 rounded-lg hover:bg-slate-800 hover:text-white transition-colors cursor-pointer"
-          >
-            Architecture
-          </button>
-          <button 
-            onClick={() => scrollToSection('fonctionnalites')} 
-            className="px-2.5 py-1 rounded-lg hover:bg-slate-800 hover:text-white transition-colors cursor-pointer"
-          >
-            Modules
-          </button>
-          <button 
-            onClick={() => scrollToSection('mecanismes')} 
-            className="px-2.5 py-1 rounded-lg hover:bg-slate-800 hover:text-white transition-colors cursor-pointer"
-          >
-            Sciences
-          </button>
-          <button 
-            onClick={() => scrollToSection('sources')} 
-            className="px-2.5 py-1 rounded-lg hover:bg-slate-800 hover:text-white transition-colors cursor-pointer"
-          >
-            Sources
-          </button>
-          <button 
-            onClick={() => scrollToSection('rigueur')} 
-            className="px-2.5 py-1 rounded-lg hover:bg-slate-800 hover:text-white transition-colors cursor-pointer"
-          >
-            Transparence
-          </button>
-          <button 
-            onClick={() => scrollToSection('faq')} 
-            className="px-2.5 py-1 rounded-lg hover:bg-slate-800 hover:text-white transition-colors cursor-pointer"
-          >
-            FAQ
-          </button>
-        </div>
-
-        <div className="shrink-0 flex items-center gap-2">
-          <button
-            onClick={() => onSelectView('dashboard')}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-gradient-to-r from-cyan-500 to-teal-500 text-slate-950 font-bold shadow-sm transition-all hover:brightness-110 cursor-pointer"
-          >
-            <span>Lancer l'App</span>
-            <ArrowRight className="w-3 h-3" />
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={() => scrollToSection('pourquoi')}
+          className="hover:text-cyan-300 transition-colors cursor-pointer whitespace-nowrap"
+        >
+          Pourquoi ?
+        </button>
+        <button
+          type="button"
+          onClick={() => scrollToSection('fonctionnement')}
+          className="hover:text-cyan-300 transition-colors cursor-pointer whitespace-nowrap"
+        >
+          Architecture
+        </button>
+        <button
+          type="button"
+          onClick={() => scrollToSection('fonctionnalites')}
+          className="hover:text-cyan-300 transition-colors cursor-pointer whitespace-nowrap"
+        >
+          Modules
+        </button>
+        <button
+          type="button"
+          onClick={() => scrollToSection('mecanismes')}
+          className="hover:text-cyan-300 transition-colors cursor-pointer whitespace-nowrap"
+        >
+          Sciences
+        </button>
+        <button
+          type="button"
+          onClick={() => scrollToSection('sources')}
+          className="hover:text-cyan-300 transition-colors cursor-pointer whitespace-nowrap"
+        >
+          Sources
+        </button>
+        <button
+          type="button"
+          onClick={() => scrollToSection('rigueur')}
+          className="hover:text-cyan-300 transition-colors cursor-pointer whitespace-nowrap"
+        >
+          Transparence
+        </button>
+        <button
+          type="button"
+          onClick={() => scrollToSection('faq')}
+          className="hover:text-cyan-300 transition-colors cursor-pointer whitespace-nowrap"
+        >
+          FAQ
+        </button>
       </nav>
 
       {/* =========================================================================
@@ -1528,28 +1516,24 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
           </div>
         </div>
 
-        {/* Sélecteur de mode interactif dans la section rigueur */}
+        {/* Explication du double régime disponible dans l'application */}
         <div className="p-6 rounded-2xl border border-slate-800 bg-slate-900/60 max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="space-y-1 text-center sm:text-left">
             <span className="text-xs font-mono font-bold text-white block">
-              Basculez entre le Mode Démonstration et le Mode Données Réelles :
+              Double régime dans l&apos;application : Données Réelles &amp; Mode Démonstration
             </span>
             <span className="text-xs text-slate-400 block font-sans">
-              {isRealData 
-                ? '🟢 Mode Actif : Flux direct auprès des API officielles avec certificats' 
-                : '🟡 Mode Actif : Fixtures scientifiques locales embarquées autonomes'}
+              À l&apos;intérieur des modules d&apos;analyse, basculez à tout moment entre les flux officiels vérifiés (NOAA, ICOS, NASA, CAMS) et les fixtures hors-ligne embarquées.
             </span>
           </div>
 
           <button
-            onClick={toggleDataMode}
-            className={`px-4 py-2 rounded-xl text-xs font-mono font-bold border transition-all cursor-pointer ${
-              isRealData
-                ? 'bg-emerald-950 text-emerald-300 border-emerald-500/50 hover:bg-emerald-900'
-                : 'bg-amber-950 text-amber-300 border-amber-500/50 hover:bg-amber-900'
-            }`}
+            type="button"
+            onClick={() => onSelectView('pipeline-audit')}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold border border-cyan-500/40 bg-cyan-950/40 hover:bg-cyan-900/50 text-cyan-300 transition-colors cursor-pointer whitespace-nowrap shrink-0"
           >
-            <span>Basculer en {isRealData ? 'Mode Démonstration 🟡' : 'Mode Réel 🟢'}</span>
+            <span>Inspecter la provenance</span>
+            <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
       </section>

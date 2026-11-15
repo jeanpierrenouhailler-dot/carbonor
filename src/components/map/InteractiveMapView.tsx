@@ -207,7 +207,7 @@ export const InteractiveMapView: React.FC = () => {
       circle.bindTooltip(`
         <div style="font-family: monospace; font-size: 11px; line-height: 1.4;">
           <strong style="color: ${markerColor};">${station.code}</strong> — ${station.name}<br/>
-          <strong>CO₂ :</strong> <span style="color: #ffffff; font-weight: bold;">${station.currentCO2.toFixed(2)} ppm</span><br/>
+          <strong>CO₂ :</strong> <span style="color: #ffffff; font-weight: bold;">${station.currentCO2 !== undefined ? `${station.currentCO2.toFixed(2)} ppm` : 'Indisponible'}</span><br/>
           <strong>Réseau :</strong> ${station.network} · Alt. ${station.altitude} m
         </div>
       `, {
@@ -666,11 +666,13 @@ export const InteractiveMapView: React.FC = () => {
               <div className="p-4 rounded-xl bg-slate-950 border border-slate-800">
                 <span className="text-xs text-slate-400 block mb-1">Dernière mesure de surface</span>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-black text-white font-mono">{selectedStation.currentCO2}</span>
+                  <span className="text-3xl font-black text-white font-mono">
+                    {selectedStation.currentCO2 !== undefined ? selectedStation.currentCO2 : 'N/D'}
+                  </span>
                   <span className="text-sm font-semibold text-emerald-400 font-mono">ppm</span>
                 </div>
                 <div className="text-[11px] text-slate-500 font-mono mt-1">
-                  Horodatage : {new Date(selectedStation.currentCO2Date).toLocaleDateString('fr-FR')}
+                  Horodatage : {selectedStation.currentCO2Date ? new Date(selectedStation.currentCO2Date).toLocaleDateString('fr-FR') : 'Indisponible'}
                 </div>
               </div>
 
@@ -682,11 +684,13 @@ export const InteractiveMapView: React.FC = () => {
                 </div>
                 <div className="p-2.5 rounded-lg bg-slate-950/70 border border-slate-800">
                   <span className="text-slate-500 block">Tendance annuelle</span>
-                  <strong className="text-emerald-400">+{selectedStation.trendYearlyPpm} ppm/an</strong>
+                  <strong className="text-emerald-400">+{selectedStation.trendYearlyPpm ?? 'N/D'} ppm/an</strong>
                 </div>
                 <div className="p-2.5 rounded-lg bg-slate-950/70 border border-slate-800">
                   <span className="text-slate-500 block">Cycle saisonnier</span>
-                  <strong className="text-slate-200">±{selectedStation.seasonalAmplitudePpm / 2} ppm</strong>
+                  <strong className="text-slate-200">
+                    {selectedStation.seasonalAmplitudePpm !== undefined ? `±${(selectedStation.seasonalAmplitudePpm / 2).toFixed(1)} ppm` : 'N/D'}
+                  </strong>
                 </div>
                 <div className="p-2.5 rounded-lg bg-slate-950/70 border border-slate-800">
                   <span className="text-slate-500 block">Coordonnées</span>

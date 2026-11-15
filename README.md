@@ -93,7 +93,7 @@ Un bouton interactif dans la barre supérieure (`Navbar`) et une bannière dans 
 8. **Laboratoire Virtuel Beer-Lambert** : Simulation interactive (280 à 1000 ppm, P, T, L) démontrant la saturation du cœur de bande et l'élargissement radiatif des ailes.
 9. **Flux & Inversions CAMS** : Flux de surface nets, photosynthèse printanière (NEE), émissions fossiles et convertisseur universel d'unités de flux.
 10. **Comparateur Multi-Sources** : Biais moyen, MAE, RMSE, corrélation de Pearson et avertissement sur les grandeurs non homogènes.
-11. **Rapport Scientifique & Exports Multi-Formats** : Génération de rapports certifiés avec DOI officiels et exports multi-formats intégrés (CSV, GeoJSON réel RFC 7946, NetCDF CF-1.8 CDL, SVG vectoriel haute définition, PNG 2K, PDF certifié conforme ISO/IEC 17025, Parquet/NDJSON et JSON structuré).
+11. **Rapport Scientifique & Exports Multi-Formats** : Génération de rapports de traçabilité avec DOI officiels et exports multi-formats intégrés (CSV, GeoJSON RFC 7946, NetCDF CF-1.8 CDL, SVG vectoriel haute définition, PDF avec empreinte SHA-256 vérifiable, NDJSON pour DuckDB/Pandas et JSON structuré ; sérialisation Parquet binaire explicitement non embarquée sans module Arrow/DuckDB-wasm natif).
 12. **Conformité PWA** : Installable sur poste et mobile, service worker Workbox, indicateur de mode hors-ligne et persistance du cache local.
 
 ---

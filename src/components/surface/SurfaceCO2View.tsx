@@ -392,7 +392,9 @@ export const SurfaceCO2View: React.FC = () => {
               />
             </div>
             <div className="mt-1 flex items-baseline gap-1.5">
-              <span className="text-2xl font-black text-cyan-400 font-mono">±{(currentStation.seasonalAmplitudePpm / 2).toFixed(1)}</span>
+              <span className="text-2xl font-black text-cyan-400 font-mono">
+                {currentStation.seasonalAmplitudePpm !== undefined ? `±${(currentStation.seasonalAmplitudePpm / 2).toFixed(1)}` : 'N/D'}
+              </span>
               <span className="text-xs text-slate-400 font-mono">ppm</span>
             </div>
             <span className="text-[10px] text-slate-500 font-mono">Oscillation biologique annuelle</span>

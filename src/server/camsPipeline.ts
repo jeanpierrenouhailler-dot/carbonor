@@ -3,12 +3,13 @@ import path from 'path';
 import https from 'https';
 import { ScientificObservation, VerticalProfile, ProfileLevel, DataProvenance } from '../types/observation.ts';
 import { FluxRecord } from '../types/flux.ts';
+import { CacheService } from '../providers/cacheService.ts';
 
 export interface CamsStageStatus {
   step: number;
   name: string;
   description: string;
-  status: 'ONLINE' | 'ACTIVE' | 'SYNCED' | 'STANDBY';
+  status: 'ONLINE' | 'ACTIVE' | 'SYNCED' | 'STANDBY' | 'OFFLINE';
   recordsProcessed: number;
   lastUpdated: string;
   details: string;
@@ -23,25 +24,44 @@ export class CamsDataPipeline {
     version: 'ECMWF IFS Cycle 49r1',
     license: 'Copernicus Open Access Software & Data License',
     url: 'https://ads.atmosphere.copernicus.eu/',
+    sourceUrl: 'https://ads.atmosphere.copernicus.eu/',
     doi: '10.24380/cams-co2-forecast',
     method: 'Integrated Forecasting System (IFS) with 4D-Var atmospheric assimilation and 3D multi-level grid interpolation',
     citation: 'ECMWF / CAMS (2025). Global atmospheric greenhouse gas concentrations reanalysis and forecasts.'
   };
 
+  private static computeFreshness(isoDate?: string): 'FRESH' | 'STALE' | 'EXPIRED' | 'UNKNOWN' {
+    if (!isoDate) return 'UNKNOWN';
+    const ageDays = Math.max(0, Math.floor((Date.now() - new Date(isoDate).getTime()) / (1000 * 60 * 60 * 24)));
+    if (ageDays <= 7) return 'FRESH';
+    if (ageDays <= 30) return 'STALE';
+    return 'EXPIRED';
+  }
+
   /**
-   * Charge un fichier JSON depuis /cache/cams/
+   * Charge un fichier JSON depuis /cache/cams/ avec ses métadonnées système (mtime)
    */
-  public static readCacheFile(filename: string): any {
+  public static readCacheWithMeta(filename: string): { data: any; retrievedAt?: string; freshness: 'FRESH' | 'STALE' | 'EXPIRED' | 'UNKNOWN' } {
     const filePath = path.join(this.CACHE_DIR, filename);
     if (fs.existsSync(filePath)) {
       try {
+        const stat = fs.statSync(filePath);
         const text = fs.readFileSync(filePath, 'utf-8');
-        return JSON.parse(text);
+        const retrievedAt = stat.mtime.toISOString();
+        return {
+          data: JSON.parse(text),
+          retrievedAt,
+          freshness: this.computeFreshness(retrievedAt)
+        };
       } catch (e) {
         console.warn(`[CAMS Pipeline] Erreur lecture ${filename}:`, e);
       }
     }
-    return null;
+    return { data: null, retrievedAt: undefined, freshness: 'UNKNOWN' };
+  }
+
+  public static readCacheFile(filename: string): any {
+    return this.readCacheWithMeta(filename).data;
   }
 
   /**
@@ -89,22 +109,29 @@ export class CamsDataPipeline {
   /**
    * Calcule la concentration de surface CAMS interpolée pour un point (lat, lon)
    */
-  public static getSurfaceConcentration(lat: number = 48.85, lon: number = 2.35): ScientificObservation {
-    const data3D = this.readCacheFile('cams_co2_3d_grid_europe.json');
-    let surfaceVal = 427.4;
+  public static getSurfaceConcentration(
+    lat: number = 48.85,
+    lon: number = 2.35,
+    options: { dataMode?: 'DEMO' | 'REAL_DATA' } = {}
+  ): ScientificObservation {
+    const { data: data3D, retrievedAt, freshness } = this.readCacheWithMeta('cams_co2_3d_grid_europe.json');
+    const isDemo = options.dataMode === 'DEMO';
 
-    if (data3D && data3D.values3D_ppm && data3D.latitudes && data3D.longitudes) {
-      // Le premier niveau de pression (1013 hPa) correspond à la surface
-      const surfaceGrid = data3D.values3D_ppm[0];
-      surfaceVal = this.interpolate2D(surfaceGrid, data3D.latitudes, data3D.longitudes, lat, lon);
+    if (!data3D || !data3D.values3D_ppm || !data3D.latitudes || !data3D.longitudes) {
+      throw new Error('SOURCE_INDISPONIBLE: Grille 3D CAMS absente ou corrompue dans /cache/cams/.');
     }
+
+    const surfaceGrid = data3D.values3D_ppm[0];
+    const surfaceVal = this.interpolate2D(surfaceGrid, data3D.latitudes, data3D.longitudes, lat, lon);
+    const observedAt = data3D.validTime || retrievedAt || new Date().toISOString();
+    const checksum = CacheService.computeChecksum({ type: 'cams_surface', lat, lon, surfaceVal, observedAt });
 
     return {
       id: `cams-surf-${lat.toFixed(2)}-${lon.toFixed(2)}`,
       source: 'Copernicus CAMS',
       dataset: 'CAMS Global Surface CO2 Analysis (IFS 49r1)',
       category: 'MODELED',
-      timestamp: new Date().toISOString(),
+      timestamp: observedAt,
       latitude: lat,
       longitude: lon,
       altitude: 45,
@@ -113,35 +140,35 @@ export class CamsDataPipeline {
       unit: 'ppm',
       uncertainty: 1.1,
       qualityFlag: '0',
-      provenance: this.PROVENANCE
+      provenance: {
+        ...this.PROVENANCE,
+        origin: isDemo ? 'DEMO' : 'REMOTE_CACHED',
+        freshness,
+        retrievedAt,
+        observedAt,
+        checksum,
+        checksumAlgorithm: 'SHA-256',
+        qualityStatus: 'VALIDATED',
+        isValidated: true,
+        dataMode: isDemo ? 'DEMO' : 'REAL_DATA',
+        isRealData: !isDemo
+      }
     };
   }
 
   /**
    * Extrait le profil vertical CAMS interpolé à travers les 14 niveaux de pression
    */
-  public static getVerticalConcentration(lat: number = 48.85, lon: number = 2.35): VerticalProfile {
-    const data3D = this.readCacheFile('cams_co2_3d_grid_europe.json');
+  public static getVerticalConcentration(
+    lat: number = 48.85,
+    lon: number = 2.35,
+    options: { dataMode?: 'DEMO' | 'REAL_DATA' } = {}
+  ): VerticalProfile {
+    const { data: data3D, retrievedAt, freshness } = this.readCacheWithMeta('cams_co2_3d_grid_europe.json');
+    const isDemo = options.dataMode === 'DEMO';
 
     if (!data3D || !data3D.values3D_ppm || !data3D.pressureLevelsHpa) {
-      // Fallback de sécurité si le cache est indisponible
-      return {
-        id: `cams-vert-${lat}-${lon}`,
-        stationOrLocation: `Point CAMS Grille (${lat}°N, ${lon}°E)`,
-        date: new Date().toISOString(),
-        type: 'CAMS Model',
-        category: 'MODELED',
-        latitude: lat,
-        longitude: lon,
-        maxAltitudeKm: 31,
-        provenance: this.PROVENANCE,
-        levels: [
-          { altitudeKm: 0.05, pressureHpa: 1013, co2Ppm: 428.2, temperatureK: 288.1, uncertaintyPpm: 0.9 },
-          { altitudeKm: 5.6,  pressureHpa: 500,  co2Ppm: 423.4, temperatureK: 252.3, uncertaintyPpm: 0.5 },
-          { altitudeKm: 16.2, pressureHpa: 100,  co2Ppm: 418.9, temperatureK: 215.3, uncertaintyPpm: 0.8 },
-          { altitudeKm: 31.0, pressureHpa: 10,   co2Ppm: 405.5, temperatureK: 231.6, uncertaintyPpm: 1.5 }
-        ]
-      };
+      throw new Error('SOURCE_INDISPONIBLE: Grille verticale 3D CAMS absente ou corrompue dans /cache/cams/.');
     }
 
     const levels: ProfileLevel[] = [];
@@ -165,16 +192,31 @@ export class CamsDataPipeline {
       });
     });
 
+    const observedAt = data3D.validTime || retrievedAt || new Date().toISOString();
+    const checksum = CacheService.computeChecksum({ type: 'cams_profile', lat, lon, levelsCount: levels.length, observedAt });
+
     return {
       id: `cams-vert-${lat.toFixed(2)}-${lon.toFixed(2)}`,
       stationOrLocation: `Point CAMS Grille IFS 3D (${lat.toFixed(2)}°N, ${lon.toFixed(2)}°E)`,
-      date: new Date().toISOString(),
+      date: observedAt,
       type: 'CAMS Model',
       category: 'MODELED',
       latitude: lat,
       longitude: lon,
       maxAltitudeKm: 31,
-      provenance: this.PROVENANCE,
+      provenance: {
+        ...this.PROVENANCE,
+        origin: isDemo ? 'DEMO' : 'REMOTE_CACHED',
+        freshness,
+        retrievedAt,
+        observedAt,
+        checksum,
+        checksumAlgorithm: 'SHA-256',
+        qualityStatus: 'VALIDATED',
+        isValidated: true,
+        dataMode: isDemo ? 'DEMO' : 'REAL_DATA',
+        isRealData: !isDemo
+      },
       levels
     };
   }
@@ -183,9 +225,14 @@ export class CamsDataPipeline {
    * Intègre numériquement la colonne massique sèche pour obtenir la moyenne de colonne XCO2
    * Formule : X_CO2 = ( ∑ q_i * Δp_i ) / ( ∑ Δp_i )
    */
-  public static getColumnMeanCO2(lat: number = 48.85, lon: number = 2.35): ScientificObservation {
-    const profile = this.getVerticalConcentration(lat, lon);
-    const data3D = this.readCacheFile('cams_co2_3d_grid_europe.json');
+  public static getColumnMeanCO2(
+    lat: number = 48.85,
+    lon: number = 2.35,
+    options: { dataMode?: 'DEMO' | 'REAL_DATA' } = {}
+  ): ScientificObservation {
+    const profile = this.getVerticalConcentration(lat, lon, options);
+    const { data: data3D, retrievedAt, freshness } = this.readCacheWithMeta('cams_co2_3d_grid_europe.json');
+    const isDemo = options.dataMode === 'DEMO';
 
     let sumWeighted = 0;
     let sumDeltaP = 0;
@@ -197,14 +244,20 @@ export class CamsDataPipeline {
       sumDeltaP += dP;
     });
 
-    const xco2 = sumDeltaP > 0 ? parseFloat((sumWeighted / sumDeltaP).toFixed(2)) : 422.8;
+    if (sumDeltaP <= 0) {
+      throw new Error('VALIDATION_ERROR: Somme des poids barométriques Δp nulle pour intégration XCO2.');
+    }
+
+    const xco2 = parseFloat((sumWeighted / sumDeltaP).toFixed(2));
+    const observedAt = profile.date;
+    const checksum = CacheService.computeChecksum({ type: 'cams_xco2', lat, lon, xco2, observedAt });
 
     return {
       id: `cams-xco2-${lat.toFixed(2)}-${lon.toFixed(2)}`,
       source: 'Copernicus CAMS',
       dataset: 'CAMS Model Column-Averaged CO2 (XCO2 IFS 49r1)',
       category: 'MODELED',
-      timestamp: new Date().toISOString(),
+      timestamp: observedAt,
       latitude: lat,
       longitude: lon,
       variable: 'xco2_cams_model',
@@ -214,37 +267,52 @@ export class CamsDataPipeline {
       qualityFlag: '0',
       provenance: {
         ...this.PROVENANCE,
-        method: 'Vertical mass-weighted dry pressure integration over 14 discrete model levels (1013 to 10 hPa)'
+        method: 'Vertical mass-weighted dry pressure integration over 14 discrete model levels (1013 to 10 hPa)',
+        origin: isDemo ? 'DEMO' : 'REMOTE_CACHED',
+        freshness,
+        retrievedAt,
+        observedAt,
+        checksum,
+        checksumAlgorithm: 'SHA-256',
+        qualityStatus: 'VALIDATED',
+        isValidated: true,
+        dataMode: isDemo ? 'DEMO' : 'REAL_DATA',
+        isRealData: !isDemo
       }
     };
   }
 
   /**
-   * Récupère les flux régionaux calculés par l'inversion atmosphérique CAMS
+   * Récupère les flux régionaux calculés par l'inversion atmosphérique CAMS (Catégorie ESTIMÉ)
    */
-  public static getSurfaceFlux(): FluxRecord[] {
-    const fluxData = this.readCacheFile('cams_surface_flux_inversion.json');
+  public static getSurfaceFlux(options: { dataMode?: 'DEMO' | 'REAL_DATA' } = {}): FluxRecord[] {
+    const { data: fluxData, retrievedAt, freshness } = this.readCacheWithMeta('cams_surface_flux_inversion.json');
     const budgets = fluxData?.regionalBudgets;
+    const isDemo = options.dataMode === 'DEMO';
 
     if (!budgets) {
-      return [
-        {
-          id: 'flux-france-net',
-          region: 'France Métropolitaine',
-          timestamp: new Date().toISOString(),
-          category: 'ESTIMATED',
-          netFlux: -0.42,
-          naturalFluxNEE: -1.65,
-          anthropogenicFossil: 1.23,
-          oceanUptake: 0.0,
-          landSink: 1.65,
-          inversionPosterior: -0.38,
-          unit: 'µmol/(m²·s)',
-          uncertaintyPercentage: 22,
-          provenance: this.PROVENANCE
-        }
-      ];
+      throw new Error('SOURCE_INDISPONIBLE: Produit inversion flux CAMS absent du cache disque (/cache/cams/).');
     }
+
+    const baseProv = (dataset: string, doi: string, obsTime: string, key: string, netFlux: number): DataProvenance => {
+      const checksum = CacheService.computeChecksum({ type: 'cams_flux', key, netFlux, obsTime });
+      return {
+        ...this.PROVENANCE,
+        dataset,
+        doi,
+        method: 'Bayesian 4D-Var atmospheric flux inversion constrained by surface flasks & XCO2 observations',
+        origin: isDemo ? 'DEMO' : 'REMOTE_CACHED',
+        freshness,
+        retrievedAt,
+        observedAt: obsTime,
+        checksum,
+        checksumAlgorithm: 'SHA-256',
+        qualityStatus: 'VALIDATED',
+        isValidated: true,
+        dataMode: isDemo ? 'DEMO' : 'REAL_DATA',
+        isRealData: !isDemo
+      };
+    };
 
     return [
       {
@@ -260,11 +328,13 @@ export class CamsDataPipeline {
         inversionPosterior: parseFloat((budgets.france.netFlux * 0.95).toFixed(2)),
         unit: budgets.france.unit,
         uncertaintyPercentage: 22,
-        provenance: {
-          ...this.PROVENANCE,
-          dataset: 'CAMS Global Atmospheric Inversion Product for Regional Fluxes',
-          doi: '10.24380/cams-flux-inversion'
-        }
+        provenance: baseProv(
+          'CAMS Global Atmospheric Inversion Product for Regional Fluxes',
+          '10.24380/cams-flux-inversion',
+          budgets.france.timestamp,
+          'france',
+          budgets.france.netFlux
+        )
       },
       {
         id: 'flux-europe-net',
@@ -279,7 +349,13 @@ export class CamsDataPipeline {
         inversionPosterior: parseFloat((budgets.europe.netFlux * 0.92).toFixed(2)),
         unit: budgets.europe.unit,
         uncertaintyPercentage: 18,
-        provenance: this.PROVENANCE
+        provenance: baseProv(
+          'CAMS Global Atmospheric Inversion Product (Europe)',
+          '10.24380/cams-flux-inversion',
+          budgets.europe.timestamp,
+          'europe',
+          budgets.europe.netFlux
+        )
       },
       {
         id: 'flux-global-annual',
@@ -294,10 +370,13 @@ export class CamsDataPipeline {
         inversionPosterior: 19100,
         unit: budgets.global.unit,
         uncertaintyPercentage: 8,
-        provenance: {
-          ...this.PROVENANCE,
-          dataset: 'Global Carbon Project / CAMS Atmospheric Inversion Budget'
-        }
+        provenance: baseProv(
+          'Global Carbon Project / CAMS Atmospheric Inversion Budget',
+          '10.5194/essd-global-carbon-budget-2025',
+          budgets.global.timestamp,
+          'global',
+          budgets.global.netFlux
+        )
       }
     ];
   }
@@ -317,82 +396,66 @@ export class CamsDataPipeline {
       catalogueCollectionsCount: number;
     };
   } {
-    const data3D = this.readCacheFile('cams_co2_3d_grid_europe.json');
-    const cat = this.readCacheFile('cams_ads_catalogue_cache.json');
-    const flux = this.readCacheFile('cams_surface_flux_inversion.json');
+    const { data: data3D, retrievedAt: gridTime } = this.readCacheWithMeta('cams_co2_3d_grid_europe.json');
+    const { data: cat, retrievedAt: catTime } = this.readCacheWithMeta('cams_ads_catalogue_cache.json');
+    const { data: flux, retrievedAt: fluxTime } = this.readCacheWithMeta('cams_surface_flux_inversion.json');
 
-    const numLats = data3D?.latitudes?.length || 23;
-    const numLons = data3D?.longitudes?.length || 31;
-    const numLevels = data3D?.pressureLevelsHpa?.length || 14;
+    const numLats = data3D?.latitudes?.length || 0;
+    const numLons = data3D?.longitudes?.length || 0;
+    const numLevels = data3D?.pressureLevelsHpa?.length || 0;
     const total3DCells = numLats * numLons * numLevels;
 
     const stages: CamsStageStatus[] = [
       {
         step: 1,
         name: 'Copernicus ADS Catalogue & API',
-        description: 'Connexion directe au Copernicus Atmosphere Data Store (ads.atmosphere.copernicus.eu)',
-        status: 'ONLINE',
-        recordsProcessed: cat?.collections?.length || 2,
-        lastUpdated: cat?.fetchedAt || new Date().toISOString(),
-        details: '2 collections GHG actives : forecasts 3D et inversion des flux'
+        description: 'Métadonnées du Copernicus Atmosphere Data Store (ads.atmosphere.copernicus.eu)',
+        status: cat ? 'ONLINE' : 'STANDBY',
+        recordsProcessed: cat?.collections?.length || 0,
+        lastUpdated: cat?.fetchedAt || catTime || 'Non synchronisé',
+        details: 'Catalogue ADS : requêtes NetCDF/GRIB authentiques par clé CDS/ADS API'
       },
       {
         step: 2,
         name: 'Données NetCDF / GRIB IFS Cycle 49r1',
-        description: 'Téléchargement et décodage des sorties IFS (Integrated Forecasting System ECMWF)',
-        status: 'ONLINE',
+        description: 'Grille 3D IFS (Integrated Forecasting System ECMWF) archivée en cache',
+        status: total3DCells > 0 ? 'SYNCED' : 'OFFLINE',
         recordsProcessed: total3DCells,
-        lastUpdated: new Date().toISOString(),
-        details: `${total3DCells} cellules volumiques 3D (${numLats}x${numLons}x${numLevels}) décodées`
+        lastUpdated: gridTime || 'Indisponible',
+        details: total3DCells > 0
+          ? `${total3DCells} cellules volumiques 3D (${numLats}x${numLons}x${numLevels}) décodées`
+          : 'Grille 3D non disponible'
       },
       {
         step: 3,
-        name: 'Cache Local & CDL (/cache/cams/)',
-        description: 'Persistance sur disque de la grille 3D, des flux de surface et du header CDL officiel',
-        status: 'SYNCED',
-        recordsProcessed: 4,
-        lastUpdated: new Date().toISOString(),
-        details: 'Fichiers JSON structurés + spécimen CDL NetCDF-4 conforme CF-1.7'
+        name: 'Interpolation Spatiale 3D & Intégration XCO2',
+        description: 'Interpolation bilinéaire et intégration barométrique pondérée par Δp_i',
+        status: total3DCells > 0 ? 'ACTIVE' : 'STANDBY',
+        recordsProcessed: numLevels,
+        lastUpdated: gridTime || 'Indisponible',
+        details: `${numLevels} niveaux de pression (1013 à 10 hPa) avec calcul SHA-256`
       },
       {
         step: 4,
-        name: 'Interpolation Spatiale 3D',
-        description: 'Algorithme d\'interpolation bilinéaire horizontale sur coordonnées géographiques',
-        status: 'ACTIVE',
-        recordsProcessed: total3DCells,
-        lastUpdated: new Date().toISOString(),
-        details: 'Résolution 0.5° x 0.5° couvrant la France et l\'Europe occidentale'
-      },
-      {
-        step: 5,
-        name: 'Intégration Verticale XCO2 & Flux',
-        description: 'Intégration barométrique de la masse de colonne sèche pondérée par Δp_i',
-        status: 'ACTIVE',
-        recordsProcessed: numLevels,
-        lastUpdated: new Date().toISOString(),
-        details: '14 niveaux de pression (1013 à 10 hPa) avec profils de température et géopotentiel'
-      },
-      {
-        step: 6,
-        name: 'API Carbonor & Visualisation',
-        description: 'Distribution temps réel : /api/cams/surface, /api/cams/xco2, /api/cams/profile, /api/cams/flux',
-        status: 'ONLINE',
-        recordsProcessed: total3DCells,
-        lastUpdated: new Date().toISOString(),
-        details: 'Alimentation dynamique des profils verticaux, flux et comparateur'
+        name: 'Inversions Régionales de Flux (ESTIMÉ)',
+        description: 'Bilans de flux nets biosphère / océan / fossile issus d’inversion 4D-Var',
+        status: flux?.regionalBudgets ? 'ACTIVE' : 'OFFLINE',
+        recordsProcessed: flux?.regionalBudgets ? Object.keys(flux.regionalBudgets).length : 0,
+        lastUpdated: fluxTime || 'Indisponible',
+        details: 'Classification stricte ESTIMÉ (inversion atmosphérique distincte des grilles MODÉLISÉ)'
       }
     ];
 
     return {
       title: 'Pipeline CAMS Copernicus (ECMWF IFS Cycle 49r1)',
-      flow: 'Copernicus ADS API → NetCDF/GRIB IFS → Cache local → Interpolation 3D → Intégration XCO2 → API Carbonor',
+      flow: 'Copernicus ADS API → NetCDF/GRIB IFS (/cache/cams/) → Interpolation 3D → Intégration XCO2 → API Carbonor',
       timestamp: new Date().toISOString(),
       stages,
       metrics: {
         gridPointsCount: numLats * numLons,
         verticalLevelsCount: numLevels,
         surfaceResolutionDeg: data3D?.gridResolutionDeg || 0.5,
-        catalogueCollectionsCount: cat?.collections?.length || 2
+        catalogueCollectionsCount: cat?.collections?.length || 0
       }
     };
   }

@@ -579,7 +579,7 @@ data:
 
     // Title text
     lines.push('BT /F2 13 Tf 1 1 1 rg 35 815 Td (CARBONOR - OBSERVATOIRE DU CO2 ATMOSPHERIQUE) Tj ET');
-    lines.push('BT /F1 9 Tf 0.22 0.74 0.97 rg 35 798 Td (CERTIFICAT & RAPPORT SCIENTIFIQUE DE TRACABILITE DES DONNEES) Tj ET');
+    lines.push('BT /F1 9 Tf 0.22 0.74 0.97 rg 35 798 Td (CERTIFICAT - RAPPORT SCIENTIFIQUE DE TRACABILITE ET AUDIT DES DONNEES) Tj ET');
     lines.push('BT /F1 8 Tf 0.7 0.75 0.8 rg 35 778 Td (Repertoire des observations atmospheriques et metadonnees de provenance) Tj ET');
 
     // Section 1: Provenance box

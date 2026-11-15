@@ -18,7 +18,10 @@ export class NoaaErddapProvider {
     url: 'https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.csv',
     doi: '10.15138/9N0H-ZH07',
     method: 'In situ NDIR and Cavity Ring-Down Spectroscopy (WMO-CO2-X2019 Scale)',
-    citation: 'NOAA GML Carbon Cycle Greenhouse Gases Group'
+    citation: 'NOAA GML Carbon Cycle Greenhouse Gases Group',
+    origin: 'DEMO' as const,
+    dataMode: 'DEMO' as const,
+    isRealData: false
   };
 
   /**
@@ -69,7 +72,10 @@ export class NoaaErddapProvider {
           url: 'https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.csv',
           doi: '10.15138/9N0H-ZH07',
           method: 'In situ NDIR and Cavity Ring-Down Spectroscopy (WMO-CO2-X2019 Scale)',
-          citation: 'Thoning, K.W., Kitzis, D.R., and Crotwell, A. (2025). Atmospheric Carbon Dioxide Dry Air Mole Fractions from the NOAA GML Network.'
+          citation: 'Thoning, K.W., Kitzis, D.R., and Crotwell, A. (2025). Atmospheric Carbon Dioxide Dry Air Mole Fractions from the NOAA GML Network.',
+          origin: 'DEMO',
+          dataMode: 'DEMO',
+          isRealData: false
         }
       },
       {
@@ -96,7 +102,10 @@ export class NoaaErddapProvider {
           license: 'NOAA Public Domain Data Policy',
           url: 'https://erddap.gml.noaa.gov/erddap/tabledap/greenhouse_gases_co2_insitu_monthly_averages.html',
           doi: '10.15138/brw-co2',
-          method: 'Continuous Cavity Ring-Down Spectroscopy'
+          method: 'Continuous Cavity Ring-Down Spectroscopy',
+          origin: 'DEMO',
+          dataMode: 'DEMO',
+          isRealData: false
         }
       },
       {
@@ -123,7 +132,10 @@ export class NoaaErddapProvider {
           license: 'NOAA Public Domain Data Policy',
           url: 'https://erddap.gml.noaa.gov/erddap/tabledap/greenhouse_gases_co2_insitu_monthly_averages.html',
           doi: '10.15138/smo-co2',
-          method: 'In situ continuous calibrated CRDS'
+          method: 'In situ continuous calibrated CRDS',
+          origin: 'DEMO',
+          dataMode: 'DEMO',
+          isRealData: false
         }
       },
       {
@@ -150,7 +162,10 @@ export class NoaaErddapProvider {
           license: 'NOAA Public Domain Data Policy',
           url: 'https://erddap.gml.noaa.gov/erddap/tabledap/greenhouse_gases_co2_insitu_hourly_averages_surface.html',
           doi: '10.15138/spo-co2',
-          method: 'In situ continuous calibrated CRDS'
+          method: 'In situ continuous calibrated CRDS',
+          origin: 'DEMO',
+          dataMode: 'DEMO',
+          isRealData: false
         }
       },
       {
@@ -177,7 +192,10 @@ export class NoaaErddapProvider {
           license: 'NOAA Public Domain Data Policy',
           url: 'https://erddap.gml.noaa.gov/erddap/tabledap/greenhouse_gases_co2_insitu_hourly_averages_surface.html',
           doi: '10.15138/mko-co2',
-          method: 'Continuous Cavity Ring-Down Spectroscopy'
+          method: 'Continuous Cavity Ring-Down Spectroscopy',
+          origin: 'DEMO',
+          dataMode: 'DEMO',
+          isRealData: false
         }
       },
       {
@@ -204,7 +222,10 @@ export class NoaaErddapProvider {
           license: 'NOAA Public Domain Data Policy',
           url: 'https://erddap.gml.noaa.gov/erddap/tabledap/greenhouse_gases_co2_flask_discrete.html',
           doi: '10.15138/mhd-co2-flask',
-          method: 'Discrete glass flask sampling in baseline maritime Atlantic clean sector'
+          method: 'Discrete glass flask sampling in baseline maritime Atlantic clean sector',
+          origin: 'DEMO',
+          dataMode: 'DEMO',
+          isRealData: false
         }
       },
       {
@@ -231,7 +252,10 @@ export class NoaaErddapProvider {
           license: 'NOAA Public Domain Data Policy',
           url: 'https://erddap.gml.noaa.gov/erddap/tabledap/greenhouse_gases_co2_flask_discrete.html',
           doi: '10.15138/cgo-co2-flask',
-          method: 'Discrete glass flask sampling in pristine Southern Ocean baseline sector'
+          method: 'Discrete glass flask sampling in pristine Southern Ocean baseline sector',
+          origin: 'DEMO',
+          dataMode: 'DEMO',
+          isRealData: false
         }
       }
     ];
@@ -471,7 +495,10 @@ export class NoaaErddapProvider {
           url: 'https://gml.noaa.gov/ccgg/aircore/',
           doi: '10.15138/aircore-co2',
           method: 'Stratospheric meteorological balloon descent with long coil stainless steel tubing sampling',
-          citation: 'Karion, A., et al. AirCore: An Innovative Atmospheric Sampling System.'
+          citation: 'Karion, A., et al. AirCore: An Innovative Atmospheric Sampling System.',
+          origin: 'DEMO',
+          dataMode: 'DEMO',
+          isRealData: false
         },
         levels: [
           { altitudeKm: 0.5, pressureHpa: 950, co2Ppm: 426.8, temperatureK: 288.2, uncertaintyPpm: 0.15 },
