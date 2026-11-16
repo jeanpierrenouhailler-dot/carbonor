@@ -1,6 +1,113 @@
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
 
+@theme {
+  /* Typographie éditoriale & scientifique */
+  --font-display: "Fraunces", Georgia, Cambria, "Times New Roman", serif;
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Surfaces & fonds — Observatoire de nuit */
+  --color-obs-bg: #040812;
+  --color-obs-surface: #0a1120;
+  --color-obs-surface-elevated: #0f182c;
+  --color-obs-surface-muted: #070d19;
+
+  /* Bordures hairline */
+  --color-obs-border: rgba(148, 163, 184, 0.14);
+  --color-obs-border-strong: rgba(56, 189, 248, 0.32);
+
+  /* Textes */
+  --color-obs-text: #f1f5f9;
+  --color-obs-text-muted: #cbd5e1;
+  --color-obs-text-subtle: #94a3b8;
+
+  /* Couleur signature unique (cyan atmosphérique) */
+  --color-obs-accent: #22d3ee;
+  --color-obs-accent-strong: #06b6d4;
+  --color-obs-accent-ink: #04101b;
+  --color-obs-accent-soft: rgba(34, 211, 238, 0.1);
+
+  /* Pastilles des 5 catégories épistémologiques (réservées aux badges/marqueurs) */
+  --color-cat-measured: #34d399;
+  --color-cat-observed: #22d3ee;
+  --color-cat-estimated: #fbbf24;
+  --color-cat-modeled: #a78bfa;
+  --color-cat-simulated: #fb7185;
+
+  /* Rayons & ombres */
+  --radius-card: 1rem;
+  --radius-panel: 1.25rem;
+  --radius-control: 0.625rem;
+  --shadow-card: 0 10px 30px -14px rgba(0, 0, 0, 0.65);
+  --shadow-glow: 0 0 80px -20px rgba(34, 211, 238, 0.25);
+}
+
+/* Fond atmosphérique subtil avec bruit/étoiles très discrets */
+.obs-atmosphere-canvas {
+  background-color: var(--color-obs-bg);
+  background-image:
+    radial-gradient(ellipse 75% 45% at 65% 8%, rgba(34, 211, 238, 0.08), transparent 65%),
+    radial-gradient(ellipse 55% 40% at 20% 25%, rgba(14, 116, 144, 0.06), transparent 60%),
+    radial-gradient(rgba(226, 232, 240, 0.12) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 44px 44px;
+}
+
+.obs-grain-surface {
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.025) 0%,
+    rgba(255, 255, 255, 0) 48%,
+    rgba(0, 0, 0, 0.18) 100%
+  );
+}
+
+.obs-cta-gradient {
+  background:
+    radial-gradient(ellipse 70% 90% at 50% 0%, rgba(34, 211, 238, 0.16), transparent 70%),
+    linear-gradient(180deg, var(--color-obs-surface-elevated) 0%, var(--color-obs-bg) 100%);
+}
+
+@keyframes obs-float-slow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes obs-halo-pulse {
+  0%, 100% {
+    opacity: 0.65;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.02);
+  }
+}
+
+.obs-animate-float {
+  animation: obs-float-slow 7s ease-in-out infinite;
+}
+
+.obs-animate-float-delayed {
+  animation: obs-float-slow 9s ease-in-out 1.5s infinite;
+}
+
+.obs-animate-halo {
+  animation: obs-halo-pulse 8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .obs-animate-float,
+  .obs-animate-float-delayed,
+  .obs-animate-halo {
+    animation: none !important;
+  }
+}
+
 /* Personnalisation élégante de Leaflet pour le thème sombre Carbonor */
 .leaflet-popup-content-wrapper {
   background-color: #0b0f19 !important;
@@ -35,6 +142,6 @@
   background-color: rgba(15, 23, 42, 0.8) !important;
   color: #94a3b8 !important;
   border-color: #334155 !important;
-  font-family: monospace !important;
+  font-family: var(--font-mono) !important;
   font-size: 10px !important;
 }
