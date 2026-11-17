@@ -42,7 +42,10 @@ export const EpistemologySection: React.FC<EpistemologySectionProps> = ({
             className="hidden lg:block absolute top-11 left-[8%] right-[8%] h-px bg-gradient-to-r from-obs-border via-obs-border-strong to-obs-border pointer-events-none"
           />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          <div
+            data-demo-id="epistemology-timeline"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3"
+          >
             {EPISTEMOLOGY_PILLARS.map((pillar) => {
               const IconComp = pillar.icon;
               const isSelected = pillar.key === activePillar.key;
@@ -50,6 +53,7 @@ export const EpistemologySection: React.FC<EpistemologySectionProps> = ({
                 <button
                   key={pillar.key}
                   type="button"
+                  data-demo-id={`epistemology-${pillar.key}`}
                   onClick={() => setSelectedKey(pillar.key)}
                   aria-expanded={isSelected}
                   className={`relative z-10 text-left rounded-[var(--radius-card)] border p-5 transition-all duration-200 cursor-pointer flex flex-col justify-between gap-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-obs-accent ${
@@ -87,7 +91,7 @@ export const EpistemologySection: React.FC<EpistemologySectionProps> = ({
 
         {/* Panneau de détail ouvert au clic */}
         <Card elevated className="p-6 sm:p-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+          <div data-demo-id="epistemology-detail" className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
             <div className="lg:col-span-7 space-y-4">
               <div className="flex flex-wrap items-center gap-3">
                 <CategoryBadge

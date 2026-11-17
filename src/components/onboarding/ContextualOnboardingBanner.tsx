@@ -174,6 +174,7 @@ export const ContextualOnboardingBanner: React.FC<
   return (
     <aside
       aria-label={guide.title}
+      data-demo-id="novice-guide-banner"
       className="mb-6 rounded-2xl border border-cyan-500/30 bg-slate-900/80 p-4 sm:p-5 shadow-lg"
     >
       <div className="flex items-start justify-between gap-4">

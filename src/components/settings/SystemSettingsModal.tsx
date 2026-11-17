@@ -119,7 +119,7 @@ export const SystemSettingsModal: React.FC<SystemSettingsModalProps> = ({
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div data-demo-id="settings-version-dates" className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
             <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
               <span className="flex items-center gap-1.5 text-slate-400 font-medium">
                 <Calendar className="w-3.5 h-3.5 text-cyan-400" />
@@ -189,6 +189,7 @@ export const SystemSettingsModal: React.FC<SystemSettingsModalProps> = ({
           <div className="flex flex-wrap items-center gap-3">
             <button
               type="button"
+              data-demo-id="settings-check-updates"
               disabled={isChecking || isInstalling}
               onClick={() => void checkForUpdates({ silent: false })}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 disabled:opacity-60 text-white text-xs font-semibold transition-colors cursor-pointer"
@@ -237,6 +238,7 @@ export const SystemSettingsModal: React.FC<SystemSettingsModalProps> = ({
 
             <button
               type="button"
+              data-demo-id="settings-theme-light"
               onClick={() => setTheme('light')}
               aria-pressed={theme === 'light'}
               className={`flex items-center gap-3 p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
@@ -258,7 +260,10 @@ export const SystemSettingsModal: React.FC<SystemSettingsModalProps> = ({
 
         {/* Bloc 3 : Installation PWA, Onboarding Novice & Mentions Légales */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="rounded-xl border border-slate-800 bg-slate-950/70 p-4 space-y-3">
+          <div
+            data-demo-id="settings-pwa-install"
+            className="rounded-xl border border-slate-800 bg-slate-950/70 p-4 space-y-3"
+          >
             <span className="text-xs font-mono uppercase tracking-wider text-cyan-400 font-semibold block">
               Installation Desktop &amp; Mobile
             </span>
@@ -297,6 +302,7 @@ export const SystemSettingsModal: React.FC<SystemSettingsModalProps> = ({
 
               <button
                 type="button"
+                data-demo-id="settings-legal-btn"
                 onClick={() => {
                   onClose();
                   openLegalModal();

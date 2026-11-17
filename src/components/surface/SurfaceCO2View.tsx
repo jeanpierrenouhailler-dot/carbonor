@@ -211,6 +211,7 @@ export const SurfaceCO2View: React.FC = () => {
           {stations.map(st => (
             <button
               key={st.id}
+              data-demo-id={`surface-station-${st.code.toLowerCase()}`}
               onClick={() => handleSelectStation(st.code)}
               className={`px-3 py-1.5 rounded-xl text-xs font-semibold font-mono transition-all cursor-pointer ${
                 selectedStationCode === st.code
@@ -244,6 +245,7 @@ export const SurfaceCO2View: React.FC = () => {
           )}
           {isMlo && (
             <button
+              data-demo-id="surface-resolution-daily"
               onClick={() => setTimeResolution('daily')}
               className={`px-3 py-1 rounded-lg transition-colors cursor-pointer ${
                 timeResolution === 'daily' ? 'bg-emerald-600 text-white font-bold' : 'text-slate-400 hover:text-white'
@@ -525,7 +527,10 @@ export const SurfaceCO2View: React.FC = () => {
         ) : (
           /* SVG Scientific Visualizer */
           <div className="space-y-2">
-            <div className="h-80 w-full relative bg-slate-950 rounded-xl p-4 border border-slate-800 overflow-hidden">
+            <div
+              data-demo-id="surface-chart"
+              className="h-80 w-full relative bg-slate-950 rounded-xl p-4 border border-slate-800 overflow-hidden"
+            >
               <svg className="w-full h-full" viewBox="0 0 1000 300" preserveAspectRatio="none">
                 <defs>
                   <linearGradient id="curveGradient" x1="0" y1="0" x2="0" y2="1">

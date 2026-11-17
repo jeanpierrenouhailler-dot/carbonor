@@ -5,12 +5,14 @@ interface FieldTooltipProps {
   label: string;
   description: string;
   example?: string;
+  demoId?: string;
 }
 
 export const FieldTooltip: React.FC<FieldTooltipProps> = ({
   label,
   description,
   example,
+  demoId,
 }) => {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLSpanElement>(null);
@@ -42,6 +44,7 @@ export const FieldTooltip: React.FC<FieldTooltipProps> = ({
     >
       <button
         type="button"
+        data-demo-id={demoId}
         onClick={(e) => {
           e.stopPropagation();
           setOpen((prev) => !prev);

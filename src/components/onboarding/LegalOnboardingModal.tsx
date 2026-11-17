@@ -87,7 +87,10 @@ export const LegalOnboardingModal: React.FC = () => {
         </div>
 
         {/* Mentions légales et clause explicite de non-responsabilité */}
-        <div className="rounded-xl border border-amber-500/40 bg-amber-950/25 p-5 space-y-3">
+        <div
+          data-demo-id="legal-disclaimer-box"
+          className="rounded-xl border border-amber-500/40 bg-amber-950/25 p-5 space-y-3"
+        >
           <div className="flex items-center gap-2 text-amber-300 font-semibold text-sm">
             <ShieldAlert className="w-5 h-5 text-amber-400 shrink-0" />
             <span>Mentions Légales &amp; Clause de Non-Responsabilité sur les Données</span>
@@ -124,6 +127,7 @@ export const LegalOnboardingModal: React.FC = () => {
           {legalAccepted && (
             <button
               type="button"
+              data-demo-id="legal-close-btn"
               onClick={closeLegalModal}
               className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium transition-colors cursor-pointer"
             >

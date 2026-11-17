@@ -39,6 +39,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <Button
                 variant="primary"
                 size="lg"
+                data-demo-id="landing-launch-app"
                 onClick={() => onSelectView('dashboard')}
               >
                 <span>Découvrir Carbonor</span>
@@ -134,6 +135,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         {/* Barre de chiffres clés sous le hero */}
         <div
           aria-label="Indicateurs scientifiques de référence"
+          data-demo-id="hero-stats"
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-obs-border rounded-[var(--radius-card)] border border-obs-border overflow-hidden shadow-card"
         >
           {HERO_STATS.map((stat) => (

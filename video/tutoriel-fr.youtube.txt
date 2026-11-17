@@ -1,0 +1,17 @@
+Carbonor — Tutoriel complet : de la mesure au sol à la physique moléculaire du CO₂
+
+Découvrez Carbonor, la plateforme scientifique ouverte qui relie les observations atmosphériques du dioxyde de carbone et la spectroscopie quantique, sans jamais confondre mesure directe, télédétection spatiale, estimation, modèle numérique et simulation.
+
+Liens utiles :
+• Dépôt GitHub : https://github.com/jeanpierrenouhailler-dot/carbonor
+• Sources scientifiques : NOAA GML, ICOS Carbon Portal, NASA Earthdata (OCO-2 / OCO-3), Copernicus CAMS, HITRAN 2020, CITEPA SECTEN
+
+Chapitres (mettre à jour les codes temporels avec video/output/tutoriel-fr.chapters.txt après le rendu local via `video-studio generate --scenario tutoriel-fr`) :
+00:00 Introduction
+00:05 Découvrir Carbonor
+00:45 Tableau de bord et carte multi-couches
+01:40 Mesures au sol et télédétection XCO₂
+02:25 Physique moléculaire et effet de serre
+03:10 Modèles CAMS, inventaires et comparaison
+03:50 Paramètres système, thème Clair et PWA
+04:30 Conclusion

@@ -190,6 +190,7 @@ export const MultiSourceCompareView: React.FC = () => {
         <span className="px-2 inline-flex items-center gap-1 text-slate-400">
           Scénario :
           <FieldTooltip
+            demoId="compare-tooltip-scenario"
             label="Scénario de comparaison"
             description="Choisissez quelles paires de données comparer. Attention : comparer une station au sol à un satellite implique un écart physique normal (voir l'encadré ci-dessous)."
           />
@@ -205,6 +206,7 @@ export const MultiSourceCompareView: React.FC = () => {
           OCO-2 Satellite vs CAMS Modèle (XCO₂)
         </button>
         <button
+          data-demo-id="compare-mode-icos"
           onClick={() => setComparisonMode('icos_vs_cams')}
           className={`px-3 py-2 rounded-xl transition-all cursor-pointer ${
             comparisonMode === 'icos_vs_cams'
@@ -251,7 +253,10 @@ export const MultiSourceCompareView: React.FC = () => {
       </div>
 
       {/* Statistical KPI Metrics Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 font-mono text-xs">
+      <div
+        data-demo-id="compare-stats-grid"
+        className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 font-mono text-xs"
+      >
         <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800">
           <span className="text-slate-500 text-[10px] block uppercase">Biais Moyen (Mod - Obs)</span>
           <strong className={`text-xl font-black ${stats.bias > 0 ? 'text-amber-400' : 'text-emerald-400'}`}>

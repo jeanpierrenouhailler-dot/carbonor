@@ -93,6 +93,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {onToggleSidebar && (
             <button
               type="button"
+              data-demo-id="menu-mobile"
               onClick={onToggleSidebar}
               className="p-2 -ml-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 lg:hidden cursor-pointer transition-colors"
               aria-label="Ouvrir le menu de navigation"
@@ -155,6 +156,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {currentView !== 'landing' && (
             <button
               type="button"
+              data-demo-id="toggle-data-mode"
               onClick={toggleDataMode}
               className={`inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium border transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
                 isRealData
@@ -184,6 +186,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Bascule Thème Clair / Sombre */}
           <button
             type="button"
+            data-demo-id="toggle-theme"
             onClick={toggleTheme}
             aria-label={theme === 'dark' ? 'Passer au thème Clair' : 'Passer au thème Sombre'}
             title={theme === 'dark' ? 'Passer au thème Clair' : 'Passer au thème Sombre'}
@@ -200,6 +203,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {onOpenSettings && (
             <button
               type="button"
+              data-demo-id="btn-system-settings"
               onClick={onOpenSettings}
               aria-label="Ouvrir les paramètres système"
               title="Paramètres Système, Mises à jour & Thème"

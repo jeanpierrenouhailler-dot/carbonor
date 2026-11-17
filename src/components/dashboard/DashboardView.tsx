@@ -327,7 +327,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectView, expe
       </div>
 
       {/* Statut Métrologique Strict : Mode Démonstration vs Mode Données Réelles */}
-      <div className={`p-4 rounded-xl border flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-md ${
+      <div
+        data-demo-id="dashboard-data-mode-card"
+        className={`p-4 rounded-xl border flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-md ${
         isRealData
           ? 'bg-emerald-950/30 border-emerald-500/40 text-emerald-100'
           : 'bg-amber-950/30 border-amber-500/40 text-amber-100'
@@ -418,7 +420,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectView, expe
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div data-demo-id="dashboard-kpis" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {kpis.map((kpi, idx) => (
           <div
             key={idx}
@@ -485,7 +487,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectView, expe
       {/* Middle row: Historic Keeling Curve + Spectroscopy summary */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Keeling Curve Quick Chart (2 cols) */}
-        <div className="lg:col-span-2 rounded-2xl border border-slate-800 bg-slate-900/60 p-6 space-y-4">
+        <div
+          data-demo-id="dashboard-keeling-chart"
+          className="lg:col-span-2 rounded-2xl border border-slate-800 bg-slate-900/60 p-6 space-y-4"
+        >
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
             <div>
               <div className="flex items-center gap-2">

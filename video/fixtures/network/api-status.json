@@ -1,0 +1,222 @@
+{
+  "status": "HEALTHY",
+  "timestamp": "2026-11-17T18:00:00.000Z",
+  "activeDataMode": "DEMO",
+  "activeDataModeLabel": "🟡 MODE DÉMONSTRATION",
+  "activeDataModeDescription": "Données d'exemple / fixtures scientifiques embarquées.",
+  "principle": "MESURÉ ≠ OBSERVÉ ≠ ESTIMÉ ≠ MODÉLISÉ ≠ SIMULÉ",
+  "dataIntegrityStatement": "Distinction stricte et scientifiquement vérifiable entre données fraîchement téléchargées (FETCHED), connectivité réseau distante (CONNECTED), cache disque certifié (CACHED), cache expiré (STALE), mode hors-ligne (OFFLINE), clé manquante (NOT_CONFIGURED) et erreurs (ERROR).",
+  "summary": {
+    "totalProviders": 6,
+    "connectedCount": 0,
+    "fetchedCount": 0,
+    "cachedCount": 4,
+    "staleCount": 0,
+    "offlineCount": 0,
+    "notConfiguredCount": 2,
+    "errorCount": 0,
+    "totalRecords": 115927
+  },
+  "providers": [
+    {
+      "id": "noaa",
+      "name": "NOAA Global Monitoring Laboratory",
+      "category": "MEASURED",
+      "status": "CACHED",
+      "statusLabel": "Cache disque certifié local",
+      "statusExplanation": "Données servies depuis les fichiers bruts certifiés stockés sur le disque local.",
+      "url": "https://gml.noaa.gov/ccgg/trends/",
+      "license": "NOAA Public Domain Data Policy (Open Government Data)",
+      "doi": "10.15138/9N0H-ZH07",
+      "recordsCount": 27660,
+      "breakdown": {
+        "cachedRecords": 27660,
+        "liveRecords": 0,
+        "embeddedRecords": 4
+      },
+      "cacheInfo": {
+        "directory": "cache/noaa",
+        "filesCount": 8,
+        "totalSizeBytes": 2457600,
+        "lastModified": "2026-11-17T12:00:00.000Z",
+        "isStale": false,
+        "ageDays": 0
+      },
+      "upstreamInfo": {
+        "endpoint": "https://gml.noaa.gov/webdata/ccgg/trends/co2/",
+        "protocol": "HTTPS Direct / ERDDAP TableDAP",
+        "requiresAuth": false,
+        "authConfigured": true,
+        "networkStatus": "UNTESTED",
+        "lastLiveFetch": null
+      }
+    },
+    {
+      "id": "icos",
+      "name": "ICOS Carbon Portal (Atmosphere Thematic Centre)",
+      "category": "MEASURED",
+      "status": "CACHED",
+      "statusLabel": "Cache disque certifié local",
+      "statusExplanation": "Données servies depuis les fichiers bruts certifiés stockés sur le disque local.",
+      "url": "https://data.icos-cp.eu/portal/",
+      "license": "Creative Commons Attribution 4.0 International (CC-BY-4.0)",
+      "doi": "10.18160/icos-atmos-release-2026",
+      "recordsCount": 75637,
+      "breakdown": {
+        "cachedRecords": 75637,
+        "liveRecords": 0,
+        "embeddedRecords": 50
+      },
+      "cacheInfo": {
+        "directory": "cache/icos",
+        "filesCount": 5,
+        "totalSizeBytes": 4915200,
+        "lastModified": "2026-11-17T12:00:00.000Z",
+        "isStale": false,
+        "ageDays": 0
+      },
+      "upstreamInfo": {
+        "endpoint": "https://meta.icos-cp.eu/sparql",
+        "protocol": "SPARQL Endpoint & ICOS ATC Download Protocol",
+        "requiresAuth": false,
+        "authConfigured": true,
+        "networkStatus": "UNTESTED",
+        "lastLiveFetch": null
+      }
+    },
+    {
+      "id": "nasa",
+      "name": "NASA Earthdata / OCO-2 & OCO-3",
+      "category": "OBSERVED",
+      "status": "NOT_CONFIGURED",
+      "statusLabel": "Clé non configurée (NASA_EARTHDATA_TOKEN)",
+      "statusExplanation": "Mode données certifiées de référence issues du cache local.",
+      "url": "https://cmr.earthdata.nasa.gov/",
+      "license": "NASA Open Access Software & Data Policy",
+      "doi": "10.5067/EWSGQD2MI070",
+      "recordsCount": 197,
+      "breakdown": {
+        "cachedRecords": 197,
+        "liveRecords": 0,
+        "embeddedRecords": 0
+      },
+      "cacheInfo": {
+        "directory": "cache/oco",
+        "filesCount": 2,
+        "totalSizeBytes": 524288,
+        "lastModified": "2026-11-17T12:00:00.000Z",
+        "isStale": false,
+        "ageDays": 0
+      },
+      "upstreamInfo": {
+        "endpoint": "https://cmr.earthdata.nasa.gov/search/granules.json",
+        "protocol": "NASA CMR API / GES DISC OpenDAP",
+        "requiresAuth": true,
+        "authConfigured": false,
+        "authEnvVar": "NASA_EARTHDATA_TOKEN",
+        "networkStatus": "UNTESTED",
+        "lastLiveFetch": null
+      }
+    },
+    {
+      "id": "cams",
+      "name": "Copernicus Atmosphere Monitoring Service (CAMS)",
+      "category": "MODELED",
+      "status": "NOT_CONFIGURED",
+      "statusLabel": "Clé non configurée (CDS_API_KEY)",
+      "statusExplanation": "Mode données certifiées de référence issues du cache local.",
+      "url": "https://atmosphere.copernicus.eu/",
+      "license": "Copernicus Free & Open Access (ECMWF)",
+      "doi": "10.24380/cams-co2-forecast",
+      "recordsCount": 10033,
+      "breakdown": {
+        "cachedRecords": 10033,
+        "liveRecords": 0,
+        "embeddedRecords": 0
+      },
+      "cacheInfo": {
+        "directory": "cache/cams",
+        "filesCount": 3,
+        "totalSizeBytes": 1048576,
+        "lastModified": "2026-11-17T12:00:00.000Z",
+        "isStale": false,
+        "ageDays": 0
+      },
+      "upstreamInfo": {
+        "endpoint": "https://ads.atmosphere.copernicus.eu/api/v2",
+        "protocol": "Copernicus ADS REST API / NetCDF-4",
+        "requiresAuth": true,
+        "authConfigured": false,
+        "authEnvVar": "CDS_API_KEY",
+        "networkStatus": "UNTESTED",
+        "lastLiveFetch": null
+      }
+    },
+    {
+      "id": "hitran",
+      "name": "HITRAN Molecular Spectroscopy Database",
+      "category": "SIMULATED",
+      "status": "CACHED",
+      "statusLabel": "Base scientifique embarquée",
+      "statusExplanation": "Données issues de la base embarquée certifiée HITRAN 2020 avec partition sums TIPS Gamache.",
+      "url": "https://hitran.org/",
+      "license": "Academic & Scientific Open Use (HITRAN License)",
+      "doi": "10.1016/j.jqsrt.2021.107949",
+      "recordsCount": 2551,
+      "breakdown": {
+        "cachedRecords": 0,
+        "liveRecords": 0,
+        "embeddedRecords": 2551
+      },
+      "cacheInfo": {
+        "directory": "cache/hitran",
+        "filesCount": 0,
+        "totalSizeBytes": 0,
+        "lastModified": null,
+        "isStale": false,
+        "ageDays": null
+      },
+      "upstreamInfo": {
+        "endpoint": "https://hitran.org/hapi",
+        "protocol": "HAPI (HITRAN Application Programming Interface) v1.2",
+        "requiresAuth": false,
+        "authConfigured": true,
+        "networkStatus": "UNTESTED",
+        "lastLiveFetch": null
+      }
+    },
+    {
+      "id": "citepa",
+      "name": "CITEPA / CCNUCC Inventaires d’Émissions SECTEN",
+      "category": "ESTIMATED",
+      "status": "CACHED",
+      "statusLabel": "Cache disque certifié local",
+      "statusExplanation": "Données servies depuis les fichiers bruts certifiés stockés sur le disque local.",
+      "url": "https://www.citepa.org/fr/secten/",
+      "license": "Licence Ouverte v2.0 (Etalab / République Française)",
+      "doi": "citepa-secten-2026",
+      "recordsCount": 49,
+      "breakdown": {
+        "cachedRecords": 49,
+        "liveRecords": 0,
+        "embeddedRecords": 14
+      },
+      "cacheInfo": {
+        "directory": "cache/citepa",
+        "filesCount": 2,
+        "totalSizeBytes": 65536,
+        "lastModified": "2026-11-17T12:00:00.000Z",
+        "isStale": false,
+        "ageDays": 0
+      },
+      "upstreamInfo": {
+        "endpoint": "https://www.citepa.org",
+        "protocol": "HTTPS Direct Official CRF/SECTEN Ingest",
+        "requiresAuth": false,
+        "authConfigured": true,
+        "networkStatus": "UNTESTED",
+        "lastLiveFetch": null
+      }
+    }
+  ]
+}

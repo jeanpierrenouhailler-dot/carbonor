@@ -849,7 +849,10 @@ export const LinesExplorerView: React.FC = () => {
           </div>
 
           {/* Lines Table Card */}
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 space-y-4 shadow-xl overflow-hidden">
+          <div
+            data-demo-id="hitran-table"
+            className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 space-y-4 shadow-xl overflow-hidden"
+          >
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pb-2 border-b border-slate-800 text-xs">
               <div className="flex items-center gap-2">
                 <TableIcon className="w-4 h-4 text-rose-400" />
@@ -877,6 +880,7 @@ export const LinesExplorerView: React.FC = () => {
               <div className="relative">
                 <input
                   type="text"
+                  data-demo-id="hitran-search-input"
                   placeholder="Filtrer J, isotopologue..."
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}

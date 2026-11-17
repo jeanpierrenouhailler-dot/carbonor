@@ -503,6 +503,7 @@ export const InteractiveMapView: React.FC = () => {
               🌙 Sombre
             </button>
             <button
+              data-demo-id="map-tile-topo"
               onClick={() => setTileStyle('osm-topo')}
               className={`px-2.5 py-1 rounded text-[11px] font-semibold transition-colors cursor-pointer ${
                 tileStyle === 'osm-topo'
@@ -538,6 +539,7 @@ export const InteractiveMapView: React.FC = () => {
             {(['ALL', 'NOAA', 'ICOS'] as const).map(n => (
               <button
                 key={n}
+                data-demo-id={`map-network-${n.toLowerCase()}`}
                 onClick={() => setNetworkFilter(n)}
                 className={`px-2 py-0.5 rounded text-[11px] font-semibold transition-colors cursor-pointer ${
                   networkFilter === n
@@ -610,7 +612,10 @@ export const InteractiveMapView: React.FC = () => {
           </div>
 
           {/* Canvas Leaflet interactif avec OpenStreetMap en arrière-plan */}
-          <div className="relative w-full h-[500px] md:h-[560px] rounded-xl overflow-hidden border border-slate-800/80 shadow-inner z-0 isolation-isolate">
+          <div
+            data-demo-id="map-canvas"
+            className="relative w-full h-[500px] md:h-[560px] rounded-xl overflow-hidden border border-slate-800/80 shadow-inner z-0 isolation-isolate"
+          >
             <div 
               ref={mapContainerRef} 
               className="w-full h-full select-none"
@@ -657,7 +662,10 @@ export const InteractiveMapView: React.FC = () => {
         </div>
 
         {/* Panneau d'inspection des détails (1 colonne) */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 space-y-5">
+        <div
+          data-demo-id="map-station-panel"
+          className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 space-y-5"
+        >
           {selectedStation && (
             <div className="space-y-4">
               <div className="flex items-start justify-between pb-3 border-b border-slate-800">

@@ -6,3 +6,10 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# video-studio — fichiers générés
+video/audio/
+video/cache/
+video/recordings/
+video/build/
+video/output/

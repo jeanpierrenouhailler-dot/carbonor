@@ -216,6 +216,7 @@ export const FluxEmissionsView: React.FC = () => {
           Flux de Surface &amp; Inversion CAMS
         </button>
         <button
+          data-demo-id="flux-tab-emissions"
           onClick={() => setActiveTab('emissions')}
           className={`px-4 py-1.5 rounded-lg transition-colors cursor-pointer ${
             activeTab === 'emissions' ? 'bg-amber-600 text-white font-bold' : 'text-slate-400 hover:text-white'
@@ -523,7 +524,7 @@ export const FluxEmissionsView: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {emissions.map(item => {
+              {emissions.map((item, idx) => {
                 const Icon = getSectorIcon(item.sector);
                 const isExpanded = expandedSectorId === item.id;
                 const hasSubSectors = item.subSectors && item.subSectors.length > 0;
@@ -532,6 +533,7 @@ export const FluxEmissionsView: React.FC = () => {
                 return (
                   <div
                     key={item.id}
+                    data-demo-id={`citepa-sector-${idx}`}
                     className={`rounded-2xl border transition-all p-4 space-y-3 cursor-pointer ${
                       isExpanded 
                         ? 'bg-slate-900 border-rose-500 shadow-xl shadow-rose-950/20' 

@@ -79,6 +79,7 @@ export const SpectroscopyLabView: React.FC = () => {
           </button>
 
           <button
+            data-demo-id="lab-tab-validation"
             onClick={() => setActiveTab('validation')}
             className={`flex items-center gap-2 px-3.5 py-2 rounded-xl font-bold transition-all cursor-pointer ${
               activeTab === 'validation'
@@ -168,6 +169,7 @@ export const SpectroscopyLabView: React.FC = () => {
                 {PRESET_CONCENTRATIONS.map(ppm => (
                   <button
                     key={ppm}
+                    data-demo-id={`lab-preset-${ppm}`}
                     onClick={() => setConcentration(ppm)}
                     className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all cursor-pointer ${
                       concentration === ppm
@@ -280,7 +282,10 @@ export const SpectroscopyLabView: React.FC = () => {
           </div>
 
           {/* Visualization Canvas: Spectrum Graph */}
-          <div className="rounded-2xl border border-slate-800 bg-slate-950 p-6 space-y-4 shadow-xl">
+          <div
+            data-demo-id="lab-spectrum-chart"
+            className="rounded-2xl border border-slate-800 bg-slate-950 p-6 space-y-4 shadow-xl"
+          >
             {/* Metric Switcher Toolbar */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-900 pb-3 text-xs font-mono">
               <div className="flex flex-wrap items-center gap-2">

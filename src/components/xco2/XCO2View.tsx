@@ -324,6 +324,7 @@ export const XCO2View: React.FC = () => {
             OCO-3 SAM Paris (2D Raster)
           </button>
           <button
+            data-demo-id="xco2-track-global"
             onClick={() => setSelectedTrack('Global')}
             className={`px-3 py-1.5 rounded-xl font-semibold transition-all cursor-pointer ${
               selectedTrack === 'Global'
@@ -365,6 +366,7 @@ export const XCO2View: React.FC = () => {
             Tous ({observations.length})
           </button>
           <button
+            data-demo-id="xco2-filter-flag0"
             onClick={() => setQualityFilter('0')}
             className={`px-2.5 py-1 rounded-lg transition-colors cursor-pointer flex items-center gap-1 ${
               qualityFilter === '0'
