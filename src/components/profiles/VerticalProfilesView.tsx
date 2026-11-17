@@ -7,6 +7,7 @@ import { ProvenanceBadge } from '../common/ProvenanceBadge';
 import { DataProvenanceModal } from '../common/DataProvenanceModal';
 import { ExportButton } from '../common/ExportButton';
 import { ScienceTooltip, PedagogicBanner } from '../common/ScienceTooltip';
+import { FieldTooltip } from '../common/FieldTooltip';
 import { 
   Layers, 
   ArrowDownUp, 
@@ -119,8 +120,12 @@ export const VerticalProfilesView: React.FC = () => {
       {/* Profile Selector & Axis Mode Toolbar */}
       <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-slate-900 border border-slate-800 text-xs font-mono">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-slate-400 font-bold uppercase tracking-wider mr-2">
+          <span className="text-slate-400 font-bold uppercase tracking-wider mr-2 inline-flex items-center gap-1.5">
             Profil :
+            <FieldTooltip
+              label="Choix du Profil Vertical"
+              description="Sélectionnez un sondage mesuré par ballon stratosphérique (AirCore, 0-30 km), avion, tour météo (180 m) ou modèle CAMS."
+            />
           </span>
           {profiles.map(p => (
             <button
@@ -139,7 +144,14 @@ export const VerticalProfilesView: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-1.5 rounded-xl bg-slate-950 border border-slate-800 p-1">
-          <span className="text-slate-500 text-[11px] px-2">Axe vertical :</span>
+          <span className="text-slate-500 text-[11px] px-2 inline-flex items-center gap-1">
+            Axe vertical :
+            <FieldTooltip
+              label="Unité de l'axe vertical"
+              description="Affiche la hauteur soit en kilomètres au-dessus du sol (Altitude), soit en pression atmosphérique (hPa, plus petite tout en haut)."
+              example="1000 hPa ≈ niveau de la mer · 100 hPa ≈ 16 km"
+            />
+          </span>
           <button
             onClick={() => setYAxisMode('altitude')}
             className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-colors cursor-pointer ${

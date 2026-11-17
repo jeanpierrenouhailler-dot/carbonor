@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" fill="none">
+  <defs>
+    <linearGradient id="cb-bg" x1="12" y1="8" x2="116" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#071327"/>
+      <stop offset="55%" stop-color="#0C213D"/>
+      <stop offset="100%" stop-color="#083344"/>
+    </linearGradient>
+    <linearGradient id="cb-ring" x1="18" y1="20" x2="110" y2="108" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#22D3EE"/>
+      <stop offset="100%" stop-color="#34D399"/>
+    </linearGradient>
+    <linearGradient id="cb-carbon" x1="50" y1="50" x2="78" y2="78" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Corps badge observatoire -->
+  <rect x="4" y="4" width="120" height="120" rx="28" fill="url(#cb-bg)" stroke="#22D3EE" stroke-opacity="0.35" stroke-width="2"/>
+
+  <!-- Orbite atmosphérique -->
+  <circle cx="64" cy="64" r="44" stroke="url(#cb-ring)" stroke-width="2" stroke-opacity="0.45" stroke-dasharray="5 5"/>
+  <ellipse cx="64" cy="64" rx="46" ry="20" transform="rotate(-24 64 64)" stroke="#22D3EE" stroke-width="1.75" stroke-opacity="0.7"/>
+
+  <!-- Liaisons doubles O=C=O -->
+  <line x1="36" y1="60" x2="54" y2="60" stroke="#94A3B8" stroke-width="3" stroke-linecap="round"/>
+  <line x1="36" y1="68" x2="54" y2="68" stroke="#94A3B8" stroke-width="3" stroke-linecap="round"/>
+  <line x1="74" y1="60" x2="92" y2="60" stroke="#94A3B8" stroke-width="3" stroke-linecap="round"/>
+  <line x1="74" y1="68" x2="92" y2="68" stroke="#94A3B8" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Atomes Oxygène -->
+  <circle cx="32" cy="64" r="10.5" fill="#FB7185" stroke="#FFF1F2" stroke-opacity="0.4" stroke-width="1.5"/>
+  <circle cx="96" cy="64" r="10.5" fill="#FB7185" stroke="#FFF1F2" stroke-opacity="0.4" stroke-width="1.5"/>
+
+  <!-- Atome Carbone central -->
+  <circle cx="64" cy="64" r="14" fill="url(#cb-carbon)" stroke="#E0F2FE" stroke-opacity="0.55" stroke-width="1.75"/>
+
+  <!-- Point satellite orbital -->
+  <circle cx="101" cy="36" r="4.5" fill="#34D399"/>
+  <circle cx="101" cy="36" r="8" stroke="#34D399" stroke-opacity="0.35" stroke-width="1.5"/>
+</svg>

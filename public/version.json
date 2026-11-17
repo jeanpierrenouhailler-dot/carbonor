@@ -1,0 +1,14 @@
+{
+  "version": "2.6.0",
+  "releaseDate": "2026-11-17",
+  "releaseDateLabel": "17 novembre 2026",
+  "channel": "production",
+  "highlights": [
+    "Menu Paramètres Système avec date de sortie, dernière vérification, vérification et mise à jour forcée",
+    "Mises à jour automatiques périodiques en arrière-plan via Service Worker PWA",
+    "Thème Clair haute lisibilité en complément du thème Sombre Observatoire",
+    "Onboarding initial avec mentions légales et clause de non-responsabilité sur les données",
+    "Onboarding contextuel et infobulles pédagogiques sur chaque champ de chaque écran",
+    "Bouton explicite « Installer l'application » sur bureau et mobile"
+  ]
+}

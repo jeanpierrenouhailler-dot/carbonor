@@ -9,6 +9,7 @@ import {
 import { ProvenanceBadge } from '../common/ProvenanceBadge';
 import { ExportButton } from '../common/ExportButton';
 import { ScienceTooltip, PedagogicBanner } from '../common/ScienceTooltip';
+import { FieldTooltip } from '../common/FieldTooltip';
 import { Wind, Atom, ArrowRightLeft, Info, HelpCircle } from 'lucide-react';
 
 export const PQRVisualizationView: React.FC = () => {
@@ -70,7 +71,13 @@ export const PQRVisualizationView: React.FC = () => {
       {/* Band selector & Options toolbar */}
       <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-slate-900 border border-slate-800 text-xs font-mono">
         <div className="flex items-center gap-3">
-          <span className="text-slate-400 font-bold uppercase tracking-wider">Bande Vibrationnelle :</span>
+          <span className="text-slate-400 font-bold uppercase tracking-wider inline-flex items-center gap-1.5">
+            Bande Vibrationnelle :
+            <FieldTooltip
+              label="Bande spectrale P/Q/R"
+              description="Comparez la bande à 15 µm (avec pic central Q) à celle à 4.3 µm (sans pic central Q, uniquement P et R)."
+            />
+          </span>
           <button
             onClick={() => setActiveBand('15um')}
             className={`px-3 py-1.5 rounded-xl font-semibold transition-all cursor-pointer ${
@@ -102,6 +109,10 @@ export const PQRVisualizationView: React.FC = () => {
               className="rounded border-slate-700 bg-slate-800 text-rose-500 focus:ring-0"
             />
             <span>Enveloppe Spectrale</span>
+            <FieldTooltip
+              label="Enveloppe spectrale"
+              description="Trace la courbe pointillée reliant les sommets des raies pour visualiser la forme globale de la bande."
+            />
           </label>
           <label className="flex items-center gap-2 cursor-pointer text-slate-300">
             <input
@@ -111,6 +122,10 @@ export const PQRVisualizationView: React.FC = () => {
               className="rounded border-slate-700 bg-slate-800 text-rose-500 focus:ring-0"
             />
             <span>Isotopologue ¹³C¹⁶O₂</span>
+            <FieldTooltip
+              label="Afficher le CO₂ lourd (¹³C)"
+              description="Inclut les raies du CO₂ contenant un atome de carbone 13, légèrement décalées en fréquence par rapport au carbone 12."
+            />
           </label>
         </div>
       </div>
@@ -312,7 +327,14 @@ export const PQRVisualizationView: React.FC = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
-            <label className="text-[11px] font-mono text-slate-400 block">Nombre d'onde ν (cm⁻¹)</label>
+            <label className="text-[11px] font-mono text-slate-400 flex items-center justify-between gap-1">
+              <span>Nombre d&apos;onde ν (cm⁻¹)</span>
+              <FieldTooltip
+                label="Nombre d'onde ν"
+                description="Nombre de vagues infrarouges tenant dans 1 centimètre. Saisissez une valeur pour convertir instantanément λ et f."
+                example="667.38 cm⁻¹"
+              />
+            </label>
             <input
               type="number"
               step="0.01"
@@ -324,7 +346,14 @@ export const PQRVisualizationView: React.FC = () => {
           </div>
 
           <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
-            <label className="text-[11px] font-mono text-slate-400 block">Longueur d'onde λ (µm)</label>
+            <label className="text-[11px] font-mono text-slate-400 flex items-center justify-between gap-1">
+              <span>Longueur d&apos;onde λ (µm)</span>
+              <FieldTooltip
+                label="Longueur d'onde λ"
+                description="Taille physique d'une onde lumineuse en micromètres (millièmes de millimètre). L'infrarouge thermique de la Terre se situe vers 15 µm."
+                example="15.0 µm"
+              />
+            </label>
             <input
               type="number"
               step="0.001"
@@ -336,7 +365,14 @@ export const PQRVisualizationView: React.FC = () => {
           </div>
 
           <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
-            <label className="text-[11px] font-mono text-slate-400 block">Fréquence f (THz)</label>
+            <label className="text-[11px] font-mono text-slate-400 flex items-center justify-between gap-1">
+              <span>Fréquence f (THz)</span>
+              <FieldTooltip
+                label="Fréquence f (Térahertz)"
+                description="Nombre de milliers de milliards d'oscillations par seconde du rayonnement infrarouge."
+                example="20.0 THz"
+              />
+            </label>
             <input
               type="number"
               step="0.01"

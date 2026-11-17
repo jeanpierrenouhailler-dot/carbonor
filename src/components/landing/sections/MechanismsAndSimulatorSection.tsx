@@ -6,6 +6,7 @@ import { SectionHeader } from '../ui/SectionHeader';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { SCIENTIFIC_MECHANISMS } from './landingData';
+import { FieldTooltip } from '../../common/FieldTooltip';
 
 interface MechanismsAndSimulatorSectionProps {
   onSelectView: (view: ViewKey) => void;
@@ -119,9 +120,14 @@ export const MechanismsAndSimulatorSection: React.FC<
               <div className="flex items-baseline justify-between gap-2">
                 <label
                   htmlFor="landing-co2-slider"
-                  className="text-sm font-medium text-obs-text"
+                  className="text-sm font-medium text-obs-text inline-flex items-center gap-1.5"
                 >
-                  Concentration atmosphérique
+                  <span>Concentration atmosphérique</span>
+                  <FieldTooltip
+                    label="Curseur CO₂ (ppm)"
+                    description="Déplacez ce curseur pour tester le forçage radiatif (chaleur piégée en W/m²) par rapport à 1750 (280 ppm)."
+                    example="426 ppm = niveau mondial actuel"
+                  />
                 </label>
                 <span className="font-mono text-2xl font-semibold text-obs-accent tabular-nums">
                   {co2Slider}{' '}

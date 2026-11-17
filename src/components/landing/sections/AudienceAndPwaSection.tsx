@@ -4,6 +4,7 @@ import { AnimatedSection } from '../ui/AnimatedSection';
 import { SectionHeader } from '../ui/SectionHeader';
 import { Card } from '../ui/Card';
 import { TARGET_AUDIENCES } from './landingData';
+import { PWAInstallButton } from '../../pwa/PWAInstallButton';
 
 export const AudienceAndPwaSection: React.FC = () => {
   return (
@@ -12,7 +13,7 @@ export const AudienceAndPwaSection: React.FC = () => {
         {/* Bandeau PWA & Accessibilité (#pwa) */}
         <Card id="pwa" elevated className="p-6 sm:p-8 scroll-mt-24">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-7 space-y-3">
+            <div className="lg:col-span-7 space-y-4">
               <div className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-obs-accent">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Progressive Web App &amp; Hors-Ligne</span>
@@ -23,6 +24,9 @@ export const AudienceAndPwaSection: React.FC = () => {
               <p className="text-[15px] sm:text-base text-obs-text-muted leading-[1.65]">
                 Carbonor s&apos;installe en un clic sur ordinateur (macOS, Windows, Linux) et mobile (iOS, Android). Grâce à son Service Worker et à ses fixtures embarquées, elle reste exploitable en mode Démonstration même sans connexion Internet.
               </p>
+              <div className="pt-1">
+                <PWAInstallButton variant="button" />
+              </div>
             </div>
 
             <div className="lg:col-span-5 grid grid-cols-1 gap-3">

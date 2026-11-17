@@ -3,6 +3,7 @@ import { ViewKey } from '../layout/Sidebar';
 import { ProvenanceBadge } from '../common/ProvenanceBadge';
 import { DataProvenanceModal } from '../common/DataProvenanceModal';
 import { ScienceTooltip } from '../common/ScienceTooltip';
+import { FieldTooltip } from '../common/FieldTooltip';
 import { 
   DataProvenance, 
   ScientificDataCategory, 
@@ -351,16 +352,23 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onSelectView, expe
             </p>
           </div>
         </div>
-        <button
-          onClick={toggleDataMode}
-          className={`shrink-0 inline-flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-mono font-bold border transition-all cursor-pointer ${
-            isRealData
-              ? 'bg-slate-900 hover:bg-slate-800 text-amber-300 border-amber-500/40 hover:border-amber-400'
-              : 'bg-emerald-900/80 hover:bg-emerald-800 text-emerald-200 border-emerald-500/50 hover:border-emerald-400'
-          }`}
-        >
-          <span>{isRealData ? 'Basculer en Mode Démonstration 🟡' : 'Basculer en Mode Données Réelles 🟢'}</span>
-        </button>
+        <div className="flex items-center gap-2 shrink-0">
+          <FieldTooltip
+            label="Mode Démo vs Données Réelles"
+            description="Choisissez entre les exemples embarqués (Mode Démo, rapide et hors-ligne) et les observations officielles synchronisées depuis NOAA, ICOS, NASA et CAMS."
+            example="Mode Démo = idéal pour découvrir · Données Réelles = recherche"
+          />
+          <button
+            onClick={toggleDataMode}
+            className={`shrink-0 inline-flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-mono font-bold border transition-all cursor-pointer ${
+              isRealData
+                ? 'bg-slate-900 hover:bg-slate-800 text-amber-300 border-amber-500/40 hover:border-amber-400'
+                : 'bg-emerald-900/80 hover:bg-emerald-800 text-emerald-200 border-emerald-500/50 hover:border-emerald-400'
+            }`}
+          >
+            <span>{isRealData ? 'Basculer en Mode Démonstration 🟡' : 'Basculer en Mode Données Réelles 🟢'}</span>
+          </button>
+        </div>
       </div>
 
       {/* Fundamental Scientific Distinction Box */}

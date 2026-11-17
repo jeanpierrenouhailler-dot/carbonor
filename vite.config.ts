@@ -11,11 +11,11 @@ export default defineConfig(() => {
       tailwindcss(),
       VitePWA({
         registerType: 'autoUpdate',
-        includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icon.svg'],
+        includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icon.svg', 'logo.svg', 'version.json'],
         manifest: {
           id: '/',
           name: 'CO₂ Atmosphère & Cycle du Carbone',
-          short_name: 'CO₂ Atmos',
+          short_name: 'Carbonor',
           description: "PWA scientifique pour l'exploration du CO₂ atmosphérique, de la spectroscopie moléculaire aux observations sol, satellites, profils et flux.",
           theme_color: '#091E3A',
           background_color: '#091E3A',
@@ -64,7 +64,8 @@ export default defineConfig(() => {
           ],
         },
         devOptions: {
-          enabled: false,
+          enabled: true,
+          type: 'module',
         },
       }),
     ],

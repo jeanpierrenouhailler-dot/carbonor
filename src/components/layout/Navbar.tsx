@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { PWAInstallButton } from '../pwa/PWAInstallButton';
 import { useDataMode } from '../../context/DataModeContext';
+import { useTheme } from '../../context/ThemeContext';
+import { useOnboarding } from '../../context/OnboardingContext';
+import { BrandLogo } from '../common/BrandLogo';
 import { ViewKey } from './Sidebar';
 import {
   Sparkles,
@@ -11,7 +14,12 @@ import {
   SlidersHorizontal,
   ChevronDown,
   ArrowRight,
-  ShieldCheck
+  ShieldCheck,
+  Settings,
+  Sun,
+  Moon,
+  Compass,
+  Scale,
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -19,6 +27,7 @@ interface NavbarProps {
   onToggleExpertMode: () => void;
   onOpenReport: () => void;
   onOpenCloudflareModal?: () => void;
+  onOpenSettings?: () => void;
   onToggleSidebar?: () => void;
   activeViewTitle?: string;
   currentView?: ViewKey;
@@ -30,11 +39,14 @@ export const Navbar: React.FC<NavbarProps> = ({
   onToggleExpertMode,
   onOpenReport,
   onOpenCloudflareModal,
+  onOpenSettings,
   onToggleSidebar,
   currentView = 'landing',
-  onSelectView
+  onSelectView,
 }) => {
   const { toggleDataMode, isRealData } = useDataMode();
+  const { theme, toggleTheme } = useTheme();
+  const { restoreAllGuides, openLegalModal } = useOnboarding();
   const [toolsOpen, setToolsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -60,7 +72,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     { id: 'dashboard', label: 'Synthèse' },
     { id: 'map', label: 'Carte' },
     { id: 'spectroscopy-lab', label: 'Spectroscopie' },
-    { id: 'sources', label: 'Sources' }
+    { id: 'sources', label: 'Sources' },
   ];
 
   const isLinkActive = (id: ViewKey) => {
@@ -75,9 +87,9 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-800/90 bg-slate-950/90 backdrop-blur-md">
-      <div className="flex h-16 items-center justify-between gap-6 px-4 lg:px-6 max-w-[1600px] mx-auto">
-        {/* Zone 1 : Identité sobre sur une seule ligne */}
-        <div className="flex items-center gap-3 shrink-0">
+      <div className="flex h-16 items-center justify-between gap-4 px-4 lg:px-6 max-w-[1600px] mx-auto">
+        {/* Zone 1 : Identité visuelle avec Logo dédié */}
+        <div className="flex items-center gap-2.5 shrink-0">
           {onToggleSidebar && (
             <button
               type="button"
@@ -92,28 +104,26 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             type="button"
             onClick={() => onSelectView && onSelectView('landing')}
-            className="flex items-center gap-2.5 text-left group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-lg"
+            className="flex items-center gap-2.5 text-left group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-lg pr-1"
             title="Revenir à l'accueil Carbonor"
           >
-            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-900 border border-cyan-500/35 group-hover:border-cyan-400/60 transition-colors shrink-0">
-              <span className="font-mono font-bold text-xs text-cyan-400 tracking-tighter">CO₂</span>
-            </div>
+            <BrandLogo size="sm" />
             <span className="text-base font-bold tracking-tight text-white group-hover:text-cyan-300 transition-colors whitespace-nowrap shrink-0">
               Carbonor
             </span>
-            <span className="hidden xl:inline text-xs text-slate-500 whitespace-nowrap shrink-0">
+            <span className="hidden 2xl:inline text-xs text-slate-500 whitespace-nowrap shrink-0">
               · Observatoire CO₂
             </span>
           </button>
         </div>
 
-        {/* Zone 2 : 5 liens directs épurés (typographie nette sans capsules) */}
+        {/* Zone 2 : 5 liens directs épurés */}
         {onSelectView && (
           <nav
             aria-label="Navigation principale"
-            className="hidden lg:flex items-center gap-6 text-sm font-medium"
+            className="hidden lg:flex items-center gap-5 text-sm font-medium"
           >
-            {primaryLinks.map(link => {
+            {primaryLinks.map((link) => {
               const active = isLinkActive(link.id);
               return (
                 <button
@@ -139,14 +149,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           </nav>
         )}
 
-        {/* Zone 3 : Contrôles compacts (Statut données uniquement dans l'app + Menu Outils + Action principale) */}
-        <div className="flex items-center gap-2.5 shrink-0">
+        {/* Zone 3 : Contrôles compacts sans surcharge */}
+        <div className="flex items-center gap-2 shrink-0">
           {/* Statut Métrologique : affiché uniquement dans les vues applicatives */}
           {currentView !== 'landing' && (
             <button
               type="button"
               onClick={toggleDataMode}
-              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
+              className={`inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium border transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
                 isRealData
                   ? 'bg-emerald-950/60 border-emerald-500/40 text-emerald-300 hover:bg-emerald-900/60'
                   : 'bg-amber-950/50 border-amber-500/35 text-amber-200 hover:bg-amber-900/50'
@@ -166,14 +176,47 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           )}
 
-          {/* Menu Outils (regroupe Mode Expert, Rapport, Cloudflare, PWA) */}
+          {/* Bouton rapide Installer l'application (desktop & mobile) */}
+          <div className="hidden md:block shrink-0">
+            <PWAInstallButton variant="button" compact />
+          </div>
+
+          {/* Bascule Thème Clair / Sombre */}
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label={theme === 'dark' ? 'Passer au thème Clair' : 'Passer au thème Sombre'}
+            title={theme === 'dark' ? 'Passer au thème Clair' : 'Passer au thème Sombre'}
+            className="inline-flex items-center justify-center p-2 rounded-lg border border-slate-800 bg-slate-900 text-slate-300 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer shrink-0"
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-4 h-4 text-amber-400" />
+            ) : (
+              <Moon className="w-4 h-4 text-cyan-400" />
+            )}
+          </button>
+
+          {/* Bouton Paramètres Système */}
+          {onOpenSettings && (
+            <button
+              type="button"
+              onClick={onOpenSettings}
+              aria-label="Ouvrir les paramètres système"
+              title="Paramètres Système, Mises à jour & Thème"
+              className="inline-flex items-center justify-center p-2 rounded-lg border border-slate-800 bg-slate-900 text-slate-300 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer shrink-0"
+            >
+              <Settings className="w-4 h-4 text-cyan-400" />
+            </button>
+          )}
+
+          {/* Menu Outils (regroupe Mode Expert, Guides, Légal, Rapport, Cloudflare, PWA) */}
           <div className="relative" ref={menuRef}>
             <button
               type="button"
-              onClick={() => setToolsOpen(prev => !prev)}
+              onClick={() => setToolsOpen((prev) => !prev)}
               aria-expanded={toolsOpen}
               aria-haspopup="menu"
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
+              className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium border transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
                 toolsOpen
                   ? 'bg-slate-800 border-slate-600 text-white'
                   : 'bg-slate-900 border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800/80'
@@ -181,7 +224,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <SlidersHorizontal className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
               <span className="hidden sm:inline">Outils</span>
-              <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-150 ${toolsOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown
+                className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-150 ${
+                  toolsOpen ? 'rotate-180' : ''
+                }`}
+              />
             </button>
 
             {toolsOpen && (
@@ -189,7 +236,25 @@ export const Navbar: React.FC<NavbarProps> = ({
                 role="menu"
                 className="absolute right-0 mt-2 w-72 rounded-xl bg-slate-900 border border-slate-800 shadow-2xl p-2 z-50 space-y-1"
               >
-                {/* Niveau d'analyse (pertinent dans l'espace applicatif) */}
+                {onOpenSettings && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onOpenSettings();
+                      setToolsOpen(false);
+                    }}
+                    className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-left text-xs text-slate-200 hover:bg-slate-800/80 transition-colors cursor-pointer"
+                  >
+                    <Settings className="w-4 h-4 text-cyan-400 shrink-0" />
+                    <span>
+                      <span className="block font-medium text-white">Paramètres système</span>
+                      <span className="block text-[11px] text-slate-400">
+                        Mises à jour automatiques, version &amp; thème
+                      </span>
+                    </span>
+                  </button>
+                )}
+
                 {currentView !== 'landing' && (
                   <button
                     type="button"
@@ -214,13 +279,18 @@ export const Navbar: React.FC<NavbarProps> = ({
                         </span>
                       </span>
                     </span>
-                    <span className={`px-1.5 py-0.5 rounded text-[10px] font-mono ${expertMode ? 'bg-purple-950 text-purple-300 border border-purple-500/30' : 'bg-slate-800 text-slate-300'}`}>
+                    <span
+                      className={`px-1.5 py-0.5 rounded text-[10px] font-mono ${
+                        expertMode
+                          ? 'bg-purple-950 text-purple-300 border border-purple-500/30'
+                          : 'bg-slate-800 text-slate-300'
+                      }`}
+                    >
                       {expertMode ? 'EXPERT' : 'PÉDA'}
                     </span>
                   </button>
                 )}
 
-                {/* Rapport scientifique */}
                 <button
                   type="button"
                   onClick={() => {
@@ -236,7 +306,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                   </span>
                 </button>
 
-                {/* Audit de provenance */}
                 {onSelectView && (
                   <button
                     type="button"
@@ -254,7 +323,36 @@ export const Navbar: React.FC<NavbarProps> = ({
                   </button>
                 )}
 
-                {/* Déploiement Cloudflare */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    restoreAllGuides();
+                    setToolsOpen(false);
+                  }}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-left text-xs text-slate-200 hover:bg-slate-800/80 transition-colors cursor-pointer"
+                >
+                  <Compass className="w-4 h-4 text-cyan-400 shrink-0" />
+                  <span>
+                    <span className="block font-medium text-white">Réafficher les guides novices</span>
+                    <span className="block text-[11px] text-slate-400">Rétablir l&apos;aide contextuelle partout</span>
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    openLegalModal();
+                    setToolsOpen(false);
+                  }}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-left text-xs text-slate-200 hover:bg-slate-800/80 transition-colors cursor-pointer"
+                >
+                  <Scale className="w-4 h-4 text-amber-400 shrink-0" />
+                  <span>
+                    <span className="block font-medium text-white">Mentions légales</span>
+                    <span className="block text-[11px] text-slate-400">Clause de non-responsabilité</span>
+                  </span>
+                </button>
+
                 {onOpenCloudflareModal && (
                   <button
                     type="button"
@@ -274,7 +372,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
                 <div className="my-1 border-t border-slate-800" />
 
-                {/* PWA Install */}
                 <PWAInstallButton variant="menu-item" />
               </div>
             )}
@@ -285,7 +382,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               type="button"
               onClick={() => onSelectView('dashboard')}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500 hover:bg-cyan-400 text-slate-950 transition-colors cursor-pointer whitespace-nowrap shrink-0"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-cyan-600 hover:bg-cyan-500 text-white transition-colors cursor-pointer whitespace-nowrap shrink-0"
             >
               <span className="hidden sm:inline">Ouvrir l&apos;App</span>
               <span className="sm:hidden">App</span>
@@ -295,7 +392,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               type="button"
               onClick={onOpenReport}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/40 text-cyan-300 transition-colors cursor-pointer whitespace-nowrap shrink-0"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/40 text-cyan-300 transition-colors cursor-pointer whitespace-nowrap shrink-0"
               title="Générer un rapport scientifique certifié"
             >
               <FileText className="w-3.5 h-3.5 text-cyan-400" />

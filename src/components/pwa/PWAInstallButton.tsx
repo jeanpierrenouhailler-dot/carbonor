@@ -4,9 +4,13 @@ import { Download, Smartphone, X, Check, Monitor } from 'lucide-react';
 
 interface PWAInstallButtonProps {
   variant?: 'button' | 'menu-item';
+  compact?: boolean;
 }
 
-export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({ variant = 'button' }) => {
+export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
+  variant = 'button',
+  compact = false,
+}) => {
   const { isInstallable, isInstalled, isIOS, install } = usePWAInstall();
   const [showIOSGuide, setShowIOSGuide] = useState(false);
   const [showBrowserGuide, setShowBrowserGuide] = useState(false);
@@ -26,7 +30,7 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({ variant = 'b
         <div className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs text-emerald-300 bg-emerald-950/30 border border-emerald-500/20">
           <span className="flex items-center gap-2 font-medium">
             <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-            <span>Application PWA active</span>
+            <span>Application installée</span>
           </span>
           <span className="text-[10px] font-mono text-emerald-400">Hors-ligne prêt</span>
         </div>
@@ -48,10 +52,10 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({ variant = 'b
             )}
             <span>
               <span className="block font-medium text-white">
-                {isInstallable ? "Installer l'application (PWA)" : isIOS ? 'Installer sur iOS' : 'Mode hors-ligne (PWA)'}
+                {isIOS ? "Installer l'application (iOS)" : "Installer l'application"}
               </span>
               <span className="block text-[11px] text-slate-400">
-                Accès local &amp; mise en cache scientifique
+                Ajouter sur l&apos;écran d&apos;accueil ou le bureau
               </span>
             </span>
           </span>
@@ -73,7 +77,7 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({ variant = 'b
     return (
       <span className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-emerald-950/60 border border-emerald-500/30 text-emerald-400 whitespace-nowrap shrink-0">
         <Check className="w-3.5 h-3.5" />
-        <span>PWA Active</span>
+        <span>Application installée</span>
       </span>
     );
   }
@@ -84,11 +88,12 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({ variant = 'b
         <button
           type="button"
           onClick={handleInstall}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white transition-colors cursor-pointer whitespace-nowrap shrink-0"
-          title="Installer l'application sur cet appareil pour un accès hors-ligne complet"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white transition-colors cursor-pointer whitespace-nowrap shrink-0 shadow-sm"
+          title="Installer l'application sur votre mobile ou ordinateur"
         >
-          <Download className="w-3.5 h-3.5" />
-          <span>Installer PWA</span>
+          <Download className="w-3.5 h-3.5 shrink-0" />
+          <span className={compact ? 'hidden xl:inline' : ''}>Installer l&apos;application</span>
+          {compact && <span className="xl:hidden">Installer</span>}
         </button>
         {installedNotice && (
           <div className="fixed bottom-6 right-6 z-50 p-4 rounded-xl bg-slate-900 border border-emerald-500/40 text-emerald-300 text-sm shadow-2xl flex items-center gap-3">
@@ -106,10 +111,12 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({ variant = 'b
         <button
           type="button"
           onClick={() => setShowIOSGuide(true)}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-slate-200 transition-colors cursor-pointer whitespace-nowrap shrink-0"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-cyan-500/40 bg-cyan-950/30 hover:bg-cyan-950/60 text-cyan-300 transition-colors cursor-pointer whitespace-nowrap shrink-0"
+          title="Ajouter Carbonor à votre écran d'accueil iOS"
         >
-          <Smartphone className="w-3.5 h-3.5 text-cyan-400" />
-          <span>Installer iOS</span>
+          <Smartphone className="w-3.5 h-3.5 shrink-0" />
+          <span className={compact ? 'hidden xl:inline' : ''}>Installer l&apos;application</span>
+          {compact && <span className="xl:hidden">Installer</span>}
         </button>
         {showIOSGuide && renderIOSModal(() => setShowIOSGuide(false))}
       </>
@@ -121,11 +128,12 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({ variant = 'b
       <button
         type="button"
         onClick={() => setShowBrowserGuide(true)}
-        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-slate-700/60 bg-slate-800/50 hover:bg-slate-800 text-slate-300 transition-colors cursor-pointer whitespace-nowrap shrink-0"
-        title="Application compatible PWA"
+        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-cyan-500/40 bg-cyan-950/30 hover:bg-cyan-950/60 text-cyan-300 transition-colors cursor-pointer whitespace-nowrap shrink-0"
+        title="Installer Carbonor sur mobile ou ordinateur (PWA)"
       >
-        <Download className="w-3.5 h-3.5 text-cyan-400" />
-        <span>PWA</span>
+        <Download className="w-3.5 h-3.5 shrink-0" />
+        <span className={compact ? 'hidden xl:inline' : ''}>Installer l&apos;application</span>
+        {compact && <span className="xl:hidden">Installer</span>}
       </button>
       {showBrowserGuide && renderBrowserModal(() => setShowBrowserGuide(false))}
     </>

@@ -4,6 +4,7 @@ import { BeerLambertParams, LineProfileType, SimulationResult } from '../../type
 import { ProvenanceBadge } from '../common/ProvenanceBadge';
 import { ExportButton } from '../common/ExportButton';
 import { ScienceTooltip, PedagogicBanner } from '../common/ScienceTooltip';
+import { FieldTooltip } from '../common/FieldTooltip';
 import { 
   SlidersHorizontal, 
   Atom, 
@@ -147,8 +148,13 @@ export const SpectroscopyLabView: React.FC = () => {
             {/* Concentration Selector & Slider */}
             <div className="md:col-span-2 space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-slate-400 font-bold uppercase tracking-wider">
+                <label className="text-slate-400 font-bold uppercase tracking-wider inline-flex items-center gap-1.5">
                   Concentration en CO₂ : <strong className="text-white text-sm">{concentration} ppm</strong>
+                  <FieldTooltip
+                    label="Concentration de CO₂ (ppm)"
+                    description="Nombre de molécules de CO₂ par million de molécules d'air sec. Faites glisser pour comparer l'ère préindustrielle (280 ppm) au futur."
+                    example="280 ppm (1750) · 426 ppm (2026) · 560 ppm (2×)"
+                  />
                 </label>
                 <span className="text-[11px] text-slate-500">
                   {concentration === 280 && '(Préindustriel ~1750)'}
@@ -188,7 +194,13 @@ export const SpectroscopyLabView: React.FC = () => {
             {/* Temperature & Pressure */}
             <div className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-slate-400 font-bold uppercase">Température :</span>
+                <span className="text-slate-400 font-bold uppercase inline-flex items-center gap-1">
+                  Température :
+                  <FieldTooltip
+                    label="Température du gaz (K)"
+                    description="Température de la couche d'air simulée en Kelvin (296 K = 23 °C ; 220 K = -53 °C en haute altitude)."
+                  />
+                </span>
                 <strong className="text-white">{temperature} K ({(temperature - 273.15).toFixed(0)} °C)</strong>
               </div>
               <input
@@ -202,7 +214,13 @@ export const SpectroscopyLabView: React.FC = () => {
               />
 
               <div className="flex justify-between pt-1">
-                <span className="text-slate-400 font-bold uppercase">Pression :</span>
+                <span className="text-slate-400 font-bold uppercase inline-flex items-center gap-1">
+                  Pression :
+                  <FieldTooltip
+                    label="Pression de l'air (atm)"
+                    description="Pression atmosphérique en atmosphères. Plus la pression est forte (1 atm au sol), plus les raies s'élargissent par chocs entre molécules."
+                  />
+                </span>
                 <strong className="text-white">{pressure.toFixed(2)} atm ({Math.round(pressure * 1013)} hPa)</strong>
               </div>
               <input
@@ -219,7 +237,14 @@ export const SpectroscopyLabView: React.FC = () => {
             {/* Path length and Profile Type */}
             <div className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-slate-400 font-bold uppercase">Trajet Optique L :</span>
+                <span className="text-slate-400 font-bold uppercase inline-flex items-center gap-1">
+                  Trajet Optique L :
+                  <FieldTooltip
+                    label="Longueur du trajet lumineux (L)"
+                    description="Distance parcourue par le rayon infrarouge à travers le gaz (en mètres). Plus le trajet est long, plus la lumière est absorbée."
+                    example="100 m = forte absorption · 10 m = test fin"
+                  />
+                </span>
                 <strong className="text-white">{pathLength} m</strong>
               </div>
               <input
@@ -232,8 +257,14 @@ export const SpectroscopyLabView: React.FC = () => {
                 className="w-full accent-emerald-500 cursor-pointer"
               />
 
-              <div className="flex justify-between pt-1">
-                <span className="text-slate-400 font-bold uppercase">Profil de raie :</span>
+              <div className="flex justify-between items-center pt-1">
+                <span className="text-slate-400 font-bold uppercase inline-flex items-center gap-1">
+                  Profil de raie :
+                  <FieldTooltip
+                    label="Modèle mathématique de raie"
+                    description="Voigt Faddeeva est le modèle physique exact utilisé par la NASA. Lorentz et Doppler servent à isoler un seul effet physique."
+                  />
+                </span>
                 <select
                   value={profileType}
                   onChange={e => setProfileType(e.target.value as LineProfileType)}
@@ -252,8 +283,14 @@ export const SpectroscopyLabView: React.FC = () => {
           <div className="rounded-2xl border border-slate-800 bg-slate-950 p-6 space-y-4 shadow-xl">
             {/* Metric Switcher Toolbar */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-900 pb-3 text-xs font-mono">
-              <div className="flex items-center gap-2">
-                <span className="text-slate-500">Grandeur affichée :</span>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-slate-500 inline-flex items-center gap-1">
+                  Grandeur affichée :
+                  <FieldTooltip
+                    label="Grandeur physique du graphique"
+                    description="Transmittance = part de lumière qui traverse (0 = bloqué, 1 = transparent). Profondeur optique = densité d'absorption. Radiance = énergie émise."
+                  />
+                </span>
                 <button
                   onClick={() => setMetricView('transmittance')}
                   className={`px-3 py-1 rounded-lg font-semibold transition-colors cursor-pointer ${
@@ -288,6 +325,10 @@ export const SpectroscopyLabView: React.FC = () => {
                   className="rounded border-slate-700 bg-slate-800 text-cyan-500 focus:ring-0"
                 />
                 <span>Superposer référence préindustrielle (280 ppm)</span>
+                <FieldTooltip
+                  label="Courbe témoin à 280 ppm"
+                  description="Affiche en surimpression le spectre de l'atmosphère avant l'ère industrielle (280 ppm) pour visualiser l'élargissement des ailes d'absorption."
+                />
               </label>
             </div>
 

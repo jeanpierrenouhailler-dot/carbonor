@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ProvenanceBadge } from '../common/ProvenanceBadge';
 import { ExportButton } from '../common/ExportButton';
 import { ScienceTooltip } from '../common/ScienceTooltip';
+import { FieldTooltip } from '../common/FieldTooltip';
 import { IcosProvider } from '../../providers/icosProvider';
 import { Station, VerticalProfile } from '../../types/observation';
 import { Flag, Building, Trees, Wind, Satellite, ShieldCheck, MapPin, RefreshCw, Radio, Globe } from 'lucide-react';
@@ -182,6 +183,10 @@ export const FranceEuropeView: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-3">
+          <FieldTooltip
+            label="Actualiser ICOS"
+            description="Récupère les derniers relevés européens depuis le Carbon Portal ICOS (Puy de Dôme, Haute-Provence, Tour de Traînou)."
+          />
           <button
             onClick={handleSyncIcos}
             disabled={syncing}
@@ -209,7 +214,13 @@ export const FranceEuropeView: React.FC = () => {
       )}
 
       {/* View Switcher */}
-      <div className="flex items-center rounded-xl bg-slate-900 border border-slate-800 p-1 text-xs font-mono w-fit">
+      <div className="flex items-center gap-1 rounded-xl bg-slate-900 border border-slate-800 p-1 text-xs font-mono w-fit">
+        <span className="px-1.5">
+          <FieldTooltip
+            label="Périmètre géographique"
+            description="Basculez entre le détail des stations françaises et le bilan comparatif des émissions par pays européens."
+          />
+        </span>
         <button
           onClick={() => setActiveTab('france')}
           className={`px-4 py-1.5 rounded-lg transition-colors cursor-pointer ${

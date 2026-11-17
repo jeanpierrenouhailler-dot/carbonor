@@ -4,6 +4,7 @@ import { SpectralLine, VibrationalBranch } from '../../types/spectroscopy';
 import { ProvenanceBadge } from '../common/ProvenanceBadge';
 import { ExportButton } from '../common/ExportButton';
 import { ScienceTooltip, PedagogicBanner } from '../common/ScienceTooltip';
+import { FieldTooltip } from '../common/FieldTooltip';
 import { 
   Atom, 
   Filter, 
@@ -312,7 +313,13 @@ export const LinesExplorerView: React.FC = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-3 text-xs font-mono">
-            <span className="text-slate-400">Filtre Rapide Démo :</span>
+            <span className="text-slate-400 inline-flex items-center gap-1">
+              Filtre Rapide Démo :
+              <FieldTooltip
+                label="Filtre rapide par bande et branche"
+                description="Choisissez une bande infrarouge (15 µm pour l'effet de serre, 4.3 µm, ou 1.61 µm utilisée par le satellite OCO-2) et filtrez éventuellement une branche P, Q ou R."
+              />
+            </span>
             <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800">
               <button
                 onClick={() => handleBandPreset('15um')}
@@ -443,7 +450,13 @@ export const LinesExplorerView: React.FC = () => {
             {/* 1. Isotopologue */}
             <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5">
               <div className="flex items-center justify-between">
-                <span className="text-slate-400 font-bold uppercase text-[10px]">1. Isotopologue</span>
+                <span className="text-slate-400 font-bold uppercase text-[10px] inline-flex items-center gap-1">
+                  1. Isotopologue
+                  <FieldTooltip
+                    label="Variante isotopique (Isotopologue)"
+                    description="Choisissez la variante de molécule de CO₂ à analyser (par défaut 626 = ¹²C¹⁶O₂ qui représente 98.4% du CO₂ dans l'air)."
+                  />
+                </span>
                 <ScienceTooltip
                   title="Isotopologues du CO₂"
                   summary="Variantes moléculaires avec isotopes stables ¹²C, ¹³C, ¹⁶O, ¹⁷O, ¹⁸O."
@@ -472,7 +485,14 @@ export const LinesExplorerView: React.FC = () => {
             {/* 2. Bande Spectrale */}
             <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5">
               <div className="flex items-center justify-between">
-                <span className="text-slate-400 font-bold uppercase text-[10px]">2. Bande Vibrationnelle</span>
+                <span className="text-slate-400 font-bold uppercase text-[10px] inline-flex items-center gap-1">
+                  2. Bande Vibrationnelle
+                  <FieldTooltip
+                    label="Bande Vibrationnelle"
+                    description="Sélectionnez la zone infrarouge correspondant à un mouvement de vibration de la molécule de CO₂."
+                    example="15 µm = principale bande de l'effet de serre"
+                  />
+                </span>
                 <ScienceTooltip
                   title="Bandes Vibrationnelles Infrarouges"
                   summary="Modes fondamentaux, harmoniques et combinaisons de vibration du CO₂."
@@ -503,7 +523,14 @@ export const LinesExplorerView: React.FC = () => {
             {/* 3. Intervalle Spectral [nu_min, nu_max] */}
             <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5">
               <div className="flex items-center justify-between">
-                <span className="text-slate-400 font-bold uppercase text-[10px]">3. Intervalle [νmin, νmax]</span>
+                <span className="text-slate-400 font-bold uppercase text-[10px] inline-flex items-center gap-1">
+                  3. Intervalle [νmin, νmax]
+                  <FieldTooltip
+                    label="Bornes de nombre d'onde (cm⁻¹)"
+                    description="Définissez la fenêtre spectrale minimale et maximale (en cm⁻¹) pour ne rechercher les raies que dans cette zone."
+                    example="645 à 690 cm⁻¹ couvre la bande à 15 µm"
+                  />
+                </span>
                 <ScienceTooltip
                   title="Intervalle Spectral en Nombre d'Onde (cm⁻¹)"
                   summary="Le nombre d'onde ν = 1 / λ représente le nombre de cycles d'onde par centimètre."
@@ -542,7 +569,13 @@ export const LinesExplorerView: React.FC = () => {
             {/* 4. Filtre Quantique J'' et Branches P/Q/R */}
             <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5">
               <div className="flex items-center justify-between">
-                <span className="text-slate-400 font-bold uppercase text-[10px]">4. États J'' &amp; Branche</span>
+                <span className="text-slate-400 font-bold uppercase text-[10px] inline-flex items-center gap-1">
+                  4. États J'' &amp; Branche
+                  <FieldTooltip
+                    label="Branche et nombre quantique J''"
+                    description="Filtrez selon le saut de rotation (P, Q ou R) et les niveaux rotationnels J'' (entrez 0 à 90 pour tout voir)."
+                  />
+                </span>
                 <ScienceTooltip
                   title="Nombres Quantiques Rotationnels J'' et J'"
                   summary="J'' est le moment cinétique de rotation dans l'état initial, J' est celui dans l'état excité."
@@ -593,7 +626,13 @@ export const LinesExplorerView: React.FC = () => {
             {/* 5. Seuil d'Intensité */}
             <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5">
               <div className="flex items-center justify-between">
-                <span className="text-slate-400 font-bold uppercase text-[10px]">5. Seuil Intensité S_cut</span>
+                <span className="text-slate-400 font-bold uppercase text-[10px] inline-flex items-center gap-1">
+                  5. Seuil Intensité S_cut
+                  <FieldTooltip
+                    label="Seuil d'intensité minimale"
+                    description="Masque les raies trop faibles pour alléger l'affichage. Plus l'exposant est proche de -18, plus seules les raies géantes sont gardées."
+                  />
+                </span>
                 <ScienceTooltip
                   title="Intensité Spectrale Intégrée S_ij"
                   summary="Mesure la probabilité quantique intrinsèque de transition dipolaire par molécule."
@@ -626,6 +665,10 @@ export const LinesExplorerView: React.FC = () => {
                 <span className="text-slate-400 font-bold uppercase text-[10px] flex items-center gap-1">
                   <Thermometer className="w-3 h-3 text-amber-400" />
                   6. Température T (K)
+                  <FieldTooltip
+                    label="Température du gaz (en Kelvin)"
+                    description="Change la température pour recalculer l'intensité de chaque raie. 296 K ≈ 23 °C (sol) · 215 K ≈ -58 °C (haute altitude)."
+                  />
                 </span>
                 <ScienceTooltip
                   title="Correction Thermique de Boltzmann S(T)"
@@ -660,6 +703,11 @@ export const LinesExplorerView: React.FC = () => {
                 <span className="text-slate-400 font-bold uppercase text-[10px] flex items-center gap-1">
                   <Gauge className="w-3 h-3 text-cyan-400" />
                   7. Pression P (atm)
+                  <FieldTooltip
+                    label="Pression atmosphérique (atm)"
+                    description="Modifie la pression de l'air : plus elle est élevée, plus les molécules se percutent et élargissent les raies spectrales."
+                    example="1.00 atm = niveau de la mer · 0.10 atm ≈ 16 km"
+                  />
                 </span>
                 <ScienceTooltip
                   title="Élargissement Collisionnel par la Pression (Profil de Lorentz)"

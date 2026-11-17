@@ -5,6 +5,7 @@ import { ProvenanceBadge } from '../common/ProvenanceBadge';
 import { DataProvenanceModal } from '../common/DataProvenanceModal';
 import { ExportButton } from '../common/ExportButton';
 import { ScienceTooltip, PedagogicBanner } from '../common/ScienceTooltip';
+import { FieldTooltip } from '../common/FieldTooltip';
 import { 
   Satellite, 
   Filter, 
@@ -166,6 +167,10 @@ export const XCO2View: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-3">
+          <FieldTooltip
+            label="Synchronisation NASA CMR"
+            description="Interroge les serveurs officiels de la NASA pour récupérer les derniers passages satellitaires OCO-2 et OCO-3 disponibles."
+          />
           <button
             onClick={handleSyncLiveCMR}
             disabled={syncing}
@@ -294,6 +299,10 @@ export const XCO2View: React.FC = () => {
         {/* Track selection */}
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-slate-400 font-bold uppercase tracking-wider mr-1">Trace / Secteur :</span>
+          <FieldTooltip
+            label="Trace Satellitaire"
+            description="Sélectionnez le survol géographique du satellite : Europe-France, Paris en mode grille 2D (OCO-3), ou un tracé Nord-Sud mondial."
+          />
           <button
             onClick={() => setSelectedTrack('Europe-France')}
             className={`px-3 py-1.5 rounded-xl font-semibold transition-all cursor-pointer ${
@@ -331,6 +340,10 @@ export const XCO2View: React.FC = () => {
           <div className="flex items-center gap-1 text-slate-400 font-bold uppercase tracking-wider">
             <Filter className="w-3.5 h-3.5 text-cyan-400" />
             <span>Quality Flag :</span>
+            <FieldTooltip
+              label="Filtre Quality Flag"
+              description="Flag 0 = ciel dégagé et mesure très fiable. Flag 1 = présence possible de nuages ou poussières augmentant l'incertitude."
+            />
             <ScienceTooltip
               title="Indicateur de Qualité Scientifique (Quality Flag)"
               summary="Filtre officiel de la NASA distinguant les sondages de qualité recherche (Flag 0) des sondages affectés par des nuages ou aérosols (Flag 1)."
@@ -379,6 +392,10 @@ export const XCO2View: React.FC = () => {
         <div className="flex items-center gap-1.5">
           <div className="flex items-center gap-1 text-slate-500">
             <span>Empreinte FP :</span>
+            <FieldTooltip
+              label="Empreinte spatiale (Footprint 1 à 8)"
+              description="Le capteur du satellite prend 8 photos côte à côte sur environ 10 km de large. Filtrer de 1 à 8 isole l'un de ces 8 détecteurs."
+            />
             <ScienceTooltip
               title="Empreintes Spatiales 1 à 8 (Cross-Track Footprints)"
               summary="Le spectromètre OCO dispose de 8 fentes parallèles qui balaient simultanément une bande au sol d'environ 10 km de large."

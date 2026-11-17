@@ -3,6 +3,7 @@ import { compareSeries, StatisticalComparison } from '../../scientific/statistic
 import { ProvenanceBadge } from '../common/ProvenanceBadge';
 import { ExportButton } from '../common/ExportButton';
 import { ScienceTooltip, PedagogicBanner } from '../common/ScienceTooltip';
+import { FieldTooltip } from '../common/FieldTooltip';
 import { OcoProvider } from '../../providers/ocoProvider';
 import { IcosProvider } from '../../providers/icosProvider';
 import { CamsProvider } from '../../providers/camsProvider';
@@ -186,6 +187,13 @@ export const MultiSourceCompareView: React.FC = () => {
 
       {/* Scenario Switcher */}
       <div className="flex flex-wrap items-center gap-2 p-1.5 rounded-2xl bg-slate-900 border border-slate-800 text-xs font-mono">
+        <span className="px-2 inline-flex items-center gap-1 text-slate-400">
+          Scénario :
+          <FieldTooltip
+            label="Scénario de comparaison"
+            description="Choisissez quelles paires de données comparer. Attention : comparer une station au sol à un satellite implique un écart physique normal (voir l'encadré ci-dessous)."
+          />
+        </span>
         <button
           onClick={() => setComparisonMode('oco_vs_cams')}
           className={`px-3 py-2 rounded-xl transition-all cursor-pointer ${

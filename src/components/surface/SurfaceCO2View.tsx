@@ -6,6 +6,7 @@ import { ProvenanceBadge } from '../common/ProvenanceBadge';
 import { DataProvenanceModal } from '../common/DataProvenanceModal';
 import { ExportButton } from '../common/ExportButton';
 import { ScienceTooltip, PedagogicBanner } from '../common/ScienceTooltip';
+import { FieldTooltip } from '../common/FieldTooltip';
 import { 
   Thermometer, 
   Calendar, 
@@ -199,8 +200,13 @@ export const SurfaceCO2View: React.FC = () => {
       {/* Station Selector Bar */}
       <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-slate-900 border border-slate-800">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider mr-2">
+          <span className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider mr-2 inline-flex items-center gap-1.5">
             Station :
+            <FieldTooltip
+              label="Sélecteur de Station"
+              description="Choisissez l'observatoire physique dont vous voulez consulter les mesures de CO₂ (en ppm)."
+              example="MLO = Mauna Loa (Hawaï), PUY = Puy de Dôme (France)"
+            />
           </span>
           {stations.map(st => (
             <button
@@ -219,7 +225,13 @@ export const SurfaceCO2View: React.FC = () => {
         </div>
 
         {/* Resolution Tabs based on Station Type */}
-        <div className="flex items-center rounded-xl bg-slate-950 border border-slate-800 p-1 text-xs font-mono">
+        <div className="flex items-center gap-1 rounded-xl bg-slate-950 border border-slate-800 p-1 text-xs font-mono">
+          <span className="px-1.5">
+            <FieldTooltip
+              label="Fréquence des relevés"
+              description="Choisissez l'intervalle de temps entre chaque point : Horaire (variations jour/nuit), Quotidien ou Mensuel (tendance depuis 1958)."
+            />
+          </span>
           {hasHourly && (
             <button
               onClick={() => setTimeResolution('hourly')}
@@ -441,6 +453,10 @@ export const SurfaceCO2View: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
+            <FieldTooltip
+              label="Graphique vs Tableau Brut"
+              description="Basculez entre la courbe visuelle et le tableau chiffré ligne par ligne avec les dates exactes (UTC) et l'incertitude."
+            />
             <button
               onClick={() => setShowDataTable(!showDataTable)}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-cyan-300 border border-slate-700 transition-colors cursor-pointer"

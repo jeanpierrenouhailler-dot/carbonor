@@ -30,30 +30,6 @@ async function startServer() {
 
   app.use(express.json());
 
-  // Initialisation asynchrone non-bloquante du pipeline de données en arrière-plan
-  // Cela permet à app.listen() de démarrer immédiatement et de répondre sur le port 3000
-  setImmediate(async () => {
-    console.log('[Scientific Pipeline] Initialisation et synchronisation des données réelles NOAA & ICOS en arrière-plan...');
-    try {
-      await NoaaDataPipeline.getMonthlyKeeling();
-      await NoaaDataPipeline.getDailyKeeling();
-      await NoaaDataPipeline.getErddapHourly('BRW');
-      await NoaaDataPipeline.getErddapHourly('SMO');
-      await NoaaDataPipeline.getErddapHourly('SPO');
-      await NoaaDataPipeline.getErddapHourly('MKO');
-      await NoaaDataPipeline.getErddapMonthly('BRW');
-      await NoaaDataPipeline.getErddapMonthly('SMO');
-      await NoaaDataPipeline.getErddapMonthly('SPO');
-      await NoaaDataPipeline.getErddapFlask('MHD');
-      await NoaaDataPipeline.getErddapFlask('CGO');
-      await NoaaDataPipeline.getErddapAircraftProfile();
-      await NasaOcoPipeline.getCmrGranules();
-      console.log('[Scientific Pipeline] Synchronisation NOAA, ICOS & NASA réussie avec succès !');
-    } catch (e) {
-      console.warn('[Scientific Pipeline] Initialisation avec données en cache disque:', e);
-    }
-  });
-
   // ==========================================
   // ROUTES API SCIENTIFIQUES (/api/*)
   // ==========================================
@@ -129,6 +105,17 @@ async function startServer() {
       description: isReal
         ? 'Données récupérées auprès de la source officielle.'
         : "Données d'exemple / fixtures scientifiques embarquées."
+    });
+  });
+
+  app.get('/api/system/version', (_req, res) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+    res.json({
+      name: 'Carbonor',
+      version: '2.6.0',
+      releaseDate: '2026-11-17',
+      releaseDateLabel: '17 novembre 2026',
+      checkedAt: new Date().toISOString()
     });
   });
 
@@ -1232,6 +1219,30 @@ async function startServer() {
 
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`[CO2 Atmospheric Server] Running on http://0.0.0.0:${PORT}`);
+
+    // Synchronisation différée après l'ouverture du port 3000 pour éviter toute contention au démarrage
+    const syncTimer = setTimeout(async () => {
+      console.log('[Scientific Pipeline] Initialisation et synchronisation des données réelles NOAA & ICOS en arrière-plan...');
+      try {
+        await NoaaDataPipeline.getMonthlyKeeling();
+        await NoaaDataPipeline.getDailyKeeling();
+        await NoaaDataPipeline.getErddapHourly('BRW');
+        await NoaaDataPipeline.getErddapHourly('SMO');
+        await NoaaDataPipeline.getErddapHourly('SPO');
+        await NoaaDataPipeline.getErddapHourly('MKO');
+        await NoaaDataPipeline.getErddapMonthly('BRW');
+        await NoaaDataPipeline.getErddapMonthly('SMO');
+        await NoaaDataPipeline.getErddapMonthly('SPO');
+        await NoaaDataPipeline.getErddapFlask('MHD');
+        await NoaaDataPipeline.getErddapFlask('CGO');
+        await NoaaDataPipeline.getErddapAircraftProfile();
+        await NasaOcoPipeline.getCmrGranules();
+        console.log('[Scientific Pipeline] Synchronisation NOAA, ICOS & NASA réussie avec succès !');
+      } catch (e) {
+        console.warn('[Scientific Pipeline] Initialisation avec données en cache disque:', e);
+      }
+    }, 3000);
+    syncTimer.unref?.();
   });
 }
 

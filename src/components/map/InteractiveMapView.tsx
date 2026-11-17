@@ -8,6 +8,7 @@ import { ProvenanceBadge } from '../common/ProvenanceBadge';
 import { DataProvenanceModal } from '../common/DataProvenanceModal';
 import { ExportButton } from '../common/ExportButton';
 import { ScienceTooltip } from '../common/ScienceTooltip';
+import { FieldTooltip } from '../common/FieldTooltip';
 import { useDataMode } from '../../context/DataModeContext';
 import { 
   MapPin, 
@@ -420,6 +421,11 @@ export const InteractiveMapView: React.FC = () => {
           <span className="font-mono font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
             <Filter className="w-3.5 h-3.5 text-cyan-400" />
             Couches :
+            <FieldTooltip
+              label="Couches de la carte"
+              description="Cochez ou décochez pour afficher les observatoires au sol (vert), la trace du satellite NASA OCO-2 (bleu) ou la grille du modèle CAMS (violet)."
+              example="Désactivez OCO-2 pour voir uniquement les stations"
+            />
           </span>
 
           <label className="flex items-center gap-2 cursor-pointer text-slate-200">
@@ -468,6 +474,11 @@ export const InteractiveMapView: React.FC = () => {
             <span className="text-slate-400 font-semibold flex items-center gap-1">
               <Globe2 className="w-3 h-3 text-cyan-400" />
               Fond OSM :
+              <FieldTooltip
+                label="Style de carte (Fond OSM)"
+                description="Change l'apparence géographique de la carte : plan routier Standard, thème Sombre, relief montagneux Topo ou vue Satellite."
+                example="⛰️ Topo aide à voir l'altitude des stations de montagne"
+              />
             </span>
             <button
               onClick={() => setTileStyle('osm-standard')}
@@ -517,7 +528,13 @@ export const InteractiveMapView: React.FC = () => {
 
           {/* Réseau filtré */}
           <div className="flex items-center gap-1 font-mono border-l border-slate-800 pl-3">
-            <span className="text-slate-500">Réseau :</span>
+            <span className="text-slate-500 flex items-center gap-1">
+              Réseau :
+              <FieldTooltip
+                label="Filtre Réseau (NOAA / ICOS)"
+                description="Filtre les stations affichées : ALL (toutes), NOAA (réseau mondial américain) ou ICOS (réseau européen haute précision)."
+              />
+            </span>
             {(['ALL', 'NOAA', 'ICOS'] as const).map(n => (
               <button
                 key={n}
@@ -541,6 +558,10 @@ export const InteractiveMapView: React.FC = () => {
               className="rounded border-slate-700 bg-slate-800 text-cyan-500 focus:ring-0"
             />
             <span>Flag '0' (Bon)</span>
+            <FieldTooltip
+              label="Filtre Qualité Satellite (Flag 0)"
+              description="Lorsqu'elle est cochée, masque les mesures satellites perturbées par des nuages ou poussières pour ne garder que les plus fiables."
+            />
           </label>
         </div>
       </div>

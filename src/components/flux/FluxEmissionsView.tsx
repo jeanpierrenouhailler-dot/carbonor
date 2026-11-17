@@ -11,6 +11,7 @@ import {
 import { ProvenanceBadge } from '../common/ProvenanceBadge';
 import { ExportButton } from '../common/ExportButton';
 import { ScienceTooltip } from '../common/ScienceTooltip';
+import { FieldTooltip } from '../common/FieldTooltip';
 import { 
   Wind, 
   Flame, 
@@ -199,7 +200,13 @@ export const FluxEmissionsView: React.FC = () => {
       </div>
 
       {/* Tab Switcher */}
-      <div className="flex items-center rounded-xl bg-slate-900 border border-slate-800 p-1 text-xs font-mono w-fit">
+      <div className="flex flex-wrap items-center gap-1 rounded-xl bg-slate-900 border border-slate-800 p-1 text-xs font-mono w-fit">
+        <span className="px-1.5">
+          <FieldTooltip
+            label="Choix de l'analyse"
+            description="Alternez entre les flux naturels (CAMS), les émissions humaines déclarées (CITEPA) et le convertisseur d'unités de flux."
+          />
+        </span>
         <button
           onClick={() => setActiveTab('fluxes')}
           className={`px-4 py-1.5 rounded-lg transition-colors cursor-pointer ${
@@ -359,6 +366,10 @@ export const FluxEmissionsView: React.FC = () => {
                       </option>
                     ))}
                   </select>
+                  <FieldTooltip
+                    label="Édition annuelle CITEPA"
+                    description="Sélectionnez l'année de publication du rapport officiel SECTEN des émissions françaises (en mégatonnes d'équivalent CO₂)."
+                  />
                 </div>
 
                 {/* Actualiser CITEPA */}
@@ -615,8 +626,13 @@ export const FluxEmissionsView: React.FC = () => {
           </div>
 
           <div className="max-w-md space-y-2">
-            <label className="text-xs font-mono text-slate-400 block">
-              Valeur de flux en µmol CO₂ / (m² · s) :
+            <label className="text-xs font-mono text-slate-400 flex items-center gap-1.5">
+              <span>Valeur de flux en µmol CO₂ / (m² · s) :</span>
+              <FieldTooltip
+                label="Flux instantané (µmol/m²/s)"
+                description="Quantité de CO₂ échangée chaque seconde sur 1 m² de surface. Saisissez une valeur (ex: -10 pour une forêt qui absorbe le jour, +5 pour un sol qui respire)."
+                example="-10 µmol/m²/s"
+              />
             </label>
             <input
               type="number"

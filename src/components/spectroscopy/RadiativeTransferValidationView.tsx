@@ -9,6 +9,7 @@ import {
   ValidationQuantity
 } from '../../types/spectroscopy';
 import { ScienceTooltip } from '../common/ScienceTooltip';
+import { FieldTooltip } from '../common/FieldTooltip';
 import { ProvenanceBadge } from '../common/ProvenanceBadge';
 import {
   CheckCircle2,
@@ -579,9 +580,15 @@ export const RadiativeTransferValidationView: React.FC = () => {
           </div>
 
           {/* Commandes dynamiques : Pression & Température */}
-          <div className="flex items-center gap-4 text-xs font-mono">
+          <div className="flex flex-wrap items-center gap-4 text-xs font-mono">
             <div className="flex items-center gap-2">
-              <span className="text-slate-400">P : <strong>{demoPressure.toFixed(2)} atm</strong></span>
+              <span className="text-slate-400 inline-flex items-center gap-1">
+                P : <strong>{demoPressure.toFixed(2)} atm</strong>
+                <FieldTooltip
+                  label="Pression de test (atm)"
+                  description="Faites varier la pression pour observer à quel moment le profil exact de Faddeeva s'écarte de l'approximation Pseudo-Voigt (~0.3 à 0.6 atm)."
+                />
+              </span>
               <input
                 type="range"
                 min="0.05"
@@ -594,7 +601,13 @@ export const RadiativeTransferValidationView: React.FC = () => {
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-slate-400">T : <strong>{demoTemp} K</strong></span>
+              <span className="text-slate-400 inline-flex items-center gap-1">
+                T : <strong>{demoTemp} K</strong>
+                <FieldTooltip
+                  label="Température de test (Kelvin)"
+                  description="Ajuste la température pour modifier l'élargissement thermique Doppler et comparer les deux courbes de Voigt."
+                />
+              </span>
               <input
                 type="range"
                 min="200"

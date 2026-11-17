@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { ArrowRight, Globe2 } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import type { ViewKey } from '../layout/Sidebar';
+import { BrandLogo } from '../common/BrandLogo';
 import { Button } from './ui/Button';
 import { HeroSection } from './sections/HeroSection';
 import { EpistemologySection } from './sections/EpistemologySection';
@@ -16,6 +17,8 @@ import type { ScreenshotItem } from './sections/landingData';
 interface LandingPageViewProps {
   onSelectView: (view: ViewKey) => void;
   onOpenReport?: () => void;
+  onOpenSettings?: () => void;
+  onOpenLegal?: () => void;
 }
 
 const QUICK_NAV_ITEMS = [
@@ -31,6 +34,8 @@ const QUICK_NAV_ITEMS = [
 export const LandingPageView: React.FC<LandingPageViewProps> = ({
   onSelectView,
   onOpenReport,
+  onOpenSettings,
+  onOpenLegal,
 }) => {
   const [zoomedScreenshot, setZoomedScreenshot] =
     useState<ScreenshotItem | null>(null);
@@ -51,7 +56,7 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
           className="rounded-[var(--radius-panel)] border border-obs-border bg-obs-surface/80 backdrop-blur-md px-4 sm:px-5 py-2.5 flex items-center justify-between gap-4 shadow-card"
         >
           <div className="flex items-center gap-2.5 shrink-0">
-            <Globe2 className="w-4 h-4 text-obs-accent" />
+            <BrandLogo size="sm" />
             <span className="font-display text-sm font-semibold tracking-wide text-obs-text">
               CARBONOR
             </span>
@@ -112,6 +117,8 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
         <FinalCtaAndFooterSection
           onSelectView={onSelectView}
           onOpenReport={onOpenReport}
+          onOpenSettings={onOpenSettings}
+          onOpenLegal={onOpenLegal}
         />
       </div>
 

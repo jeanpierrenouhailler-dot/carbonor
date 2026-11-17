@@ -1,17 +1,21 @@
 import React from 'react';
-import { ArrowRight, ExternalLink, FileText, Globe2 } from 'lucide-react';
+import { ArrowRight, ExternalLink, FileText, Scale, Settings } from 'lucide-react';
 import type { ViewKey } from '../../layout/Sidebar';
+import { BrandLogo } from '../../common/BrandLogo';
+import { APP_META } from '../../../config/appMeta';
 import { AnimatedSection } from '../ui/AnimatedSection';
 import { Button } from '../ui/Button';
 
 interface FinalCtaAndFooterSectionProps {
   onSelectView: (view: ViewKey) => void;
   onOpenReport?: () => void;
+  onOpenSettings?: () => void;
+  onOpenLegal?: () => void;
 }
 
 export const FinalCtaAndFooterSection: React.FC<
   FinalCtaAndFooterSectionProps
-> = ({ onSelectView, onOpenReport }) => {
+> = ({ onSelectView, onOpenReport, onOpenSettings, onOpenLegal }) => {
   return (
     <div className="space-y-16">
       {/* CTA Final pleine largeur avec dégradé et un seul bouton d'action principal */}
@@ -46,8 +50,8 @@ export const FinalCtaAndFooterSection: React.FC<
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Colonne 1 : Identité */}
           <div className="space-y-3">
-            <div className="flex items-center gap-2 text-obs-text font-semibold text-base">
-              <Globe2 className="w-4 h-4 text-obs-accent" />
+            <div className="flex items-center gap-2.5 text-obs-text font-semibold text-base">
+              <BrandLogo size="sm" />
               <span className="font-display tracking-tight">CARBONOR</span>
             </div>
             <p className="text-sm text-obs-text-muted leading-relaxed">
@@ -183,6 +187,30 @@ export const FinalCtaAndFooterSection: React.FC<
                   </button>
                 </li>
               )}
+              {onOpenSettings && (
+                <li>
+                  <button
+                    type="button"
+                    onClick={onOpenSettings}
+                    className="inline-flex items-center gap-1.5 text-obs-text-muted hover:text-obs-accent transition-colors cursor-pointer"
+                  >
+                    <Settings className="w-3.5 h-3.5 text-obs-accent" />
+                    <span>Paramètres &amp; Mises à jour</span>
+                  </button>
+                </li>
+              )}
+              {onOpenLegal && (
+                <li>
+                  <button
+                    type="button"
+                    onClick={onOpenLegal}
+                    className="inline-flex items-center gap-1.5 text-obs-text-muted hover:text-obs-accent transition-colors cursor-pointer"
+                  >
+                    <Scale className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Mentions légales</span>
+                  </button>
+                </li>
+              )}
               <li className="pt-2 font-mono text-xs text-obs-text-subtle leading-relaxed">
                 Étalons certifiés WMO-CO2-X2019. Résolution raie-par-raie HITRAN 2020.
               </li>
@@ -192,10 +220,10 @@ export const FinalCtaAndFooterSection: React.FC<
 
         <div className="pt-6 border-t border-obs-border flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
           <p className="text-obs-text-subtle text-center sm:text-left leading-relaxed">
-            Données scientifiques fournies à titre de recherche et d&apos;enseignement ouvert : NOAA GML, ICOS ERIC, NASA Earthdata JPL, Copernicus ECMWF, Harvard-Smithsonian CfA et CITEPA.
+            Données scientifiques fournies à titre de recherche et d&apos;enseignement ouvert (NOAA GML, ICOS ERIC, NASA JPL, Copernicus ECMWF, HITRAN, CITEPA). L&apos;éditeur n&apos;est pas responsable des données fournies.
           </p>
           <div className="flex items-center gap-3 font-mono text-obs-text-subtle shrink-0">
-            <span>v2.4.0</span>
+            <span>v{APP_META.version}</span>
             <span aria-hidden="true">·</span>
             <span>PWA Ouverte</span>
             <span aria-hidden="true">·</span>
